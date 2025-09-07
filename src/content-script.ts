@@ -104,22 +104,6 @@ function showDictionaryButton(x: number, y: number, selectedText: string) {
 
     document.body.appendChild(dictionaryButton);
 
-    console.log("Button position:", {
-      left: dictionaryButton.style.left,
-      top: dictionaryButton.style.top,
-      zIndex: dictionaryButton.style.zIndex,
-    });
-
-    // Test if button is actually visible
-    setTimeout(() => {
-      const buttonRect = dictionaryButton?.getBoundingClientRect();
-
-      console.log(
-        "Button is visible:",
-        buttonRect && buttonRect.width > 0 && buttonRect.height > 0
-      );
-    }, 100);
-
     // Add a flag to prevent immediate removal by click-outside
     (dictionaryButton as any).justCreated = true;
     setTimeout(() => {
@@ -176,9 +160,9 @@ function showDictionaryPopup(selectedText: string, x?: number, y?: number) {
     let popupX = x || window.innerWidth / 2;
     let popupY = y || window.innerHeight / 2;
 
-    // Default popup dimensions
+    // Default popup dimensions (height will be updated dynamically)
     const popupWidth = 300;
-    const popupHeight = 500; // Use the fixed height we set in the component
+    let popupHeight = 200; // Initial height, will be updated by popup content
 
     if (x !== undefined && y !== undefined) {
       // Position popup to the right of selection, with some offset
@@ -256,20 +240,25 @@ function showDictionaryPopup(selectedText: string, x?: number, y?: number) {
         let newPopupX = selectionViewportX + 20;
         let newPopupY = selectionViewportY;
 
-        // Smart vertical positioning based on viewport space
+        // Smart vertical positioning based on viewport space and current popup height
         const spaceBelow = window.innerHeight - selectionViewportY;
         const spaceAbove = selectionViewportY;
-        const minimumPopupHeight = 400;
+        const currentPopupHeight =
+          parseInt(dictionaryPopup.style.height) || popupHeight;
+        const minimumPopupHeight = Math.min(currentPopupHeight, 150);
 
         if (spaceBelow >= minimumPopupHeight + 50) {
           // Enough space below - position below selection
           newPopupY = selectionViewportY + 20;
         } else if (spaceAbove >= minimumPopupHeight + 50) {
           // Not enough space below but enough above - position above selection
-          newPopupY = selectionViewportY - popupHeight - 20;
+          newPopupY = selectionViewportY - currentPopupHeight - 20;
         } else {
           // Not enough space in either direction - center vertically in viewport
-          newPopupY = Math.max(20, (window.innerHeight - popupHeight) / 2);
+          newPopupY = Math.max(
+            20,
+            (window.innerHeight - currentPopupHeight) / 2
+          );
         }
 
         // Horizontal bounds checking (viewport relative)
@@ -278,8 +267,8 @@ function showDictionaryPopup(selectedText: string, x?: number, y?: number) {
         }
 
         // Final bounds checking (viewport relative)
-        if (newPopupY + popupHeight > window.innerHeight) {
-          newPopupY = window.innerHeight - popupHeight - 20;
+        if (newPopupY + currentPopupHeight > window.innerHeight) {
+          newPopupY = window.innerHeight - currentPopupHeight - 20;
         }
         if (newPopupY < 20) {
           newPopupY = 20;
@@ -327,7 +316,45 @@ function showDictionaryPopup(selectedText: string, x?: number, y?: number) {
           }, 350); // 250ms delay to ensure proper positioning
         }
       } else if (event.data.type === "UPDATE_POPUP_HEIGHT" && dictionaryPopup) {
-        dictionaryPopup.style.height = `${event.data.height}px`;
+        const newHeight = event.data.height;
+        popupHeight = newHeight; // Update the stored height
+        dictionaryPopup.style.height = `${newHeight}px`;
+
+        // Reposition popup if needed based on new height
+        if (x !== undefined && y !== undefined) {
+          let newPopupX = popupX;
+          let newPopupY = popupY;
+
+          // Smart vertical repositioning based on new height
+          const spaceBelow = window.innerHeight - y;
+          const spaceAbove = y;
+          const minimumPopupHeight = Math.min(newHeight, 150);
+
+          if (spaceBelow >= minimumPopupHeight + 50) {
+            // Enough space below - keep it below selection
+            newPopupY = y + 20;
+          } else if (spaceAbove >= minimumPopupHeight + 50) {
+            // Not enough space below but enough above - move above selection
+            newPopupY = y - newHeight - 20;
+          } else {
+            // Not enough space in either direction - center vertically
+            newPopupY = Math.max(20, (window.innerHeight - newHeight) / 2);
+          }
+
+          // Final bounds checking with new height
+          if (newPopupY + newHeight > window.innerHeight) {
+            newPopupY = window.innerHeight - newHeight - 20;
+          }
+          if (newPopupY < 20) {
+            newPopupY = 20;
+          }
+
+          // Update position if it changed
+          if (newPopupY !== popupY) {
+            dictionaryPopup.style.top = `${newPopupY}px`;
+            popupOriginalPosition = { x: newPopupX, y: newPopupY };
+          }
+        }
 
         // Show popup if not already visible with a small delay
         if (!popupVisible) {
@@ -339,21 +366,14 @@ function showDictionaryPopup(selectedText: string, x?: number, y?: number) {
               dictionaryPopup.style.visibility = "visible";
               popupVisible = true;
             }
-          }, 350); // 250ms delay to ensure proper positioning
+          }, 150); // Reduced delay since height is already calculated
         }
       }
     };
     window.addEventListener("message", handlePopupMessage); // Send the selected text to the popup with a delay as fallback
     dictionaryPopup.onload = () => {
-      console.log(
-        "Dictionary popup iframe loaded, waiting for React component to mount"
-      );
       setTimeout(() => {
         if (!textSent) {
-          console.log(
-            "Fallback: Sending TRANSLATE_TEXT message with text:",
-            selectedText
-          );
           dictionaryPopup?.contentWindow?.postMessage(
             {
               type: "TRANSLATE_TEXT",
@@ -439,11 +459,6 @@ document.addEventListener("mouseup", (e) => {
   if (selectedText && selectedText.length > 0) {
     const rect = selection?.getRangeAt(0).getBoundingClientRect();
     if (rect) {
-      console.log(
-        "Showing dictionary button at:",
-        rect.left + rect.width / 2,
-        rect.top + window.scrollY - 35
-      );
       showDictionaryButton(
         rect.left + rect.width / 2,
         rect.top + window.scrollY - 35, // Position above the selection
@@ -475,11 +490,6 @@ document.addEventListener("selectionchange", () => {
     ) {
       const rect = selection?.getRangeAt(0).getBoundingClientRect();
       if (rect) {
-        console.log(
-          "Showing dictionary button from selection change at:",
-          rect.left + rect.width / 2,
-          rect.top + window.scrollY - 35
-        );
         showDictionaryButton(
           rect.left + rect.width / 2,
           rect.top + window.scrollY - 35, // Position above the selection

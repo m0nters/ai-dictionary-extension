@@ -30,18 +30,46 @@ const DictionaryPopup: React.FC = () => {
   // Hardcoded API key for convenience
   const apiKey = "AIzaSyAWVSbmZSU-gR2TqJzifTfQL0AJDACPiFk";
 
-  // Function to set a fixed popup height for scrolling
+  // Function to calculate and set dynamic popup height based on content
   const updatePopupHeight = () => {
     setTimeout(() => {
-      const fixedHeight = 500; // Fixed height to ensure consistent scrolling
-
-      window.parent.postMessage(
-        {
-          type: "UPDATE_POPUP_HEIGHT",
-          height: fixedHeight,
-        },
-        "*"
+      // Get the actual content height
+      const contentWrapper = document.querySelector(
+        ".dictionary-content-wrapper"
       );
+      const closeButton = document.querySelector(".flex.justify-end.p-4.pb-0");
+
+      if (contentWrapper && closeButton) {
+        const contentHeight = contentWrapper.scrollHeight;
+        const closeButtonHeight = closeButton.getBoundingClientRect().height;
+        const padding = 32; // Account for padding and margins
+
+        // Calculate total needed height
+        let totalHeight = contentHeight + closeButtonHeight + padding;
+
+        // Set reasonable min and max heights
+        const minHeight = 150;
+        const maxHeight = Math.min(500, window.parent.innerHeight * 0.8); // Max 80% of viewport or 500px
+
+        totalHeight = Math.max(minHeight, Math.min(totalHeight, maxHeight));
+
+        window.parent.postMessage(
+          {
+            type: "UPDATE_POPUP_HEIGHT",
+            height: totalHeight,
+          },
+          "*"
+        );
+      } else {
+        // Fallback to minimum height if elements not found
+        window.parent.postMessage(
+          {
+            type: "UPDATE_POPUP_HEIGHT",
+            height: 150,
+          },
+          "*"
+        );
+      }
     }, 100);
   };
 
@@ -56,10 +84,6 @@ const DictionaryPopup: React.FC = () => {
     // Listen for messages from content script
     const handleMessage = (event: MessageEvent) => {
       if (event.data.type === "TRANSLATE_TEXT") {
-        console.log(
-          "Processing TRANSLATE_TEXT message with text:",
-          event.data.text
-        );
         setResult((prev) => ({
           ...prev,
           text: event.data.text,
@@ -74,27 +98,54 @@ const DictionaryPopup: React.FC = () => {
     window.addEventListener("message", handleMessage);
 
     // Signal to parent that the component is ready
-
     window.parent.postMessage({ type: "POPUP_READY" }, "*");
 
     return () => {
       window.removeEventListener("message", handleMessage);
     };
-  }, [targetLanguage, apiKey]);
+  }, []); // Remove targetLanguage from dependencies
 
   // Update popup height whenever result changes
   useEffect(() => {
     updatePopupHeight();
   }, [result]);
 
+  // Additional height update after DOM changes are complete
+  useEffect(() => {
+    if (result.translation && !result.loading) {
+      // Wait a bit longer for all DOM updates to complete
+      const timer = setTimeout(() => {
+        updatePopupHeight();
+      }, 200);
+
+      return () => clearTimeout(timer);
+    }
+  }, [result.translation, result.loading]);
+
   const getLanguageName = (code: string) => {
     return SUPPORTED_LANGUAGES.find((lang) => lang.code === code)?.name || code;
   };
 
   const translateText = async (text: string) => {
+    // Get the latest target language from storage to avoid closure issues
+    const storageData = await new Promise<{ targetLanguage?: string }>(
+      (resolve) => {
+        chrome.storage.sync.get(["targetLanguage"], (data) => {
+          resolve(data);
+        });
+      }
+    );
+
+    const currentTargetLanguage = storageData.targetLanguage || "vi";
+
+    // Update state if it's different
+    if (currentTargetLanguage !== targetLanguage) {
+      setTargetLanguage(currentTargetLanguage);
+    }
+
     // API key is hardcoded, so we can proceed directly
     try {
-      const targetLangName = getLanguageName(targetLanguage);
+      const targetLangName = getLanguageName(currentTargetLanguage);
       // @ts-ignore
       const prompt = `You are a multilingual dictionary and translation tool. Translate the user's text into ${targetLangName} (the target language), following these exact rules and formatting:
 
@@ -102,13 +153,13 @@ const DictionaryPopup: React.FC = () => {
     - Detect the source language.
     - Provide the IPA pronunciation.
     - Translate the meaning into target language, specifying its part of speech (e.g., "noun", "verb",... but in target language, for example if the target language is Vietnamese then they are "danh từ", "động từ",...).
-    - Include one or two example sentences using the word, with both the original and Vietnamese translations.
+    - Include one or two example sentences using the word, with both the original and target language translations.
     - If the word has multiple meanings or pronunciations, list each one separately using the same format.
 - **If the input is a phrase or a sentence (more than two words):**
-    - Just provide the Vietnamese translation.
+    - Just provide the target language translation.
 - **Formatting:**
     - Do not add any extra commentary, explanations, or conversational text.
-    - Follow this precise format, as shown with the example for the English word 'bow' translated to Vietnamse:
+    - Follow this precise format, for example this is English word 'bow' translated to target language: Vietnamese:
 
 bow /baʊ/
 (động từ, danh từ) cúi chào, cúi người

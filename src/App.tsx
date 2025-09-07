@@ -12,18 +12,15 @@ const SUPPORTED_LANGUAGES = [
 ];
 
 function App() {
-  const [apiKey, setApiKey] = useState("");
   const [targetLanguage, setTargetLanguage] = useState("vi");
   const [saved, setSaved] = useState(false);
 
   useEffect(() => {
     // Load saved settings
-    chrome.storage.sync.get(["geminiApiKey", "targetLanguage"], (data) => {
-      if (data.geminiApiKey) {
-        setApiKey(data.geminiApiKey);
-      }
+    chrome.storage.sync.get(["targetLanguage"], (data) => {
       if (data.targetLanguage) {
         setTargetLanguage(data.targetLanguage);
+      } else {
       }
     });
   }, []);
@@ -31,7 +28,6 @@ function App() {
   const handleSave = () => {
     chrome.storage.sync.set(
       {
-        geminiApiKey: apiKey,
         targetLanguage: targetLanguage,
       },
       () => {
@@ -65,30 +61,6 @@ function App() {
           </select>
         </div>
 
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Gemini API Key:
-          </label>
-          <input
-            type="password"
-            value={apiKey}
-            onChange={(e) => setApiKey(e.target.value)}
-            placeholder="Enter your Gemini API key"
-            className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-          <p className="text-xs text-gray-500 mt-1">
-            Get your API key from{" "}
-            <a
-              href="https://aistudio.google.com/app/apikey"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-blue-600 hover:underline"
-            >
-              Google AI Studio
-            </a>
-          </p>
-        </div>
-
         <button
           onClick={handleSave}
           className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -101,17 +73,6 @@ function App() {
             Settings saved successfully!
           </p>
         )}
-      </div>
-
-      <div className="mt-6 p-4 bg-gray-50 rounded-md">
-        <h3 className="font-medium text-gray-800 mb-2">How to use:</h3>
-        <ol className="text-sm text-gray-600 space-y-1">
-          <li>1. Set your Gemini API key above</li>
-          <li>2. Choose your target language</li>
-          <li>3. Select any text on any webpage</li>
-          <li>4. Click the "tra từ" button that appears</li>
-          <li>5. View the translation in the popup</li>
-        </ol>
       </div>
     </div>
   );
