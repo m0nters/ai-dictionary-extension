@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import { createRoot } from "react-dom/client";
+import { SUPPORTED_LANGUAGES } from "../constants/language";
+import "../index.css";
 
 interface TranslationResult {
   text: string;
@@ -7,17 +9,6 @@ interface TranslationResult {
   loading: boolean;
   error?: string;
 }
-
-const SUPPORTED_LANGUAGES = [
-  { code: "vi", name: "Vietnamese" },
-  { code: "en", name: "English" },
-  { code: "ja", name: "Japanese" },
-  { code: "ko", name: "Korean" },
-  { code: "zh", name: "Chinese" },
-  { code: "fr", name: "French" },
-  { code: "de", name: "German" },
-  { code: "es", name: "Spanish" },
-];
 
 const DictionaryPopup: React.FC = () => {
   const [result, setResult] = useState<TranslationResult>({
