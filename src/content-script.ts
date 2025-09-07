@@ -281,7 +281,15 @@ function showDictionaryPopup(selectedText: string, x?: number, y?: number) {
     let textSent = false;
     let popupVisible = false;
     const handlePopupMessage = (event: MessageEvent) => {
+      // Only handle messages from our popup iframe
+      if (event.source !== dictionaryPopup?.contentWindow) {
+        return;
+      }
+
+      console.log("Received message from popup:", event.data.type);
+
       if (event.data.type === "POPUP_READY" && !textSent) {
+        console.log("Popup ready, sending text:", selectedText);
         dictionaryPopup?.contentWindow?.postMessage(
           {
             type: "TRANSLATE_TEXT",
@@ -359,7 +367,25 @@ function showDictionaryPopup(selectedText: string, x?: number, y?: number) {
         }
       }
     };
-    window.addEventListener("message", handlePopupMessage); // Send the selected text to the popup with a delay as fallback
+    window.addEventListener("message", handlePopupMessage);
+    (dictionaryPopup as any).messageHandler = handlePopupMessage;
+
+    // Fallback: Send text after a timeout in case POPUP_READY is missed
+    const fallbackTimeout = setTimeout(() => {
+      if (!textSent && dictionaryPopup?.contentWindow) {
+        console.log("Fallback: sending text after timeout");
+        dictionaryPopup.contentWindow.postMessage(
+          {
+            type: "TRANSLATE_TEXT",
+            text: selectedText,
+          },
+          "*"
+        );
+        textSent = true;
+      }
+    }, 2000); // 2 second fallback
+
+    (dictionaryPopup as any).fallbackTimeout = fallbackTimeout; // Send the selected text to the popup with a delay as fallback
     dictionaryPopup.onload = () => {
       setTimeout(() => {
         if (!textSent) {
@@ -427,6 +453,18 @@ function removeDictionaryPopup() {
     const scrollHandler = (dictionaryPopup as any).scrollHandler;
     if (scrollHandler) {
       window.removeEventListener("scroll", scrollHandler);
+    }
+
+    // Clean up message event listener
+    const messageHandler = (dictionaryPopup as any).messageHandler;
+    if (messageHandler) {
+      window.removeEventListener("message", messageHandler);
+    }
+
+    // Clean up fallback timeout
+    const fallbackTimeout = (dictionaryPopup as any).fallbackTimeout;
+    if (fallbackTimeout) {
+      clearTimeout(fallbackTimeout);
     }
 
     dictionaryPopup.remove();

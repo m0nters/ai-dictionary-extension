@@ -98,7 +98,7 @@ function App() {
           >
             <div className="flex items-center space-x-2 text-green-600 animate-fade-in">
               <Check className="w-4 h-4" />
-              <span className="text-sm font-medium">Đã lưu!</span>
+              <span className="text-xs font-medium">Đã lưu!</span>
             </div>
           </div>
         </div>
