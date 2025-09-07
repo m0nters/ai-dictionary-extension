@@ -1,0 +1,39 @@
+/* Content script styles */
+#dictionary-button {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+  animation: fadeIn 0.2s ease-out;
+}
+
+#dictionary-button:hover {
+  background: #4338ca !important;
+  transform: scale(1.05);
+  transition: all 0.2s ease;
+}
+
+#dictionary-popup {
+  animation: slideUp 0.3s ease-out;
+}
+
+#dictionary-overlay {
+  animation: fadeIn 0.2s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -40%);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+}

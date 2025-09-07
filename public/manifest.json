@@ -1,0 +1,24 @@
+{
+  "manifest_version": 3,
+  "name": "Dictionary Extension",
+  "version": "1.0.0",
+  "action": {
+    "default_popup": "index.html"
+  },
+  "permissions": ["storage", "activeTab", "scripting"],
+  "host_permissions": ["https://generativelanguage.googleapis.com/*"],
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content-script.js"],
+      "css": ["content-script.css"],
+      "run_at": "document_end"
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": ["dictionary-popup.html", "assets/*"],
+      "matches": ["<all_urls>"]
+    }
+  ]
+}
