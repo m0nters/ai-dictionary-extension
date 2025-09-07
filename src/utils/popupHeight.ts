@@ -5,9 +5,9 @@ export const updatePopupHeight = (): void => {
   setTimeout(() => {
     // Get the actual content height
     const contentWrapper = document.querySelector(
-      ".dictionary-content-wrapper"
+      ".dictionary-content-wrapper",
     );
-    const closeButton = document.querySelector(".flex.justify-end.p-4.pb-0");
+    const closeButton = document.querySelector(".flex.justify-end.p-4");
 
     if (contentWrapper && closeButton) {
       const contentHeight = contentWrapper.scrollHeight;
@@ -18,26 +18,25 @@ export const updatePopupHeight = (): void => {
       let totalHeight = contentHeight + closeButtonHeight + padding;
 
       // Set reasonable min and max heights
-      const minHeight = 150;
       const maxHeight = 500;
 
-      totalHeight = Math.max(minHeight, Math.min(totalHeight, maxHeight));
+      totalHeight = Math.min(totalHeight, maxHeight);
 
       window.parent.postMessage(
         {
           type: "UPDATE_POPUP_HEIGHT",
           height: totalHeight,
         },
-        "*"
+        "*",
       );
     } else {
       // Fallback to minimum height if elements not found
       window.parent.postMessage(
         {
           type: "UPDATE_POPUP_HEIGHT",
-          height: 150,
+          height: 200,
         },
-        "*"
+        "*",
       );
     }
   }, 100);

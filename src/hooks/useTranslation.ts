@@ -50,7 +50,7 @@ export const useTranslation = () => {
         chrome.storage.sync.get(["targetLanguage"], (data) => {
           resolve(data);
         });
-      }
+      },
     );
 
     const currentTargetLanguage = storageData.targetLanguage || "vi";
@@ -71,7 +71,7 @@ export const useTranslation = () => {
     try {
       const translation = await translateWithGemini(
         text,
-        currentTargetLanguage
+        currentTargetLanguage,
       );
 
       setResult((prev) => ({

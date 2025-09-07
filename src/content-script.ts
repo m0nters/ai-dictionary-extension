@@ -246,7 +246,7 @@ function showDictionaryPopup(selectedText: string, x?: number, y?: number) {
           // Not enough space in either direction - center vertically in viewport
           newPopupY = Math.max(
             20,
-            (window.innerHeight - currentPopupHeight) / 2
+            (window.innerHeight - currentPopupHeight) / 2,
           );
         }
 
@@ -295,7 +295,7 @@ function showDictionaryPopup(selectedText: string, x?: number, y?: number) {
             type: "TRANSLATE_TEXT",
             text: selectedText,
           },
-          "*"
+          "*",
         );
         textSent = true;
 
@@ -379,7 +379,7 @@ function showDictionaryPopup(selectedText: string, x?: number, y?: number) {
             type: "TRANSLATE_TEXT",
             text: selectedText,
           },
-          "*"
+          "*",
         );
         textSent = true;
       }
@@ -394,7 +394,7 @@ function showDictionaryPopup(selectedText: string, x?: number, y?: number) {
               type: "TRANSLATE_TEXT",
               text: selectedText,
             },
-            "*"
+            "*",
           );
           textSent = true;
         }
@@ -489,7 +489,7 @@ document.addEventListener("mouseup", (e) => {
       showDictionaryButton(
         rect.left + rect.width / 2,
         rect.top + window.scrollY - 35, // Position above the selection
-        selectedText
+        selectedText,
       );
     }
   } else if (!selectedText || selectedText.length === 0) {
@@ -520,7 +520,7 @@ document.addEventListener("selectionchange", () => {
         showDictionaryButton(
           rect.left + rect.width / 2,
           rect.top + window.scrollY - 35, // Position above the selection
-          selectedText
+          selectedText,
         );
       }
     } else if (!selectedText || selectedText.length === 0) {

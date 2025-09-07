@@ -1,3 +1,4 @@
+import { X } from "lucide-react";
 import { useEffect } from "react";
 import { createRoot } from "react-dom/client";
 import { useTranslation } from "../hooks/useTranslation";
@@ -37,30 +38,30 @@ const DictionaryPopup: React.FC = () => {
   };
 
   return (
-    <div className="w-full h-full bg-white flex flex-col">
+    <div className="flex h-full w-full flex-col bg-white">
       {/* Close button - properly aligned */}
       <div className="flex justify-end p-4 pb-0">
         <button
           onClick={closePopup}
-          className="text-gray-400 hover:text-gray-600 text-xl leading-none w-5 h-5 flex items-center justify-center"
+          className="flex cursor-pointer rounded-full p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500"
         >
-          ×
+          <X className="h-4 w-4" />
         </button>
       </div>
 
       {/* Scrollable content area */}
-      <div className="flex-1 overflow-y-auto px-4 pb-4 dictionary-content-wrapper">
+      <div className="dictionary-content-wrapper flex-1 overflow-y-auto px-4 pb-4">
         {/* Translation Result - Dictionary Style */}
         <div className="w-full">
           {result.loading && (
             <div className="flex items-center justify-center py-12">
-              <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-500"></div>
-              <span className="ml-2 text-gray-500 text-sm">Loading...</span>
+              <div className="h-6 w-6 animate-spin rounded-full border-b-2 border-blue-500"></div>
+              <span className="ml-2 text-sm text-gray-500">Loading...</span>
             </div>
           )}
 
           {result.error && (
-            <div className="text-red-500 text-sm p-4 text-center">
+            <div className="p-4 text-center text-sm text-red-500">
               <p>{result.error}</p>
             </div>
           )}
@@ -73,13 +74,13 @@ const DictionaryPopup: React.FC = () => {
             !result.error &&
             !result.translation &&
             result.text && (
-              <p className="text-gray-400 text-center py-8 text-sm">
+              <p className="py-8 text-center text-sm text-gray-400">
                 No translation available
               </p>
             )}
 
           {!result.text && (
-            <p className="text-gray-400 text-center py-8 text-sm">
+            <p className="py-8 text-center text-sm text-gray-400">
               Select text on the page to translate
             </p>
           )}

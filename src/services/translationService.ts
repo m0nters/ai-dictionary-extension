@@ -15,7 +15,7 @@ export const getLanguageName = (code: string): string => {
  */
 export const generateTranslationPrompt = (
   text: string,
-  targetLanguage: string
+  targetLanguage: string,
 ): string => {
   const targetLangName = getLanguageName(targetLanguage);
 
@@ -23,45 +23,36 @@ export const generateTranslationPrompt = (
 
 - **Single word input:**
   - Detect the source language.
+  - If the source language is English, provide the IPA pronunciation for both UK and US English (in that order).
   - Provide the IPA pronunciation.
   - Translate the meaning into the target language, specifying its part of speech (in the target language, e.g., "danh từ" for noun in Vietnamese, "名词" for noun in Chinese).
-  - Include 1–2 example sentences in the target language, bold that word in the sentence.
+  - For verbs in any conjugated form (e.g., if the text is "spelled" in English), translate the infinitive form (e.g., still translate the word "spell") and list key conjugations (e.g., infinitive, past tense, past participle for English; equivalent forms for other languages where applicable, like preterite and participle in Spanish).
+  - Include 2-3 example sentences in the target language, bold that word in the sentence. If that word is a verb and has many conjugations, give enough examples to illustrate the different forms.
   - If the word has multiple meanings or pronunciations, list each separately in the same format.
   - If the source and target languages are the same, provide the dictionary entry and example sentences in that language without translations.
 - **Phrase or sentence input (more than two words):**
   - Provide only the target language translation.
 - **Format:**
-  - Use this format for single words, e.g., English "bow" to Vietnamese:
+  - Use this format for single words, e.g., English "ran" to Vietnamese:
 
+[VERB FORMS: run / ran / run]
 
-bow /baʊ/
-(động từ, danh từ) cúi chào, cúi người
-- He **bowed** to the audience. → Anh ấy cúi chào khán giả.
-- She gave a polite **bow**. → Cô ấy cúi chào một cách lịch sự.
+run /rʌn/ (UK), /rʌn/ (US)
+(động từ) chạy
+- He **runs** every morning. → Anh ấy **chạy** mỗi sáng.
+- She **ran** to catch the bus. → Cô ấy **chạy** để bắt xe buýt.
 
-bow /boʊ/
-(danh từ) cái nơ, cái ruy băng
-- She wore a red **bow** in her hair. → Cô ấy cài một chiếc nơ đỏ trên tóc.
-- The gift box had a big **bow** on top. → Hộp quà có một chiếc nơ lớn trên cùng.
-
-bow /boʊ/
-(danh từ) cung (bắn tên hoặc chơi violin)
-- The archer drew his **bow**. → Người cung thủ kéo cung.
-- He tightened the strings of the **bow** for his violin. → Anh ấy căng dây cây cung đàn violin.
-
-bow /boʊ/
-(danh từ) mũi tàu
-- The passengers stood at the **bow** of the ship. → Hành khách đứng ở mũi tàu.
-
+run /rʌn/ (UK), /rʌn/ (US)
+(danh từ) sự chạy, cuộc chạy
+- The marathon was a tough **run**. → Cuộc marathon là một cuộc **chạy** khó khăn.
+- They went for a quick **run** in the park. → Họ đi **chạy** nhanh trong công viên.
 
   - For same-language translation, e.g., English to English:
 
-
-resources /rɪˈsɔːrsɪz/
-(noun, plural) Supplies of money, materials, staff, and other assets; sources of help or information.
+resource /rɪˈzɔːs/ (UK), /ˈriːsɔːrs/ (US)
+(noun) A supply of money, materials, staff, or other assets; a source of help or information.
 - The country is rich in natural **resources** like oil and gas.
 - The library is an excellent **resource** for students.
-
 
 - Do not add extra commentary or explanations.
 
@@ -73,7 +64,7 @@ Text for translation: "${text}"`;
  */
 export const translateWithGemini = async (
   text: string,
-  targetLanguage: string
+  targetLanguage: string,
 ): Promise<string> => {
   const prompt = generateTranslationPrompt(text, targetLanguage);
 
@@ -96,7 +87,7 @@ export const translateWithGemini = async (
           },
         ],
       }),
-    }
+    },
   );
 
   if (!response.ok) {

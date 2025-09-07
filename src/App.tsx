@@ -39,19 +39,19 @@ function App() {
   };
 
   return (
-    <div className="w-80 min-h-[400px] bg-gradient-to-br from-indigo-50 to-purple-50 relative overflow-hidden">
+    <div className="relative min-h-[400px] w-80 overflow-hidden bg-gradient-to-br from-indigo-50 to-purple-50">
       {/* Background decoration */}
-      <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-indigo-300 to-purple-300 rounded-full -translate-y-16 translate-x-16 opacity-50"></div>
-      <div className="absolute bottom-0 left-0 w-24 h-24 bg-gradient-to-tr from-purple-300 to-indigo-300 rounded-full translate-y-12 -translate-x-12 opacity-30"></div>
+      <div className="absolute top-0 right-0 h-32 w-32 translate-x-16 -translate-y-16 rounded-full bg-gradient-to-br from-indigo-300 to-purple-300 opacity-50"></div>
+      <div className="absolute bottom-0 left-0 h-24 w-24 -translate-x-12 translate-y-12 rounded-full bg-gradient-to-tr from-purple-300 to-indigo-300 opacity-30"></div>
 
       {/* Header */}
       <div className="relative z-10 p-6 pb-4">
-        <div className="flex items-center space-x-3 mb-6">
-          <div className="w-10 h-10 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl flex items-center justify-center shadow-lg">
-            <Languages className="w-6 h-6 text-white" />
+        <div className="mb-6 flex items-center space-x-3">
+          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 shadow-lg">
+            <Languages className="h-6 w-6 text-white" />
           </div>
           <div>
-            <h1 className="text-xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
+            <h1 className="bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-xl font-bold text-transparent">
               Từ điển AI
             </h1>
             <p className="text-sm text-gray-500">Dịch nhanh với AI</p>
@@ -61,9 +61,9 @@ function App() {
 
       {/* Main content */}
       <div className="relative z-10 px-6 pb-6">
-        <div className="bg-white/70 backdrop-blur-sm rounded-2xl p-5 shadow-xl border border-white/20">
-          <label className="flex text-sm font-semibold text-gray-700 mb-3 items-center space-x-2">
-            <Globe className="w-4 h-4 text-indigo-500" />
+        <div className="rounded-2xl border border-white/20 bg-white/70 p-5 shadow-xl backdrop-blur-sm">
+          <label className="mb-3 flex items-center space-x-2 text-sm font-semibold text-gray-700">
+            <Globe className="h-4 w-4 text-indigo-500" />
             <span>Ngôn ngữ dịch</span>
           </label>
 
@@ -73,7 +73,7 @@ function App() {
               onChange={handleChangeLanguage}
               onMouseDown={handleDropdownClick}
               onBlur={() => setIsDropdownOpen(false)}
-              className="w-full p-3 bg-white border-2 border-gray-200 rounded-xl focus:outline-none focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100 transition-all duration-200 appearance-none cursor-pointer shadow-sm"
+              className="w-full cursor-pointer appearance-none rounded-xl border-2 border-gray-200 bg-white p-3 shadow-sm transition-all duration-200 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100 focus:outline-none"
             >
               {SUPPORTED_LANGUAGES.map((lang) => (
                 <option key={lang.code} value={lang.code}>
@@ -81,9 +81,9 @@ function App() {
                 </option>
               ))}
             </select>
-            <div className="absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none">
+            <div className="pointer-events-none absolute top-1/2 right-3 -translate-y-1/2 transform">
               <ChevronDown
-                className={`w-5 h-5 text-gray-400 transition-transform duration-200 ${
+                className={`h-5 w-5 text-gray-400 transition-transform duration-200 ${
                   isDropdownOpen ? "rotate-180" : "rotate-0"
                 }`}
               />
@@ -93,33 +93,33 @@ function App() {
           {/* Save indicator*/}
           <div
             className={`overflow-hidden transition-all duration-300 ease-out ${
-              saved ? "max-h-20 mt-3" : "max-h-0 mt-0"
+              saved ? "mt-3 max-h-20" : "mt-0 max-h-0"
             }`}
           >
-            <div className="flex items-center space-x-2 text-green-600 animate-fade-in">
-              <Check className="w-4 h-4" />
+            <div className="animate-fade-in flex items-center space-x-2 text-green-600">
+              <Check className="h-4 w-4" />
               <span className="text-xs font-medium">Đã lưu!</span>
             </div>
           </div>
         </div>
 
         {/* Usage instructions */}
-        <div className="mt-4 bg-gradient-to-r from-indigo-500/10 to-purple-500/10 rounded-xl p-4 border border-indigo-200/50">
-          <h3 className="text-sm font-semibold text-indigo-700 mb-2 flex items-center space-x-2">
-            <Info className="w-4 h-4" />
+        <div className="mt-4 rounded-xl border border-indigo-200/50 bg-gradient-to-r from-indigo-500/10 to-purple-500/10 p-4">
+          <h3 className="mb-2 flex items-center space-x-2 text-sm font-semibold text-indigo-700">
+            <Info className="h-4 w-4" />
             <span>Cách sử dụng</span>
           </h3>
-          <ul className="text-xs text-gray-600 space-y-1">
+          <ul className="space-y-1 text-xs text-gray-600">
             <li className="flex items-start space-x-2">
-              <span className="w-1.5 h-1.5 bg-indigo-400 rounded-full mt-1.5 flex-shrink-0"></span>
+              <span className="mt-1.5 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-indigo-400"></span>
               <span>Bôi đen văn bản trên trang web</span>
             </li>
             <li className="flex items-start space-x-2">
-              <MousePointer2 className="w-3 h-3 text-purple-400 mt-1 flex-shrink-0" />
+              <MousePointer2 className="mt-1 h-3 w-3 flex-shrink-0 text-purple-400" />
               <span>Nhấp vào nút "tra từ điển" xuất hiện</span>
             </li>
             <li className="flex items-start space-x-2">
-              <span className="w-1.5 h-1.5 bg-indigo-400 rounded-full mt-1.5 flex-shrink-0"></span>
+              <span className="mt-1.5 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-indigo-400"></span>
               <span>Xem bản dịch chi tiết với phiên âm</span>
             </li>
           </ul>
