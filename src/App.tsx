@@ -30,7 +30,7 @@ function App() {
 
     chrome.storage.sync.set({ targetLanguage: newLanguage }, () => {
       setSaved(true);
-      setTimeout(() => setSaved(false), 2000);
+      setTimeout(() => setSaved(false), 500);
     });
   };
 
@@ -41,8 +41,8 @@ function App() {
   return (
     <div className="w-80 min-h-[400px] bg-gradient-to-br from-indigo-50 to-purple-50 relative overflow-hidden">
       {/* Background decoration */}
-      <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-indigo-100 to-purple-100 rounded-full -translate-y-16 translate-x-16 opacity-50"></div>
-      <div className="absolute bottom-0 left-0 w-24 h-24 bg-gradient-to-tr from-purple-100 to-indigo-100 rounded-full translate-y-12 -translate-x-12 opacity-30"></div>
+      <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-indigo-300 to-purple-300 rounded-full -translate-y-16 translate-x-16 opacity-50"></div>
+      <div className="absolute bottom-0 left-0 w-24 h-24 bg-gradient-to-tr from-purple-300 to-indigo-300 rounded-full translate-y-12 -translate-x-12 opacity-30"></div>
 
       {/* Header */}
       <div className="relative z-10 p-6 pb-4">
@@ -54,7 +54,7 @@ function App() {
             <h1 className="text-xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
               Từ điển AI
             </h1>
-            <p className="text-sm text-gray-500">Dịch nhanh với Gemini AI</p>
+            <p className="text-sm text-gray-500">Dịch nhanh với AI</p>
           </div>
         </div>
       </div>

@@ -1,24 +1,17 @@
 let dictionaryButton: HTMLElement | null = null;
 let dictionaryPopup: HTMLIFrameElement | null = null;
 let lastSelectedText: string = "";
-let buttonCreationInProgress: boolean = false;
 let selectionChangeTimeout: number | null = null;
 let buttonOriginalPosition: { x: number; y: number } | null = null;
 let popupOriginalPosition: { x: number; y: number } | null = null;
 
 // Create and show the "tra từ điển" button
 function showDictionaryButton(x: number, y: number, selectedText: string) {
-  // Prevent duplicate creation
-  if (buttonCreationInProgress) {
-    return;
-  }
-
   // Don't recreate if the same text is selected and button exists
   if (dictionaryButton && lastSelectedText === selectedText) {
     return;
   }
 
-  buttonCreationInProgress = true;
   lastSelectedText = selectedText;
 
   // Remove existing button if any
@@ -37,7 +30,7 @@ function showDictionaryButton(x: number, y: number, selectedText: string) {
       padding: 6px 12px;
       border-radius: 6px;
       font-size: 12px;
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      font-family: Roboto, sans-serif;
       cursor: pointer;
       z-index: 10000;
       box-shadow: 0 2px 8px rgba(0,0,0,0.15);
@@ -118,10 +111,8 @@ function showDictionaryButton(x: number, y: number, selectedText: string) {
     }, 5000);
 
     // Clear the creation flag
-    buttonCreationInProgress = false;
   } catch (error) {
     console.error("Error creating dictionary button:", error);
-    buttonCreationInProgress = false;
   }
 }
 
@@ -138,8 +129,6 @@ function removeDictionaryButton() {
     dictionaryButton = null;
     buttonOriginalPosition = null;
     lastSelectedText = "";
-    buttonCreationInProgress = false;
-  } else {
   }
 }
 

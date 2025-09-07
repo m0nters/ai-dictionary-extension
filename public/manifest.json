@@ -1,6 +1,7 @@
 {
   "manifest_version": 3,
-  "name": "Dictionary Extension",
+  "name": "Từ điển Lạc Việt",
+  "description": "Tra từ nhanh chóng với AI. Ưu việt hơn so phương pháp truyền thống như tra từ điển hay Google Translate khi có thể dịch từ, cụm từ hay cả câu với tiên đoán ngữ nghĩa chính xác.",
   "version": "1.0.0",
   "action": {
     "default_popup": "index.html"

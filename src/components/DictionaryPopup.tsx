@@ -18,7 +18,7 @@ const DictionaryPopup: React.FC = () => {
   });
   const [targetLanguage, setTargetLanguage] = useState("vi");
 
-  // Hardcoded API key for convenience
+  // Hardcoded API key
   const apiKey = "AIzaSyAWVSbmZSU-gR2TqJzifTfQL0AJDACPiFk";
 
   // Function to calculate and set dynamic popup height based on content
@@ -40,7 +40,7 @@ const DictionaryPopup: React.FC = () => {
 
         // Set reasonable min and max heights
         const minHeight = 150;
-        const maxHeight = Math.min(500, window.parent.innerHeight * 0.8); // Max 80% of viewport or 500px
+        const maxHeight = 500;
 
         totalHeight = Math.max(minHeight, Math.min(totalHeight, maxHeight));
 
@@ -152,7 +152,7 @@ const DictionaryPopup: React.FC = () => {
 - **Format:**
   - Use this format for single words, e.g., English "bow" to Vietnamese:
 
-\`\`\`
+
 bow /baʊ/
 (động từ, danh từ) cúi chào, cúi người
 - Anh ấy cúi chào khán giả.
@@ -171,16 +171,16 @@ bow /boʊ/
 bow /boʊ/
 (danh từ) mũi tàu
 - Hành khách đứng ở mũi tàu.
-\`\`\`
+
 
   - For same-language translation, e.g., English to English:
 
-\`\`\`
+
 resources /rɪˈsɔːrsɪz/
 (noun, plural) Supplies of money, materials, staff, and other assets; sources of help or information.
 - The country is rich in natural resources like oil and gas.
 - The library is an excellent resource for students.
-\`\`\`
+
 
 - Do not add extra commentary or explanations.
 
@@ -292,85 +292,100 @@ Text for translation: "${text}"`;
 
           {!result.loading && !result.error && result.translation && (
             <div className="dictionary-content">
-              {result.translation.split("\n\n").map((section, index) => (
-                <div key={index} className="mb-4">
-                  {section.split("\n").map((line, lineIndex) => {
-                    // Main word + pronunciation line
-                    if (lineIndex === 0 && line.includes("/")) {
-                      const parts = line.split(" /");
-                      const word = parts[0];
-                      const pronunciation = "/" + parts.slice(1).join(" /");
-
-                      return (
-                        <div key={lineIndex} className="mb-2">
-                          <h1 className="text-xl font-semibold text-blue-600 inline">
-                            {word}
-                          </h1>
-                          <span className="text-base text-gray-600 ml-2">
-                            {pronunciation}
-                          </span>
-                        </div>
-                      );
-                    }
-
-                    // Part of speech and meaning line
-                    else if (line.startsWith("(") && line.includes(")")) {
-                      const parts = line.match(/\(([^)]+)\)\s*(.+)/);
-                      if (parts) {
-                        const partOfSpeech = parts[1];
-                        const meaning = parts[2];
+              {result.translation.split("\n\n").map((section, index) => {
+                return (
+                  <div key={index} className="mb-4">
+                    {section.split("\n").map((line, lineIndex) => {
+                      // Main word + pronunciation line
+                      if (lineIndex === 0 && line.includes("/")) {
+                        const parts = line.split(" /");
+                        const word = parts[0];
+                        const pronunciation = "/" + parts.slice(1).join(" /");
 
                         return (
                           <div key={lineIndex} className="mb-2">
-                            <span className="text-xs font-medium text-green-600 bg-green-50 px-2 py-1 rounded-full">
-                              {partOfSpeech}
+                            <h1 className="text-xl font-semibold text-blue-600 inline">
+                              {word}
+                            </h1>
+                            <span className="text-base text-gray-600 ml-2">
+                              {pronunciation}
                             </span>
-                            <p className="text-gray-800 font-medium mt-1 text-sm">
-                              {meaning}
-                            </p>
                           </div>
                         );
                       }
-                    }
 
-                    // Example sentences
-                    else if (line.startsWith("- ")) {
-                      const exampleText = line.substring(2);
-                      const parts = exampleText.split(" → ");
+                      // Part of speech and meaning line
+                      else if (line.startsWith("(") && line.includes(")")) {
+                        const parts = line.match(/\(([^)]+)\)\s*(.+)/);
+                        if (parts) {
+                          const partOfSpeech = parts[1];
+                          const meaning = parts[2];
 
-                      if (parts.length === 2) {
+                          return (
+                            <div key={lineIndex} className="mb-2">
+                              <span className="text-xs font-medium text-green-600 bg-green-50 px-2 py-1 rounded-full">
+                                {partOfSpeech}
+                              </span>
+                              <p className="text-gray-800 font-medium mt-1 text-sm">
+                                {meaning}
+                              </p>
+                            </div>
+                          );
+                        }
+                      }
+
+                      // Example sentences - handle both formats
+                      else if (line.startsWith("- ")) {
+                        const exampleText = line.substring(2);
+                        const parts = exampleText.split(" → ");
+
+                        if (parts.length === 2) {
+                          // Format with translation: "- English example → Vietnamese translation"
+                          return (
+                            <div
+                              key={lineIndex}
+                              className="ml-3 mb-1 border-l-2 border-blue-100 pl-2"
+                            >
+                              <p className="text-gray-700 text-xs italic">
+                                {parts[0].trim()}
+                              </p>
+                              <p className="text-blue-700 text-xs font-medium">
+                                {parts[1].trim()}
+                              </p>
+                            </div>
+                          );
+                        } else {
+                          // Simple format: "- Example sentence only"
+                          return (
+                            <div
+                              key={lineIndex}
+                              className="ml-3 mb-1 border-l-2 border-blue-100 pl-2"
+                            >
+                              <p className="text-gray-700 text-xs">
+                                {exampleText.trim()}
+                              </p>
+                            </div>
+                          );
+                        }
+                      }
+
+                      // Any other lines (fallback) - handle unmatched content
+                      else if (line.trim()) {
                         return (
                           <div
                             key={lineIndex}
-                            className="ml-3 mb-1 border-l-2 border-blue-100 pl-2"
+                            className="text-gray-800 mb-1 text-sm ml-3"
                           >
-                            <p className="text-gray-700 text-xs italic">
-                              {parts[0].trim()}
-                            </p>
-                            <p className="text-blue-700 text-xs font-medium">
-                              {parts[1].trim()}
-                            </p>
+                            {line}
                           </div>
                         );
                       }
-                    }
 
-                    // Any other lines (fallback)
-                    else if (line.trim()) {
-                      return (
-                        <p
-                          key={lineIndex}
-                          className="text-gray-800 mb-1 text-sm"
-                        >
-                          {line}
-                        </p>
-                      );
-                    }
-
-                    return null;
-                  })}
-                </div>
-              ))}
+                      return null;
+                    })}
+                  </div>
+                );
+              })}
             </div>
           )}
 
