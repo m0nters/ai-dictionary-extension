@@ -6,7 +6,7 @@ let selectionChangeTimeout: number | null = null;
 let buttonOriginalPosition: { x: number; y: number } | null = null;
 let popupOriginalPosition: { x: number; y: number } | null = null;
 
-// Create and show the "tra từ" button
+// Create and show the "tra từ điển" button
 function showDictionaryButton(x: number, y: number, selectedText: string) {
   // Prevent duplicate creation
   if (buttonCreationInProgress) {
@@ -27,7 +27,7 @@ function showDictionaryButton(x: number, y: number, selectedText: string) {
   try {
     dictionaryButton = document.createElement("div");
     dictionaryButton.id = "dictionary-button";
-    dictionaryButton.textContent = "tra từ";
+    dictionaryButton.textContent = "tra từ điển";
     dictionaryButton.style.cssText = `
       position: absolute;
       left: ${x}px;

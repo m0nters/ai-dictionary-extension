@@ -138,40 +138,53 @@ const DictionaryPopup: React.FC = () => {
     try {
       const targetLangName = getLanguageName(currentTargetLanguage);
       // @ts-ignore
-      const prompt = `You are a multilingual dictionary and translation tool. Translate the user's text into ${targetLangName} (the target language), following these exact rules and formatting:
+      const prompt = `You are a multilingual dictionary and translation tool. Translate the user's text into ${targetLangName}, using the following rules and format:
 
-- **If the input is a single word:**
-    - Detect the source language.
-    - Provide the IPA pronunciation.
-    - Translate the meaning into target language, specifying its part of speech (e.g., "noun", "verb",... but in target language, for example if the target language is Vietnamese then they are "danh từ", "động từ",...).
-    - Include one or two example sentences using the word, with both the original and target language translations.
-    - If the word has multiple meanings or pronunciations, list each one separately using the same format.
-- **If the input is a phrase or a sentence (more than two words):**
-    - Just provide the target language translation.
-- **Formatting:**
-    - Do not add any extra commentary, explanations, or conversational text.
-    - Follow this precise format, for example this is English word 'bow' translated to target language: Vietnamese:
+- **Single word input:**
+  - Detect the source language.
+  - Provide the IPA pronunciation.
+  - Translate the meaning into the target language, specifying its part of speech (in the target language, e.g., "danh từ" for noun in Vietnamese, "名词" for noun in Chinese).
+  - Include 1–2 example sentences in the target language.
+  - If the word has multiple meanings or pronunciations, list each separately in the same format.
+  - If the source and target languages are the same, provide the dictionary entry and example sentences in that language without translations.
+- **Phrase or sentence input (more than two words):**
+  - Provide only the target language translation.
+- **Format:**
+  - Use this format for single words, e.g., English "bow" to Vietnamese:
 
+\`\`\`
 bow /baʊ/
 (động từ, danh từ) cúi chào, cúi người
-- He bowed to the audience. → Anh ấy cúi chào khán giả.
-- She gave a polite bow. → Cô ấy cúi chào một cách lịch sự.
+- Anh ấy cúi chào khán giả.
+- Cô ấy cúi chào một cách lịch sự.
 
 bow /boʊ/
-(danh từ) cái nơ, cái ruy băng buộc thành hình nơ
-- She wore a red bow in her hair. → Cô ấy cài một chiếc nơ đỏ trên tóc.
-- The gift box had a big bow on top. → Hộp quà có một chiếc nơ lớn trên cùng.
+(danh từ) cái nơ, cái ruy băng
+- Cô ấy cài một chiếc nơ đỏ trên tóc.
+- Hộp quà có một chiếc nơ lớn trên cùng.
 
 bow /boʊ/
-(danh từ) cung (dùng để bắn tên hoặc chơi đàn như violin)
-- The archer drew his bow. → Người cung thủ kéo cung.
-- He tightened the strings of the bow for his violin. → Anh ấy căng dây cây cung đàn violin của mình.
+(danh từ) cung (bắn tên hoặc chơi violin)
+- Người cung thủ kéo cung.
+- Anh ấy căng dây cây cung đàn violin.
 
 bow /boʊ/
 (danh từ) mũi tàu
-- The passengers stood at the bow of the ship. → Hành khách đứng ở mũi tàu.
+- Hành khách đứng ở mũi tàu.
+\`\`\`
 
-Finally, the text for the translation is "${text}"`;
+  - For same-language translation, e.g., English to English:
+
+\`\`\`
+resources /rɪˈsɔːrsɪz/
+(noun, plural) Supplies of money, materials, staff, and other assets; sources of help or information.
+- The country is rich in natural resources like oil and gas.
+- The library is an excellent resource for students.
+\`\`\`
+
+- Do not add extra commentary or explanations.
+
+Text for translation: "${text}"`;
 
       const response = await fetch(
         `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent`,
