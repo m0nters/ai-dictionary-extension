@@ -1,3 +1,47 @@
+// We have to define translations in here like this instead of in i18n `locales`
+// folder because content script has issues with ES module. Google sucks!
+// Reference: https://stackoverflow.com/questions/48104433/how-to-import-es6-modules-in-content-script-for-chrome-extension
+
+const TRANSLATIONS = {
+  en: { dictionaryButton: "dictionary" },
+  vi: { dictionaryButton: "tra từ điển" },
+  zh: { dictionaryButton: "词典" },
+  ja: { dictionaryButton: "辞書" },
+  ko: { dictionaryButton: "사전" },
+  fr: { dictionaryButton: "dictionnaire" },
+  es: { dictionaryButton: "diccionario" },
+  de: { dictionaryButton: "Wörterbuch" },
+} as const;
+
+async function getDictionaryButtonText(): Promise<string> {
+  try {
+    const data = await new Promise<any>((resolve, reject) => {
+      if (
+        typeof chrome !== "undefined" &&
+        chrome.storage &&
+        chrome.storage.sync
+      ) {
+        chrome.storage.sync.get(["appLanguage"], (result) => {
+          if (chrome.runtime.lastError) {
+            reject(chrome.runtime.lastError);
+          } else {
+            resolve(result);
+          }
+        });
+      } else {
+        resolve({ appLanguage: "vi" });
+      }
+    });
+
+    const currentLang = data.appLanguage || "vi";
+    const translation =
+      TRANSLATIONS[currentLang as keyof typeof TRANSLATIONS] || TRANSLATIONS.vi;
+    return translation.dictionaryButton;
+  } catch (error) {
+    return "tra từ điển"; // Fallback text
+  }
+}
+
 let dictionaryButton: HTMLElement | null = null;
 let dictionaryPopup: HTMLIFrameElement | null = null;
 let lastSelectedText: string = "";
@@ -5,8 +49,12 @@ let selectionChangeTimeout: number | null = null;
 let buttonOriginalPosition: { x: number; y: number } | null = null;
 let popupOriginalPosition: { x: number; y: number } | null = null;
 
-// Create and show the "tra từ điển" button
-function showDictionaryButton(x: number, y: number, selectedText: string) {
+// Create and show the dictionary button
+async function showDictionaryButton(
+  x: number,
+  y: number,
+  selectedText: string,
+) {
   // Don't recreate if the same text is selected and button exists
   if (dictionaryButton && lastSelectedText === selectedText) {
     return;
@@ -18,9 +66,12 @@ function showDictionaryButton(x: number, y: number, selectedText: string) {
   removeDictionaryButton();
 
   try {
+    // Get translated button text
+    const buttonText = await getDictionaryButtonText();
+
     dictionaryButton = document.createElement("div");
     dictionaryButton.id = "dictionary-button";
-    dictionaryButton.textContent = "tra từ điển";
+    dictionaryButton.textContent = buttonText;
     dictionaryButton.style.cssText = `
       position: absolute;
       left: ${x}px;
@@ -286,10 +337,7 @@ function showDictionaryPopup(selectedText: string, x?: number, y?: number) {
         return;
       }
 
-      console.log("Received message from popup:", event.data.type);
-
       if (event.data.type === "POPUP_READY" && !textSent) {
-        console.log("Popup ready, sending text:", selectedText);
         dictionaryPopup?.contentWindow?.postMessage(
           {
             type: "TRANSLATE_TEXT",
@@ -373,7 +421,6 @@ function showDictionaryPopup(selectedText: string, x?: number, y?: number) {
     // Fallback: Send text after a timeout in case POPUP_READY is missed
     const fallbackTimeout = setTimeout(() => {
       if (!textSent && dictionaryPopup?.contentWindow) {
-        console.log("Fallback: sending text after timeout");
         dictionaryPopup.contentWindow.postMessage(
           {
             type: "TRANSLATE_TEXT",
@@ -474,7 +521,7 @@ function removeDictionaryPopup() {
 }
 
 // Listen for text selection
-document.addEventListener("mouseup", (e) => {
+document.addEventListener("mouseup", async (e) => {
   // Only proceed if it's a left mouse button release (button 0)
   if (e.button !== 0) {
     return;
@@ -486,7 +533,7 @@ document.addEventListener("mouseup", (e) => {
   if (selectedText && selectedText.length > 0) {
     const rect = selection?.getRangeAt(0).getBoundingClientRect();
     if (rect) {
-      showDictionaryButton(
+      await showDictionaryButton(
         rect.left + rect.width / 2,
         rect.top + window.scrollY - 35, // Position above the selection
         selectedText,
@@ -505,7 +552,7 @@ document.addEventListener("selectionchange", () => {
   }
 
   // Debounce the selection change event
-  selectionChangeTimeout = window.setTimeout(() => {
+  selectionChangeTimeout = window.setTimeout(async () => {
     const selection = window.getSelection();
     const selectedText = selection?.toString().trim();
 
@@ -517,7 +564,7 @@ document.addEventListener("selectionchange", () => {
     ) {
       const rect = selection?.getRangeAt(0).getBoundingClientRect();
       if (rect) {
-        showDictionaryButton(
+        await showDictionaryButton(
           rect.left + rect.width / 2,
           rect.top + window.scrollY - 35, // Position above the selection
           selectedText,

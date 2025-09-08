@@ -1,0 +1,11 @@
+{
+  "appTitle": "AI辞書",
+  "appSubtitle": "高速AI翻訳",
+  "translateTo": "翻訳先",
+  "appLanguage": "アプリ言語",
+  "saved": "保存しました！",
+  "howToUse": "使い方",
+  "step1": "ウェブページでテキストを選択",
+  "step2": "表示される「辞書」ボタンをクリック",
+  "step3": "発音付きの詳細な翻訳を表示"
+}

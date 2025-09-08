@@ -5,14 +5,19 @@ import {
   Info,
   Languages,
   MousePointer2,
+  Settings,
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { SUPPORTED_LANGUAGES } from "./constants/language";
+import { I18nProvider, useI18n } from "./i18n/I18nContext";
 
-function App() {
+function AppContent() {
+  const { messages, currentLanguage, changeLanguage, availableLanguages } =
+    useI18n();
   const [targetLanguage, setTargetLanguage] = useState("vi");
   const [saved, setSaved] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [isAppLangDropdownOpen, setIsAppLangDropdownOpen] = useState(false);
 
   useEffect(() => {
     // Load saved settings
@@ -30,12 +35,24 @@ function App() {
 
     chrome.storage.sync.set({ targetLanguage: newLanguage }, () => {
       setSaved(true);
-      setTimeout(() => setSaved(false), 500);
+      setTimeout(() => setSaved(false), 5000);
     });
   };
 
   const handleDropdownClick = () => {
     setIsDropdownOpen(!isDropdownOpen);
+  };
+
+  const handleAppLanguageChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const newLanguage = e.target.value;
+    changeLanguage(newLanguage);
+    setIsAppLangDropdownOpen(false);
+    setSaved(true);
+    setTimeout(() => setSaved(false), 1000);
+  };
+
+  const handleAppLangDropdownClick = () => {
+    setIsAppLangDropdownOpen(!isAppLangDropdownOpen);
   };
 
   return (
@@ -52,9 +69,9 @@ function App() {
           </div>
           <div>
             <h1 className="bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-xl font-bold text-transparent">
-              Từ điển AI
+              {messages.appTitle}
             </h1>
-            <p className="text-sm text-gray-500">Dịch nhanh với AI</p>
+            <p className="text-sm text-gray-500">{messages.appSubtitle}</p>
           </div>
         </div>
       </div>
@@ -62,31 +79,65 @@ function App() {
       {/* Main content */}
       <div className="relative z-10 px-6 pb-6">
         <div className="rounded-2xl border border-white/20 bg-white/70 p-5 shadow-xl backdrop-blur-sm">
-          <label className="mb-3 flex items-center space-x-2 text-sm font-semibold text-gray-700">
-            <Globe className="h-4 w-4 text-indigo-500" />
-            <span>Ngôn ngữ dịch</span>
-          </label>
+          {/* App Language Selector */}
+          <div className="mb-4">
+            <label className="mb-3 flex items-center space-x-2 text-sm font-semibold text-gray-700">
+              <Settings className="h-4 w-4 text-purple-500" />
+              <span>{messages.appLanguage}</span>
+            </label>
 
-          <div className="relative">
-            <select
-              value={targetLanguage}
-              onChange={handleChangeLanguage}
-              onMouseDown={handleDropdownClick}
-              onBlur={() => setIsDropdownOpen(false)}
-              className="w-full cursor-pointer appearance-none rounded-xl border-2 border-gray-200 bg-white p-3 shadow-sm transition-all duration-200 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100 focus:outline-none"
-            >
-              {SUPPORTED_LANGUAGES.map((lang) => (
-                <option key={lang.code} value={lang.code}>
-                  {lang.name}
-                </option>
-              ))}
-            </select>
-            <div className="pointer-events-none absolute top-1/2 right-3 -translate-y-1/2 transform">
-              <ChevronDown
-                className={`h-5 w-5 text-gray-400 transition-transform duration-200 ${
-                  isDropdownOpen ? "rotate-180" : "rotate-0"
-                }`}
-              />
+            <div className="relative">
+              <select
+                value={currentLanguage}
+                onChange={handleAppLanguageChange}
+                onMouseDown={handleAppLangDropdownClick}
+                onBlur={() => setIsAppLangDropdownOpen(false)}
+                className="w-full cursor-pointer appearance-none rounded-xl border-2 border-gray-200 bg-white p-3 shadow-sm transition-all duration-200 focus:border-purple-500 focus:ring-4 focus:ring-purple-100 focus:outline-none"
+              >
+                {availableLanguages.map((lang) => (
+                  <option key={lang.code} value={lang.code}>
+                    {lang.nativeName}
+                  </option>
+                ))}
+              </select>
+              <div className="pointer-events-none absolute top-1/2 right-3 -translate-y-1/2 transform">
+                <ChevronDown
+                  className={`h-5 w-5 text-gray-400 transition-transform duration-200 ${
+                    isAppLangDropdownOpen ? "rotate-180" : "rotate-0"
+                  }`}
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* Translation Language Selector */}
+          <div>
+            <label className="mb-3 flex items-center space-x-2 text-sm font-semibold text-gray-700">
+              <Globe className="h-4 w-4 text-indigo-500" />
+              <span>{messages.translateTo}</span>
+            </label>
+
+            <div className="relative">
+              <select
+                value={targetLanguage}
+                onChange={handleChangeLanguage}
+                onMouseDown={handleDropdownClick}
+                onBlur={() => setIsDropdownOpen(false)}
+                className="w-full cursor-pointer appearance-none rounded-xl border-2 border-gray-200 bg-white p-3 shadow-sm transition-all duration-200 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100 focus:outline-none"
+              >
+                {SUPPORTED_LANGUAGES.map((lang) => (
+                  <option key={lang.code} value={lang.code}>
+                    {lang.name}
+                  </option>
+                ))}
+              </select>
+              <div className="pointer-events-none absolute top-1/2 right-3 -translate-y-1/2 transform">
+                <ChevronDown
+                  className={`h-5 w-5 text-gray-400 transition-transform duration-200 ${
+                    isDropdownOpen ? "rotate-180" : "rotate-0"
+                  }`}
+                />
+              </div>
             </div>
           </div>
 
@@ -98,7 +149,7 @@ function App() {
           >
             <div className="animate-fade-in flex items-center space-x-2 text-green-600">
               <Check className="h-4 w-4" />
-              <span className="text-xs font-medium">Đã lưu!</span>
+              <span className="text-xs font-medium">{messages.saved}</span>
             </div>
           </div>
         </div>
@@ -107,25 +158,33 @@ function App() {
         <div className="mt-4 rounded-xl border border-indigo-200/50 bg-gradient-to-r from-indigo-500/10 to-purple-500/10 p-4">
           <h3 className="mb-2 flex items-center space-x-2 text-sm font-semibold text-indigo-700">
             <Info className="h-4 w-4" />
-            <span>Cách sử dụng</span>
+            <span>{messages.howToUse}</span>
           </h3>
           <ul className="space-y-1 text-xs text-gray-600">
             <li className="flex items-start space-x-2">
               <span className="mt-1.5 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-indigo-400"></span>
-              <span>Bôi đen văn bản trên trang web</span>
+              <span>{messages.step1}</span>
             </li>
             <li className="flex items-start space-x-2">
               <MousePointer2 className="mt-1 h-3 w-3 flex-shrink-0 text-purple-400" />
-              <span>Nhấp vào nút "tra từ điển" xuất hiện</span>
+              <span>{messages.step2}</span>
             </li>
             <li className="flex items-start space-x-2">
               <span className="mt-1.5 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-indigo-400"></span>
-              <span>Xem bản dịch chi tiết với phiên âm</span>
+              <span>{messages.step3}</span>
             </li>
           </ul>
         </div>
       </div>
     </div>
+  );
+}
+
+function App() {
+  return (
+    <I18nProvider>
+      <AppContent />
+    </I18nProvider>
   );
 }
 

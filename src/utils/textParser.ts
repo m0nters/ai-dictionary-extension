@@ -60,23 +60,14 @@ export const parseTranslationContent = (content: string): ParsedTranslation => {
     const jsonMatch = content.match(/```json\s*([\s\S]*?)\s*```/);
     const jsonString = jsonMatch ? jsonMatch[1] : content;
 
-    console.log("Parsing translation content:", {
-      original: content,
-      extracted: jsonString,
-    });
-
     const parsed = JSON.parse(jsonString);
-
-    console.log("Parsed JSON:", parsed);
 
     // Validate the structure
     if (parsed.word && parsed.meanings) {
       // Single word translation
-      console.log("Detected single word translation");
       return parsed as SingleWordTranslation;
     } else if (parsed.text && parsed.translation) {
       // Phrase translation
-      console.log("Detected phrase translation");
       return parsed as PhraseTranslation;
     } else {
       throw new Error("Invalid JSON structure - missing required fields");
