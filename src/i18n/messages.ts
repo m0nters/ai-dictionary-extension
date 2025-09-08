@@ -52,7 +52,6 @@ export interface TranslationMessages {
   step1: string;
   step2: string;
   step3: string;
-  dictionaryButton: string;
 
   // Thank You page context
   thankYou: {

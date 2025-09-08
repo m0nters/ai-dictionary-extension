@@ -1,6 +1,6 @@
 {
   "title": "Cảm ơn bạn!",
-  "subtitle": "Cảm ơn bạn đã cài đặt Từ điển AI! Bạn đã sẵn sàng để trải nghiệm việc tra từ thông minh.",
+  "subtitle": "Cảm ơn bạn đã cài đặt Từ điển AI! Bạn đã sẵn sàng để trải nghiệm việc dịch thuật thông minh.",
   "featuresTitle": "Tính năng nổi bật",
   "features": {
     "aiTranslation": {
@@ -20,6 +20,6 @@
       "description": "Hoạt động trên mọi trang web"
     }
   },
-  "usageDescription": "Để bắt đầu, chỉ cần bôi đen bất kỳ từ nào trên trang web và nhấp vào nút từ điển xuất hiện!",
+  "usageDescription": "Để bắt đầu, chỉ cần bôi đen bất kỳ từ nào trên trang web và nhấp vào nút \"tra từ điển\" xuất hiện!",
   "author": "Tác giả:"
 }

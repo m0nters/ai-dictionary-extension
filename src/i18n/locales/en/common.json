@@ -1,7 +1,6 @@
 {
   "howToUse": "How to use",
-  "step1": "Select text on web pages",
+  "step1": "Highlight text on web pages",
   "step2": "Click the \"dictionary\" button that appears",
-  "step3": "View detailed translation with pronunciation",
-  "dictionaryButton": "dictionary"
+  "step3": "View detailed translation with pronunciation"
 }
