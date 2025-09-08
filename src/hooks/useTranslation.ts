@@ -44,16 +44,18 @@ export const useTranslation = () => {
    * Translates text using the current target language
    */
   const translateText = async (text: string) => {
-    // Get the latest target language from storage to avoid closure issues
-    const storageData = await new Promise<{ targetLanguage?: string }>(
-      (resolve) => {
-        chrome.storage.sync.get(["targetLanguage"], (data) => {
-          resolve(data);
-        });
-      },
-    );
+    // Get the latest target language and app language from storage to avoid closure issues
+    const storageData = await new Promise<{
+      targetLanguage?: string;
+      appLanguage?: string;
+    }>((resolve) => {
+      chrome.storage.sync.get(["targetLanguage", "appLanguage"], (data) => {
+        resolve(data);
+      });
+    });
 
     const currentTargetLanguage = storageData.targetLanguage || "vi";
+    const currentAppLanguage = storageData.appLanguage || "en";
 
     // Update state if it's different
     if (currentTargetLanguage !== targetLanguage) {
@@ -72,6 +74,7 @@ export const useTranslation = () => {
       const translation = await translateWithGemini(
         text,
         currentTargetLanguage,
+        currentAppLanguage,
       );
 
       setResult((prev) => ({

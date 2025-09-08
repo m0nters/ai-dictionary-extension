@@ -45,6 +45,7 @@ export interface TranslationMessages {
   appSubtitle: string;
   translateTo: string;
   appLanguage: string;
+  detectedLanguage: string;
   saved: string;
 
   // Common context

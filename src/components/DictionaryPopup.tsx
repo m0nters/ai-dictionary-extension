@@ -7,7 +7,7 @@ import "../index.css";
 import { parseTranslationContent } from "../utils/textParser";
 import { DictionaryRenderer } from "./DictionaryRenderer";
 
-const DictionaryPopup: React.FC = () => {
+function DictionaryPopup() {
   const { result, translateText, setResult } = useTranslation();
   const { messages } = useI18n();
 
@@ -98,7 +98,7 @@ const DictionaryPopup: React.FC = () => {
       </div>
     </div>
   );
-};
+}
 
 // Initialize the popup
 const container = document.getElementById("root");

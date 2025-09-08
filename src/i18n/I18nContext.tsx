@@ -1,4 +1,4 @@
-import React, {
+import {
   createContext,
   ReactNode,
   useContext,
@@ -21,7 +21,7 @@ interface I18nProviderProps {
   children: ReactNode;
 }
 
-export const I18nProvider: React.FC<I18nProviderProps> = ({ children }) => {
+export function I18nProvider({ children }: I18nProviderProps) {
   const [currentLanguage, setCurrentLanguage] = useState(DEFAULT_APP_LANGUAGE);
 
   useEffect(() => {
@@ -52,7 +52,7 @@ export const I18nProvider: React.FC<I18nProviderProps> = ({ children }) => {
   return (
     <I18nContext.Provider value={contextValue}>{children}</I18nContext.Provider>
   );
-};
+}
 
 export const useI18n = (): I18nContextType => {
   const context = useContext(I18nContext);

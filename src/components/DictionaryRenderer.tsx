@@ -1,11 +1,10 @@
-import React from "react";
+import { useI18n } from "../i18n/I18nContext";
 import {
   MeaningEntry,
   ParsedTranslation,
   PhraseTranslation,
   PronunciationVariants,
   SingleWordTranslation,
-  SourceLanguage,
 } from "../types/translation";
 import {
   hasPronunciationVariants,
@@ -21,31 +20,37 @@ interface DictionaryRendererProps {
 /**
  * Renders the source language information
  */
-const SourceLanguageRenderer: React.FC<{
-  sourceLanguage?: SourceLanguage;
-}> = ({ sourceLanguage }) => {
+function SourceLanguageRenderer({
+  sourceLanguage,
+}: {
+  sourceLanguage?: string;
+}) {
+  const { messages } = useI18n();
+
   if (!sourceLanguage) return null;
 
   return (
     <div className="mb-4 flex items-center justify-center rounded-lg border border-gray-200 bg-gradient-to-r from-gray-50 to-blue-50 p-3 shadow-sm">
       <div className="flex items-center justify-center space-x-2">
         <div className="text-sm font-semibold text-gray-700">
-          Detected Language:
+          {messages.detectedLanguage}
         </div>
         <div className="text-sm font-medium text-blue-600">
-          {sourceLanguage.name}
+          {sourceLanguage}
         </div>
       </div>
     </div>
   );
-};
+}
 
 /**
  * Renders pronunciation with proper styling for variants (original style)
  */
-const PronunciationRenderer: React.FC<{
+function PronunciationRenderer({
+  pronunciation,
+}: {
   pronunciation: string | PronunciationVariants;
-}> = ({ pronunciation }) => {
+}) {
   if (hasPronunciationVariants(pronunciation)) {
     return (
       <span className="ml-2 inline-flex flex-wrap items-center gap-2">
@@ -74,15 +79,18 @@ const PronunciationRenderer: React.FC<{
       {pronunciation as string}
     </span>
   );
-};
+}
 
 /**
  * Renders a single meaning entry (original style)
  */
-const MeaningEntryRenderer: React.FC<{
+function MeaningEntryRenderer({
+  entry,
+  word,
+}: {
   entry: MeaningEntry;
   word: string;
-}> = ({ entry, word }) => {
+}) {
   return (
     <div className="mb-4">
       {/* Word and Pronunciation Header (original style) */}
@@ -128,14 +136,12 @@ const MeaningEntryRenderer: React.FC<{
       )}
     </div>
   );
-};
+}
 
 /**
  * Renders verb forms with original gradient styling
  */
-const VerbFormsRenderer: React.FC<{ verbForms: string[] }> = ({
-  verbForms,
-}) => {
+function VerbFormsRenderer({ verbForms }: { verbForms: string[] }) {
   return (
     <div className="mb-4">
       <div className="rounded-xl border border-violet-200 bg-gradient-to-r from-violet-50 to-purple-50 p-4 shadow-sm">
@@ -165,14 +171,12 @@ const VerbFormsRenderer: React.FC<{ verbForms: string[] }> = ({
       </div>
     </div>
   );
-};
+}
 
 /**
  * Main dictionary renderer component
  */
-export const DictionaryRenderer: React.FC<DictionaryRendererProps> = ({
-  translation,
-}) => {
+export function DictionaryRenderer({ translation }: DictionaryRendererProps) {
   // Handle phrase translations (original style)
   if (isPhraseTranslation(translation)) {
     const phraseTranslation = translation as PhraseTranslation;
@@ -181,19 +185,12 @@ export const DictionaryRenderer: React.FC<DictionaryRendererProps> = ({
         <SourceLanguageRenderer
           sourceLanguage={phraseTranslation.source_language}
         />
-        <div className="mb-4">
-          <div className="flex items-start space-x-2">
-            <div className="mt-1 h-6 w-1 flex-shrink-0 rounded-full bg-blue-400"></div>
-            <p className="text-base leading-relaxed font-medium text-gray-800">
-              {renderTextWithBold(phraseTranslation.text)}
-            </p>
-          </div>
-          <div className="mt-2 flex items-start space-x-2">
-            <div className="mt-1 h-6 w-1 flex-shrink-0 rounded-full bg-blue-400"></div>
-            <p className="text-base leading-relaxed font-medium text-gray-800">
-              {renderTextWithBold(phraseTranslation.translation)}
-            </p>
-          </div>
+
+        <div className="mt-2 flex items-start space-x-2">
+          <div className="mt-1 h-6 w-1 flex-shrink-0 rounded-full bg-blue-400"></div>
+          <p className="text-base leading-relaxed font-medium text-gray-800">
+            {renderTextWithBold(phraseTranslation.translation)}
+          </p>
         </div>
       </div>
     );
@@ -237,4 +234,4 @@ export const DictionaryRenderer: React.FC<DictionaryRendererProps> = ({
       </div>
     </div>
   );
-};
+}

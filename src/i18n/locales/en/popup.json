@@ -3,5 +3,6 @@
   "appSubtitle": "Fast AI Translation",
   "translateTo": "Translate to",
   "appLanguage": "App Language",
+  "detectedLanguage": "Detected Language:",
   "saved": "Saved!"
 }

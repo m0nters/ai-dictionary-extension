@@ -3,5 +3,6 @@
   "appSubtitle": "快速AI翻译",
   "translateTo": "翻译为",
   "appLanguage": "应用语言",
+  "detectedLanguage": "检测到的语言:",
   "saved": "已保存！"
 }

@@ -3,5 +3,6 @@
   "appSubtitle": "高速AI翻訳",
   "translateTo": "翻訳先",
   "appLanguage": "アプリ言語",
+  "detectedLanguage": "検出された言語:",
   "saved": "保存しました！"
 }

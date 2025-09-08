@@ -14,7 +14,7 @@ import { I18nProvider, useI18n } from "./i18n/I18nContext";
 function AppContent() {
   const { messages, currentLanguage, changeLanguage, availableLanguages } =
     useI18n();
-  const [targetLanguage, setTargetLanguage] = useState<string>("es");
+  const [targetLanguage, setTargetLanguage] = useState<string>("vi");
   const [saved, setSaved] = useState(false);
 
   useEffect(() => {

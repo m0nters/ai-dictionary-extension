@@ -1,21 +1,11 @@
-export interface SourceLanguageInfo {
-  code: string;
-  name: string;
-}
-
 /**
  * Fallback source language info for unknown languages
  */
-export const UNKNOWN_SOURCE_LANGUAGE: SourceLanguageInfo = {
-  code: "unknown",
-  name: "Unknown",
-};
+export const UNKNOWN_SOURCE_LANGUAGE = "Unknown";
 
 /**
  * Gets source language info, with fallback for unknown languages
  */
-export const getSourceLanguageInfo = (
-  languageInfo?: SourceLanguageInfo,
-): SourceLanguageInfo => {
+export const getSourceLanguageInfo = (languageInfo?: string): string => {
   return languageInfo || UNKNOWN_SOURCE_LANGUAGE;
 };

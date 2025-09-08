@@ -1,10 +1,10 @@
 export const TRANSLATED_LANGUAGES = [
-  { code: "vi", name: "Tiếng Việt" },
-  { code: "en", name: "Tiếng Anh" },
-  { code: "ja", name: "Tiếng Nhật" },
-  { code: "ko", name: "Tiếng Hàn" },
-  { code: "zh", name: "Tiếng Trung" },
-  { code: "fr", name: "Tiếng Pháp" },
-  { code: "de", name: "Tiếng Đức" },
-  { code: "es", name: "Tiếng Tây Ban Nha" },
+  { code: "vi", name: "Vietnamese" },
+  { code: "en", name: "English" },
+  { code: "ja", name: "Japanese" },
+  { code: "ko", name: "Korean" },
+  { code: "zh", name: "Chinese" },
+  { code: "fr", name: "French" },
+  { code: "de", name: "German" },
+  { code: "es", name: "Spanish" },
 ];
