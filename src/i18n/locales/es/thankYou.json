@@ -1,0 +1,25 @@
+{
+  "title": "¡Gracias!",
+  "subtitle": "¡Gracias por instalar Diccionario IA! Estás listo para experimentar la traducción inteligente.",
+  "featuresTitle": "Características clave",
+  "features": {
+    "aiTranslation": {
+      "title": "Traducción con IA",
+      "description": "Traduce palabras, frases y oraciones con IA inteligente"
+    },
+    "multiLanguage": {
+      "title": "Soporte para 8 idiomas",
+      "description": "Soporte para 8 idiomas de interfaz"
+    },
+    "professional": {
+      "title": "Diccionario profesional",
+      "description": "Pronunciación y definiciones profesionales"
+    },
+    "everywhere": {
+      "title": "Funciona en todas partes",
+      "description": "Funciona en todos los sitios web"
+    }
+  },
+  "usageDescription": "Para comenzar, simplemente resalta cualquier palabra en una página web y haz clic en el botón de diccionario que aparece!",
+  "author": "Autor:"
+}

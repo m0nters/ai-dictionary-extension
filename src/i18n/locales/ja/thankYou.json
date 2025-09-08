@@ -1,0 +1,25 @@
+{
+  "title": "AI辞書をご利用いただきありがとうございます！",
+  "subtitle": "AI辞書をインストールしていただき、ありがとうございます！スマート翻訳を体験する準備が整いました。",
+  "featuresTitle": "主な機能",
+  "features": {
+    "aiTranslation": {
+      "title": "AI搭載翻訳",
+      "description": "スマートAIで単語、フレーズ、文章を翻訳"
+    },
+    "multiLanguage": {
+      "title": "8言語サポート",
+      "description": "8つのインターフェース言語をサポート"
+    },
+    "professional": {
+      "title": "プロフェッショナル辞書",
+      "description": "プロフェッショナルな発音と定義"
+    },
+    "everywhere": {
+      "title": "どこでも動作",
+      "description": "あらゆるウェブページで動作"
+    }
+  },
+  "usageDescription": "開始するには、ウェブページ上の任意の単語をハイライトして、表示される辞書ボタンをクリックしてください！",
+  "author": "作者："
+}

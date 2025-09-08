@@ -1,0 +1,25 @@
+{
+  "title": "Cảm ơn bạn!",
+  "subtitle": "Cảm ơn bạn đã cài đặt Từ điển AI! Bạn đã sẵn sàng để trải nghiệm việc tra từ thông minh.",
+  "featuresTitle": "Tính năng nổi bật",
+  "features": {
+    "aiTranslation": {
+      "title": "Dịch thuật bởi AI",
+      "description": "Dịch từ, cụm từ và câu với AI thông minh"
+    },
+    "multiLanguage": {
+      "title": "8 ngôn ngữ",
+      "description": "Hỗ trợ 8 ngôn ngữ giao diện"
+    },
+    "professional": {
+      "title": "Từ điển chuyên nghiệp",
+      "description": "Phiên âm và định nghĩa chuyên nghiệp"
+    },
+    "everywhere": {
+      "title": "Hoạt động mọi nơi",
+      "description": "Hoạt động trên mọi trang web"
+    }
+  },
+  "usageDescription": "Để bắt đầu, chỉ cần bôi đen bất kỳ từ nào trên trang web và nhấp vào nút từ điển xuất hiện!",
+  "author": "Tác giả:"
+}

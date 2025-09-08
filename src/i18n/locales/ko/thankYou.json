@@ -1,0 +1,25 @@
+{
+  "title": "AI 사전을 사용해 주셔서 감사합니다！",
+  "subtitle": "AI 사전을 설치해 주셔서 감사합니다! 스마트 번역을 경험할 준비가 되었습니다.",
+  "featuresTitle": "주요 기능",
+  "features": {
+    "aiTranslation": {
+      "title": "AI 기반 번역",
+      "description": "스마트 AI로 단어, 구문, 문장을 번역"
+    },
+    "multiLanguage": {
+      "title": "8개 언어 지원",
+      "description": "8개 인터페이스 언어 지원"
+    },
+    "professional": {
+      "title": "전문 사전",
+      "description": "전문적인 발음과 정의"
+    },
+    "everywhere": {
+      "title": "어디서나 작동",
+      "description": "모든 웹페이지에서 작동"
+    }
+  },
+  "usageDescription": "시작하려면 웹페이지의 아무 단어나 강조 표시하고 나타나는 사전 버튼을 클릭하세요!",
+  "author": "작성자："
+}

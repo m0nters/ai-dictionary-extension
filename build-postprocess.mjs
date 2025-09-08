@@ -13,20 +13,31 @@ copyFileSync("public/content-script.css", "dist/content-script.css");
 if (readFileSync("dist/public/dictionary-popup.html")) {
   copyFileSync(
     "dist/public/dictionary-popup.html",
-    "dist/dictionary-popup.html"
+    "dist/dictionary-popup.html",
   );
 }
 
-// Get the actual content-script hash
+// Move thank-you.html to root
+if (readFileSync("dist/public/thank-you.html")) {
+  copyFileSync("dist/public/thank-you.html", "dist/thank-you.html");
+}
+
+// Get the actual content-script and background script hashes
 const assetFiles = readdirSync("dist/assets/");
 const contentScriptFile = assetFiles.find(
-  (f) => f.startsWith("content-script-") && f.endsWith(".js")
+  (f) => f.startsWith("content-script-") && f.endsWith(".js"),
+);
+const backgroundScriptFile = assetFiles.find(
+  (f) => f.startsWith("background-") && f.endsWith(".js"),
 );
 
-// Update manifest with correct content script path
+// Update manifest with correct content script and background script paths
 const manifest = JSON.parse(readFileSync("public/manifest.json", "utf-8"));
 if (contentScriptFile) {
   manifest.content_scripts[0].js = [`assets/${contentScriptFile}`];
+}
+if (backgroundScriptFile) {
+  manifest.background.service_worker = `assets/${backgroundScriptFile}`;
 }
 writeFileSync("dist/manifest.json", JSON.stringify(manifest, null, 2));
 
@@ -43,6 +54,14 @@ const fixedPopupHtml = popupHtml
   .replace(/src="\/assets\//g, 'src="./assets/')
   .replace(/href="\/assets\//g, 'href="./assets/');
 writeFileSync("dist/dictionary-popup.html", fixedPopupHtml);
+
+// Fix thank you page paths
+const thankYouHtml = readFileSync("dist/thank-you.html", "utf-8");
+const fixedThankYouHtml = thankYouHtml
+  .replace(/src="\/assets\//g, 'src="./assets/')
+  .replace(/href="\/assets\//g, 'href="./assets/')
+  .replace(/<title>.*<\/title>/, "<title>Thank You - Từ điển AI</title>");
+writeFileSync("dist/thank-you.html", fixedThankYouHtml);
 
 // Clean up
 rmSync("dist/public", { recursive: true, force: true });

@@ -10,7 +10,9 @@ export default defineConfig({
       input: {
         popup: "./index.html",
         "dictionary-popup": "./public/dictionary-popup.html",
+        "thank-you": "./public/thank-you.html",
         "content-script": "./src/content-script.ts",
+        background: "./src/background.ts",
       },
     },
   },

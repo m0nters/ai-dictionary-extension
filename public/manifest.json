@@ -3,10 +3,13 @@
   "name": "Từ điển AI",
   "description": "Tra từ nhanh chóng với AI. Ưu việt hơn so từ điển truyền thống hay Google Translate khi có thể dịch từ, cụm từ hay cả câu với tiên đoán ngữ nghĩa chính xác. Từ điển được trình bày chuyên nghiệp theo tiêu chuẩn với phiên âm, định nghĩa, biến ngôi và các ví dụ minh họa.",
   "version": "1.0.0",
+  "background": {
+    "service_worker": "background.js"
+  },
   "action": {
     "default_popup": "index.html"
   },
-  "permissions": ["storage", "activeTab", "scripting"],
+  "permissions": ["storage", "activeTab", "scripting", "tabs", "management"],
   "host_permissions": ["https://generativelanguage.googleapis.com/*"],
   "content_scripts": [
     {
@@ -18,7 +21,7 @@
   ],
   "web_accessible_resources": [
     {
-      "resources": ["dictionary-popup.html", "assets/*"],
+      "resources": ["dictionary-popup.html", "thank-you.html", "assets/*"],
       "matches": ["<all_urls>"]
     }
   ]

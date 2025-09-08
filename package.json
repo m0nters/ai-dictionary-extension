@@ -11,6 +11,7 @@
     "validate:translations": "node src/i18n/validate-translations.js"
   },
   "dependencies": {
+    "@icons-pack/react-simple-icons": "^13.7.0",
     "@tailwindcss/typography": "^0.5.16",
     "@tailwindcss/vite": "^4.1.13",
     "lucide-react": "^0.542.0",

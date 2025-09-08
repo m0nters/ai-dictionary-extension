@@ -1,0 +1,25 @@
+{
+  "title": "Vielen Dank für die Nutzung des KI-Wörterbuchs!",
+  "subtitle": "Vielen Dank für die Installation des KI-Wörterbuchs! Sie sind bereit, intelligente Übersetzung zu erleben.",
+  "featuresTitle": "Hauptfunktionen",
+  "features": {
+    "aiTranslation": {
+      "title": "KI-gestützte Übersetzung",
+      "description": "Übersetzen Sie Wörter, Phrasen und Sätze mit intelligenter KI"
+    },
+    "multiLanguage": {
+      "title": "8 Sprachen Unterstützung",
+      "description": "Unterstützung für 8 Oberflächensprachen"
+    },
+    "professional": {
+      "title": "Professionelles Wörterbuch",
+      "description": "Professionelle Aussprache und Definitionen"
+    },
+    "everywhere": {
+      "title": "Funktioniert überall",
+      "description": "Funktioniert auf jeder Webseite"
+    }
+  },
+  "usageDescription": "Um zu beginnen, markieren Sie einfach ein beliebiges Wort auf einer Webseite und klicken Sie auf die erscheinende Wörterbuch-Schaltfläche!",
+  "author": "Autor:"
+}

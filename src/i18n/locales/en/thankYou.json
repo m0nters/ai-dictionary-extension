@@ -1,0 +1,25 @@
+{
+  "title": "Thank you!",
+  "subtitle": "Thank you for installing AI Dictionary! You're ready to experience smart translation.",
+  "featuresTitle": "Key Features",
+  "features": {
+    "aiTranslation": {
+      "title": "AI-Powered Translation",
+      "description": "Translate words, phrases and sentences with smart AI"
+    },
+    "multiLanguage": {
+      "title": "8 Languages Support",
+      "description": "Support for 8 interface languages"
+    },
+    "professional": {
+      "title": "Professional Dictionary",
+      "description": "Professional pronunciation and definitions"
+    },
+    "everywhere": {
+      "title": "Works Everywhere",
+      "description": "Works on all websites"
+    }
+  },
+  "usageDescription": "To get started, simply highlight any word on a webpage and click the dictionary button that appears!",
+  "author": "Author:"
+}
