@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
-  "name": "Từ điển Tự Nhiên",
-  "description": "Tra từ nhanh chóng với AI. Ưu việt hơn so phương pháp truyền thống như tra từ điển hay Google Translate khi có thể dịch từ, cụm từ hay cả câu với tiên đoán ngữ nghĩa chính xác.",
+  "name": "Từ điển AI",
+  "description": "Tra từ nhanh chóng với AI. Ưu việt hơn so từ điển truyền thống hay Google Translate khi có thể dịch từ, cụm từ hay cả câu với tiên đoán ngữ nghĩa chính xác. Từ điển được trình bày chuyên nghiệp theo tiêu chuẩn với phiên âm, định nghĩa, biến ngôi và các ví dụ minh họa.",
   "version": "1.0.0",
   "action": {
     "default_popup": "index.html"

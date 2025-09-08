@@ -1,6 +1,5 @@
 import {
   Check,
-  ChevronDown,
   Globe,
   Info,
   Languages,
@@ -8,16 +7,15 @@ import {
   Settings,
 } from "lucide-react";
 import { useEffect, useState } from "react";
+import { DropdownMenu } from "./components/DropdownMenu";
 import { TRANSLATED_LANGUAGES } from "./constants/translatedLanguage";
 import { I18nProvider, useI18n } from "./i18n/I18nContext";
 
 function AppContent() {
   const { messages, currentLanguage, changeLanguage, availableLanguages } =
     useI18n();
-  const [targetLanguage, setTargetLanguage] = useState("vi");
+  const [targetLanguage, setTargetLanguage] = useState<string>("es");
   const [saved, setSaved] = useState(false);
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [isAppLangDropdownOpen, setIsAppLangDropdownOpen] = useState(false);
 
   useEffect(() => {
     // Load saved settings
@@ -28,35 +26,23 @@ function AppContent() {
     });
   }, []);
 
-  const handleChangeLanguage = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const newLanguage = e.target.value;
-    setTargetLanguage(newLanguage);
-    setIsDropdownOpen(false); // Close dropdown when selection is made
+  const handleChangeLanguage = (value: string) => {
+    setTargetLanguage(value);
 
-    chrome.storage.sync.set({ targetLanguage: newLanguage }, () => {
+    chrome.storage.sync.set({ targetLanguage: value }, () => {
       setSaved(true);
       setTimeout(() => setSaved(false), 5000);
     });
   };
 
-  const handleDropdownClick = () => {
-    setIsDropdownOpen(!isDropdownOpen);
-  };
-
-  const handleAppLanguageChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const newLanguage = e.target.value;
-    changeLanguage(newLanguage);
-    setIsAppLangDropdownOpen(false);
+  const handleAppLanguageChange = (value: string) => {
+    changeLanguage(value);
     setSaved(true);
     setTimeout(() => setSaved(false), 1000);
   };
 
-  const handleAppLangDropdownClick = () => {
-    setIsAppLangDropdownOpen(!isAppLangDropdownOpen);
-  };
-
   return (
-    <div className="relative min-h-[400px] w-80 overflow-hidden bg-gradient-to-br from-indigo-50 to-purple-50">
+    <div className="relative min-h-[400px] w-80 bg-gradient-to-br from-indigo-50 to-purple-50">
       {/* Background decoration */}
       <div className="absolute top-0 right-0 h-32 w-32 translate-x-16 -translate-y-16 rounded-full bg-gradient-to-br from-indigo-300 to-purple-300 opacity-50"></div>
       <div className="absolute bottom-0 left-0 h-24 w-24 -translate-x-12 translate-y-12 rounded-full bg-gradient-to-tr from-purple-300 to-indigo-300 opacity-30"></div>
@@ -86,28 +72,15 @@ function AppContent() {
               <span>{messages.appLanguage}</span>
             </label>
 
-            <div className="relative">
-              <select
-                value={currentLanguage}
-                onChange={handleAppLanguageChange}
-                onMouseDown={handleAppLangDropdownClick}
-                onBlur={() => setIsAppLangDropdownOpen(false)}
-                className="w-full cursor-pointer appearance-none rounded-xl border-2 border-gray-200 bg-white p-3 shadow-sm transition-all duration-200 focus:border-purple-500 focus:ring-4 focus:ring-purple-100 focus:outline-none"
-              >
-                {availableLanguages.map((lang) => (
-                  <option key={lang.code} value={lang.code}>
-                    {lang.nativeName}
-                  </option>
-                ))}
-              </select>
-              <div className="pointer-events-none absolute top-1/2 right-3 -translate-y-1/2 transform">
-                <ChevronDown
-                  className={`h-5 w-5 text-gray-400 transition-transform duration-200 ${
-                    isAppLangDropdownOpen ? "rotate-180" : "rotate-0"
-                  }`}
-                />
-              </div>
-            </div>
+            <DropdownMenu
+              value={currentLanguage}
+              options={availableLanguages.map((lang) => ({
+                value: lang.code,
+                label: lang.nativeName,
+              }))}
+              onChange={handleAppLanguageChange}
+              focusColor="purple"
+            />
           </div>
 
           {/* Translation Language Selector */}
@@ -117,32 +90,18 @@ function AppContent() {
               <span>{messages.translateTo}</span>
             </label>
 
-            <div className="relative">
-              <select
-                value={targetLanguage}
-                onChange={handleChangeLanguage}
-                onMouseDown={handleDropdownClick}
-                onBlur={() => setIsDropdownOpen(false)}
-                className="w-full cursor-pointer appearance-none rounded-xl border-2 border-gray-200 bg-white p-3 shadow-sm transition-all duration-200 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100 focus:outline-none"
-              >
-                {TRANSLATED_LANGUAGES.map((lang) => (
-                  <option key={lang.code} value={lang.code}>
-                    {
-                      messages.languages[
-                        lang.code as keyof typeof messages.languages
-                      ]
-                    }
-                  </option>
-                ))}
-              </select>
-              <div className="pointer-events-none absolute top-1/2 right-3 -translate-y-1/2 transform">
-                <ChevronDown
-                  className={`h-5 w-5 text-gray-400 transition-transform duration-200 ${
-                    isDropdownOpen ? "rotate-180" : "rotate-0"
-                  }`}
-                />
-              </div>
-            </div>
+            <DropdownMenu
+              value={targetLanguage}
+              options={TRANSLATED_LANGUAGES.map((lang) => ({
+                value: lang.code,
+                label:
+                  messages.languages[
+                    lang.code as keyof typeof messages.languages
+                  ],
+              }))}
+              onChange={handleChangeLanguage}
+              focusColor="indigo"
+            />
           </div>
 
           {/* Save indicator*/}
