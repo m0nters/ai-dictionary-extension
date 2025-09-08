@@ -78,43 +78,29 @@ const MeaningEntryRenderer: React.FC<{
         </p>
       </div>
 
-      {/* Examples (original style) */}
+      {/* Examples (consistent object format for all languages) */}
       {entry.examples && entry.examples.length > 0 && (
         <div className="space-y-2">
-          {entry.examples.map((example, exampleIndex) => {
-            // Check if example has translation (contains →)
-            const hasTranslation = example.includes("→");
-
-            if (hasTranslation) {
-              const [original, translation] = example
-                .split("→")
-                .map((s) => s.trim());
-              return (
-                <div
-                  key={exampleIndex}
-                  className="mb-3 ml-4 rounded-lg border-l-4 border-blue-200 bg-blue-50 p-3"
-                >
-                  <p className="mb-1 text-sm font-medium text-gray-800">
-                    {renderTextWithBold(original)}
-                  </p>
-                  <p className="text-sm font-normal text-blue-700">
-                    {renderTextWithBold(translation)}
-                  </p>
-                </div>
-              );
-            } else {
-              return (
-                <div
-                  key={exampleIndex}
-                  className="mb-2 ml-4 rounded-lg border-l-4 border-gray-200 bg-gray-50 p-3"
-                >
-                  <p className="text-sm text-gray-700">
-                    {renderTextWithBold(example)}
-                  </p>
-                </div>
-              );
-            }
-          })}
+          {entry.examples.map((example, exampleIndex) => (
+            <div
+              key={exampleIndex}
+              className="mb-3 ml-4 rounded-lg border-l-4 border-blue-200 bg-blue-50 p-3"
+            >
+              <p className="mb-1 text-sm font-medium text-gray-800">
+                {renderTextWithBold(example.text)}
+              </p>
+              {example.pronunciation && (
+                <p className="mb-1 text-xs text-gray-600 italic">
+                  {renderTextWithBold(example.pronunciation)}
+                </p>
+              )}
+              {example.translation && (
+                <p className="text-sm font-normal text-blue-700">
+                  {renderTextWithBold(example.translation)}
+                </p>
+              )}
+            </div>
+          ))}
         </div>
       )}
     </div>

@@ -10,12 +10,18 @@ export interface PronunciationVariants {
   US?: string;
 }
 
+export interface ExampleSentence {
+  text: string;
+  pronunciation?: string; // For non-Latin languages like Chinese (pinyin), Japanese (romaji)
+  translation?: string; // Optional for same-language translations
+}
+
 export interface MeaningEntry {
   pronunciation: string | PronunciationVariants;
   part_of_speech: string;
   translation?: string; // For translations to other languages
   definition?: string; // For same-language definitions
-  examples: string[];
+  examples: ExampleSentence[];
 }
 
 export interface SingleWordTranslation {

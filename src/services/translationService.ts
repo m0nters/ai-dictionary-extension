@@ -27,11 +27,16 @@ export const generateTranslationPrompt = (
   - For the source languages without pronunciation variants (e.g., Chinese, where Pinyin is used), provide a single pronunciation in the pronunciation field as a string.
   - Translate the meaning into the translated language, specifying its part of speech (in the translated language, e.g., "danh từ" for noun in Vietnamese, "名词" for noun in Chinese).
   - For verbs in any conjugated form (e.g., if the text is "spelled" in English), translate the infinitive form (e.g., still translate the word "spell") and list key conjugations (e.g., infinitive, past tense, past participle for English; equivalent forms for other languages where applicable, like preterite and participle in Spanish).
-  - Include 2-3 example sentences in the translated language, bold that word in the sentence. If that word is a verb and has many conjugations, give enough examples to illustrate the different forms.
+  - Include 2-3 example sentences as objects with "text" (in source language) and "translation" (in translated language). For non-Latin script languages (Chinese, Japanese, Arabic, etc.), also include "pronunciation" field with romanization (pinyin, romaji, etc.).
+  - If that word is a verb and has many conjugations, give enough examples to illustrate the different forms.
   - If the word has multiple meanings or pronunciations, list each separately in the same format.
   - If the source and translated languages are the same, provide the dictionary entry and example sentences in that language without translations.
 - **Phrase or sentence input (more than two words):**
   - Provide only the translated language translation.
+- **Vulgar/Explicit content (words or sentences):**
+  - Translate accurately and completely, including all profanity, slang, and explicit language without censorship or modification.
+  - Maintain the exact tone, intensity, and meaning of the original text.
+  - Do not add warnings, disclaimers, or euphemisms - provide direct, faithful translations.
 - **Gibberish or non-language input:**
   - Respond with sentence like "No translation available." but in translated language. (e.g., "Không có bản dịch" in Vietnamese, "没有可用的翻译" in Chinese)
 - **Output Format:** Use JSON format with the structure following these examples below:
@@ -50,8 +55,14 @@ export const generateTranslationPrompt = (
       \"part_of_speech\": \"động từ\",
       \"translation\": \"chạy\",
       \"examples\": [
-        \"He **runs** every morning. → Anh ấy **chạy** mỗi sáng.\",
-        \"She **ran** to catch the bus. → Cô ấy **chạy** để bắt xe buýt.\"
+        {
+          \"text\": \"He **runs** every morning.\",
+          \"translation\": \"Anh ấy **chạy** mỗi sáng.\"
+        },
+        {
+          \"text\": \"She **ran** to catch the bus.\",
+          \"translation\": \"Cô ấy **chạy** để bắt xe buýt.\"
+        }
       ]
     },
     {
@@ -62,8 +73,14 @@ export const generateTranslationPrompt = (
       \"part_of_speech\": \"danh từ\",
       \"translation\": \"sự chạy, cuộc chạy\",
       \"examples\": [
-        \"The marathon was a tough **run**. → Cuộc marathon là một cuộc **chạy** khó khăn.\",
-        \"They went for a quick **run** in the park. → Họ đi **chạy** nhanh trong công viên.\"
+        {
+          \"text\": \"The marathon was a tough **run**.\",
+          \"translation\": \"Cuộc marathon là một cuộc **chạy** khó khăn.\"
+        },
+        {
+          \"text\": \"They went for a quick **run** in the park.\",
+          \"translation\": \"Họ đi **chạy** nhanh trong công viên.\"
+        }
       ]
     }
   ]
@@ -81,8 +98,43 @@ export const generateTranslationPrompt = (
       \"part_of_speech\": \"danh từ\",
       \"translation\": \"sách\",
       \"examples\": [
-        \"Tôi mua một **quyển sách** mới. → Wǒ mǎile yī běn xīn **shū**.\",
-        \"Thư viện có nhiều **sách** hay. → Túshūguǎn yǒu hěnduō hǎo **shū**.\"
+        {
+          \"text\": \"我买了一本新**书**。\",
+          \"pronunciation\": \"Wǒ mǎile yī běn xīn **shū**.\",
+          \"translation\": \"Tôi mua một quyển sách mới.\"
+        },
+        {
+          \"text\": \"图书馆有很多好**书**。\",
+          \"pronunciation\": \"Túshūguǎn yǒu hěnduō hǎo **shū**.\",
+          \"translation\": \"Thư viện có nhiều sách hay.\"
+        }
+      ]
+    }
+  ]
+}
+\`\`\`
+
+  - For Japanese words, e.g., Japanese word '本' (hon) to English:
+
+\`\`\`json
+{
+  \"word\": \"本\",
+  \"meanings\": [
+    {
+      \"pronunciation\": \"hon\",
+      \"part_of_speech\": \"noun\",
+      \"translation\": \"book\",
+      \"examples\": [
+        {
+          \"text\": \"新しい**本**を買いました。\",
+          \"pronunciation\": \"Atarashii **hon** wo kaimashita.\",
+          \"translation\": \"I bought a new book.\"
+        },
+        {
+          \"text\": \"図書館にたくさんの**本**があります。\",
+          \"pronunciation\": \"Toshokan ni takusan no **hon** ga arimasu.\",
+          \"translation\": \"There are many books in the library.\"
+        }
       ]
     }
   ]
@@ -103,8 +155,12 @@ export const generateTranslationPrompt = (
       \"part_of_speech\": \"noun\",
       \"definition\": \"A supply of money, materials, staff, or other assets; a source of help or information.\",
       \"examples\": [
-        \"The country is rich in natural **resources** like oil and gas.\",
-        \"The library is an excellent **resource** for students.\"
+        {
+          \"text\": \"The country is rich in natural **resources** like oil and gas.\"
+        },
+        {
+          \"text\": \"The library is an excellent **resource** for students.\"
+        }
       ]
     }
   ]
