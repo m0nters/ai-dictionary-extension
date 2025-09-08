@@ -7,5 +7,16 @@
   "howToUse": "How to use",
   "step1": "Select text on web pages",
   "step2": "Click the \"dictionary\" button that appears",
-  "step3": "View detailed translation with pronunciation"
+  "step3": "View detailed translation with pronunciation",
+  "dictionaryButton": "dictionary",
+  "languages": {
+    "vi": "Vietnamese",
+    "en": "English",
+    "ja": "Japanese",
+    "ko": "Korean",
+    "zh": "Chinese",
+    "fr": "French",
+    "de": "German",
+    "es": "Spanish"
+  }
 }

@@ -7,5 +7,16 @@
   "howToUse": "Verwendung",
   "step1": "Text auf Webseiten markieren",
   "step2": "Auf den erscheinenden \"Wörterbuch\"-Button klicken",
-  "step3": "Detaillierte Übersetzung mit Aussprache anzeigen"
+  "step3": "Detaillierte Übersetzung mit Aussprache anzeigen",
+  "dictionaryButton": "Wörterbuch",
+  "languages": {
+    "vi": "Vietnamesisch",
+    "en": "Englisch",
+    "ja": "Japanisch",
+    "ko": "Koreanisch",
+    "zh": "Chinesisch",
+    "fr": "Französisch",
+    "de": "Deutsch",
+    "es": "Spanisch"
+  }
 }

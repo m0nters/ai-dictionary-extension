@@ -18,6 +18,17 @@ export interface TranslationMessages {
   step1: string;
   step2: string;
   step3: string;
+  dictionaryButton: string;
+  languages: {
+    vi: string;
+    en: string;
+    ja: string;
+    ko: string;
+    zh: string;
+    fr: string;
+    de: string;
+    es: string;
+  };
 }
 
 export const messages: Record<string, TranslationMessages> = {

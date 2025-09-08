@@ -7,5 +7,16 @@
   "howToUse": "Cómo usar",
   "step1": "Selecciona texto en páginas web",
   "step2": "Haz clic en el botón \"diccionario\" que aparece",
-  "step3": "Ver traducción detallada con pronunciación"
+  "step3": "Ver traducción detallada con pronunciación",
+  "dictionaryButton": "diccionario",
+  "languages": {
+    "vi": "Vietnamita",
+    "en": "Inglés",
+    "ja": "Japonés",
+    "ko": "Coreano",
+    "zh": "Chino",
+    "fr": "Francés",
+    "de": "Alemán",
+    "es": "Español"
+  }
 }

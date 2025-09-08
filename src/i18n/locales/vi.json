@@ -7,5 +7,16 @@
   "howToUse": "Cách sử dụng",
   "step1": "Bôi đen văn bản trên trang web",
   "step2": "Nhấp vào nút \"tra từ điển\" xuất hiện",
-  "step3": "Xem bản dịch chi tiết với phiên âm"
+  "step3": "Xem bản dịch chi tiết với phiên âm",
+  "dictionaryButton": "tra từ điển",
+  "languages": {
+    "vi": "Tiếng Việt",
+    "en": "Tiếng Anh",
+    "ja": "Tiếng Nhật",
+    "ko": "Tiếng Hàn",
+    "zh": "Tiếng Trung",
+    "fr": "Tiếng Pháp",
+    "de": "Tiếng Đức",
+    "es": "Tiếng Tây Ban Nha"
+  }
 }

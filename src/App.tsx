@@ -127,7 +127,11 @@ function AppContent() {
               >
                 {SUPPORTED_LANGUAGES.map((lang) => (
                   <option key={lang.code} value={lang.code}>
-                    {lang.name}
+                    {
+                      messages.languages[
+                        lang.code as keyof typeof messages.languages
+                      ]
+                    }
                   </option>
                 ))}
               </select>
