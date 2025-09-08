@@ -52,6 +52,10 @@ export interface TranslationMessages {
   step1: string;
   step2: string;
   step3: string;
+  dictionaryButton: string;
+  loading: string;
+  noTranslationAvailable: string;
+  selectTextToTranslate: string;
 
   // Thank You page context
   thankYou: {

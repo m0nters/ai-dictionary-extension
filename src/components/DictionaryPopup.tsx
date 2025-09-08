@@ -2,12 +2,14 @@ import { X } from "lucide-react";
 import { useEffect } from "react";
 import { createRoot } from "react-dom/client";
 import { useTranslation } from "../hooks/useTranslation";
+import { I18nProvider, useI18n } from "../i18n/I18nContext";
 import "../index.css";
 import { parseTranslationContent } from "../utils/textParser";
 import { DictionaryRenderer } from "./DictionaryRenderer";
 
 const DictionaryPopup: React.FC = () => {
   const { result, translateText, setResult } = useTranslation();
+  const { messages } = useI18n();
 
   useEffect(() => {
     // Listen for messages from content script
@@ -62,7 +64,9 @@ const DictionaryPopup: React.FC = () => {
           {result.loading && (
             <div className="flex items-center justify-center py-12">
               <div className="h-6 w-6 animate-spin rounded-full border-b-2 border-blue-500"></div>
-              <span className="ml-2 text-sm text-gray-500">Loading...</span>
+              <span className="ml-2 text-sm text-gray-500">
+                {messages.loading}
+              </span>
             </div>
           )}
 
@@ -81,13 +85,13 @@ const DictionaryPopup: React.FC = () => {
             !result.translation &&
             result.text && (
               <p className="py-8 text-center text-sm text-gray-400">
-                No translation available
+                {messages.noTranslationAvailable}
               </p>
             )}
 
           {!result.text && (
             <p className="py-8 text-center text-sm text-gray-400">
-              Select text on the page to translate
+              {messages.selectTextToTranslate}
             </p>
           )}
         </div>
@@ -100,5 +104,9 @@ const DictionaryPopup: React.FC = () => {
 const container = document.getElementById("root");
 if (container) {
   const root = createRoot(container);
-  root.render(<DictionaryPopup />);
+  root.render(
+    <I18nProvider>
+      <DictionaryPopup />
+    </I18nProvider>,
+  );
 }

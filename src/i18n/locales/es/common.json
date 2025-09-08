@@ -2,5 +2,9 @@
   "howToUse": "Cómo usar",
   "step1": "Selecciona texto en páginas web",
   "step2": "Haz clic en el botón \"diccionario\" que aparece",
-  "step3": "Ver traducción detallada con pronunciación"
+  "step3": "Ver traducción detallada con pronunciación",
+  "dictionaryButton": "diccionario",
+  "loading": "Cargando...",
+  "noTranslationAvailable": "No hay traducción disponible",
+  "selectTextToTranslate": "Selecciona texto en la página para traducir"
 }

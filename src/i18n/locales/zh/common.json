@@ -2,5 +2,9 @@
   "howToUse": "使用方法",
   "step1": "在网页上选择文本",
   "step2": "点击出现的\"词典\"按钮",
-  "step3": "查看详细翻译和发音"
+  "step3": "查看详细翻译和发音",
+  "dictionaryButton": "词典",
+  "loading": "加载中...",
+  "noTranslationAvailable": "无可用翻译",
+  "selectTextToTranslate": "选择页面上的文本进行翻译"
 }
