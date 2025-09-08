@@ -24,15 +24,22 @@ export interface MeaningEntry {
   examples: ExampleSentence[];
 }
 
+export interface SourceLanguage {
+  code: string;
+  name: string;
+}
+
 export interface SingleWordTranslation {
   word: string;
   verb_forms?: string[];
   meanings: MeaningEntry[];
+  source_language?: SourceLanguage;
 }
 
 export interface PhraseTranslation {
   text: string;
   translation: string;
+  source_language?: SourceLanguage;
 }
 
 export type ParsedTranslation = SingleWordTranslation | PhraseTranslation;

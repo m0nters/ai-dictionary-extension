@@ -21,8 +21,12 @@ export const generateTranslationPrompt = (
 
   return `You are a multilingual dictionary and translation tool. Translate the user's text into ${translatedLangName} (translated language), using the following rules and format:
 
+- **Source Language Detection:**
+  - Always detect and specify the source language of the input text.
+  - Include the source_language field with code and name in all responses.
+  - For ambiguous text (e.g., Chinese vs Japanese characters), make your best determination and specify it clearly.
+
 - **Single word input:**
-  - Detect the source language.
   - For the source languages that have variants in pronunciation (e.g., English UK/US, Spanish Spain/Latin America), provide both variants IPA.
   - For the source languages without pronunciation variants (e.g., Chinese, where Pinyin is used), provide a single pronunciation in the pronunciation field as a string.
   - Translate the meaning into the translated language, specifying its part of speech (in the translated language, e.g., "danh từ" for noun in Vietnamese, "名词" for noun in Chinese).
@@ -46,6 +50,10 @@ export const generateTranslationPrompt = (
 {
   \"word\": \"run\",
   \"verb_forms\": [\"run\", \"ran\", \"run\"],
+  \"source_language\": {
+    \"code\": \"en\",
+    \"name\": \"English\"
+  },
   \"meanings\": [
     {
       \"pronunciation\": {
@@ -92,6 +100,10 @@ export const generateTranslationPrompt = (
 \`\`\`json
 {
   \"word\": \"书\",
+  \"source_language\": {
+    \"code\": \"zh\",
+    \"name\": \"Chinese\"
+  },
   \"meanings\": [
     {
       \"pronunciation\": \"shū\",
@@ -119,6 +131,10 @@ export const generateTranslationPrompt = (
 \`\`\`json
 {
   \"word\": \"本\",
+  \"source_language\": {
+    \"code\": \"ja\",
+    \"name\": \"Japanese\"
+  },
   \"meanings\": [
     {
       \"pronunciation\": \"hon\",
@@ -146,6 +162,10 @@ export const generateTranslationPrompt = (
 \`\`\`json
 {
   \"word\": \"resource\",
+  \"source_language\": {
+    \"code\": \"en\",
+    \"name\": \"English\"
+  },
   \"meanings\": [
     {
       \"pronunciation\": {
@@ -172,6 +192,10 @@ export const generateTranslationPrompt = (
  \`\`\`json
 {
   \"text\": \"Good morning!\",
+  \"source_language\": {
+    \"code\": \"en\",
+    \"name\": \"English\"
+  },
   \"translation\": \"Chào buổi sáng!\"
 }
  \`\`\`
@@ -181,6 +205,10 @@ export const generateTranslationPrompt = (
 \`\`\`json
 {
   \"text\": \"asdkjhasd\",
+  \"source_language\": {
+    \"code\": \"unknown\",
+    \"name\": \"Unknown\"
+  },
   \"translation\": \"Không có bản dịch.\"
 }
 \`\`\`

@@ -5,6 +5,7 @@ import {
   PhraseTranslation,
   PronunciationVariants,
   SingleWordTranslation,
+  SourceLanguage,
 } from "../types/translation";
 import {
   hasPronunciationVariants,
@@ -16,6 +17,28 @@ import {
 interface DictionaryRendererProps {
   translation: ParsedTranslation;
 }
+
+/**
+ * Renders the source language information
+ */
+const SourceLanguageRenderer: React.FC<{
+  sourceLanguage?: SourceLanguage;
+}> = ({ sourceLanguage }) => {
+  if (!sourceLanguage) return null;
+
+  return (
+    <div className="mb-4 flex items-center justify-center rounded-lg border border-gray-200 bg-gradient-to-r from-gray-50 to-blue-50 p-3 shadow-sm">
+      <div className="flex items-center justify-center space-x-2">
+        <div className="text-sm font-semibold text-gray-700">
+          Detected Language:
+        </div>
+        <div className="text-sm font-medium text-blue-600">
+          {sourceLanguage.name}
+        </div>
+      </div>
+    </div>
+  );
+};
 
 /**
  * Renders pronunciation with proper styling for variants (original style)
@@ -155,6 +178,9 @@ export const DictionaryRenderer: React.FC<DictionaryRendererProps> = ({
     const phraseTranslation = translation as PhraseTranslation;
     return (
       <div className="dictionary-content">
+        <SourceLanguageRenderer
+          sourceLanguage={phraseTranslation.source_language}
+        />
         <div className="mb-4">
           <div className="flex items-start space-x-2">
             <div className="mt-1 h-6 w-1 flex-shrink-0 rounded-full bg-blue-400"></div>
@@ -178,6 +204,9 @@ export const DictionaryRenderer: React.FC<DictionaryRendererProps> = ({
     const singleWordTranslation = translation as SingleWordTranslation;
     return (
       <div className="dictionary-content">
+        <SourceLanguageRenderer
+          sourceLanguage={singleWordTranslation.source_language}
+        />
         <div className="mb-4">
           {/* Verb Forms (if present) */}
           {singleWordTranslation.verb_forms &&
