@@ -5,25 +5,28 @@ export interface TranslationResult {
   error?: string;
 }
 
-export interface DictionaryEntry {
+export interface PronunciationVariants {
+  UK?: string;
+  US?: string;
+}
+
+export interface MeaningEntry {
+  pronunciation: string | PronunciationVariants;
+  part_of_speech: string;
+  translation?: string; // For translations to other languages
+  definition?: string; // For same-language definitions
+  examples: string[];
+}
+
+export interface SingleWordTranslation {
   word: string;
-  pronunciation?: string;
-  partOfSpeech?: string;
-  meaning?: string;
-  examples?: ExampleSentence[];
+  verb_forms?: string[];
+  meanings: MeaningEntry[];
 }
 
-export interface ExampleSentence {
-  original: string;
-  translation?: string;
+export interface PhraseTranslation {
+  text: string;
+  translation: string;
 }
 
-export interface ParsedTranslation {
-  sections: DictionarySection[];
-}
-
-export interface DictionarySection {
-  word: string;
-  pronunciation?: string;
-  entries: DictionaryEntry[];
-}
+export type ParsedTranslation = SingleWordTranslation | PhraseTranslation;

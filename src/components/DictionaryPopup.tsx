@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import { createRoot } from "react-dom/client";
 import { useTranslation } from "../hooks/useTranslation";
 import "../index.css";
+import { parseTranslationContent } from "../utils/textParser";
 import { DictionaryRenderer } from "./DictionaryRenderer";
 
 const DictionaryPopup: React.FC = () => {
@@ -37,6 +38,11 @@ const DictionaryPopup: React.FC = () => {
     window.parent.postMessage({ type: "CLOSE_POPUP" }, "*");
   };
 
+  // Parse the translation content for structured rendering
+  const parsedTranslation = result.translation
+    ? parseTranslationContent(result.translation)
+    : null;
+
   return (
     <div className="flex h-full w-full flex-col bg-white">
       {/* Close button - properly aligned */}
@@ -66,8 +72,8 @@ const DictionaryPopup: React.FC = () => {
             </div>
           )}
 
-          {!result.loading && !result.error && result.translation && (
-            <DictionaryRenderer translation={result.translation} />
+          {!result.loading && !result.error && parsedTranslation && (
+            <DictionaryRenderer translation={parsedTranslation} />
           )}
 
           {!result.loading &&

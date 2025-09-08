@@ -23,8 +23,8 @@ export const generateTranslationPrompt = (
 
 - **Single word input:**
   - Detect the source language.
-  - If the source language is English, provide the IPA pronunciation for both UK and US English (in that order).
-  - Provide the IPA pronunciation.
+  - For the language that has variants in pronunciation (e.g., English UK/US, Spanish Spain/Latin America), provide both variants IPA.
+  - For languages without pronunciation variants (e.g., Chinese, where Pinyin is used), provide a single pronunciation in the pronunciation field as a string.
   - Translate the meaning into the target language, specifying its part of speech (in the target language, e.g., "danh từ" for noun in Vietnamese, "名词" for noun in Chinese).
   - For verbs in any conjugated form (e.g., if the text is "spelled" in English), translate the infinitive form (e.g., still translate the word "spell") and list key conjugations (e.g., infinitive, past tense, past participle for English; equivalent forms for other languages where applicable, like preterite and participle in Spanish).
   - Include 2-3 example sentences in the target language, bold that word in the sentence. If that word is a verb and has many conjugations, give enough examples to illustrate the different forms.
@@ -32,27 +32,102 @@ export const generateTranslationPrompt = (
   - If the source and target languages are the same, provide the dictionary entry and example sentences in that language without translations.
 - **Phrase or sentence input (more than two words):**
   - Provide only the target language translation.
-- **Format:**
-  - Use this format for single words, e.g., English "ran" to Vietnamese:
+- **Gibberish or non-language input:**
+  - Respond with sentence like "No translation available." but in target language. (e.g., "Không có bản dịch" in Vietnamese, "没有可用的翻译" in Chinese)
+- **Output Format:** Use JSON format with the structure following these examples below:
+  - e.g., English "ran" to Vietnamese:
 
-[VERB FORMS: run / ran / run]
+\`\`\`json
+{
+  \"word\": \"run\",
+  \"verb_forms\": [\"run\", \"ran\", \"run\"],
+  \"meanings\": [
+    {
+      \"pronunciation\": {
+        \"UK\": \"/rʌn/\",
+        \"US\": \"/rʌn/\"
+      },
+      \"part_of_speech\": \"động từ\",
+      \"translation\": \"chạy\",
+      \"examples\": [
+        \"He **runs** every morning. → Anh ấy **chạy** mỗi sáng.\",
+        \"She **ran** to catch the bus. → Cô ấy **chạy** để bắt xe buýt.\"
+      ]
+    },
+    {
+      \"pronunciation\": {
+        \"UK\": \"/rʌn/\",
+        \"US\": \"/rʌn/\"
+      },
+      \"part_of_speech\": \"danh từ\",
+      \"translation\": \"sự chạy, cuộc chạy\",
+      \"examples\": [
+        \"The marathon was a tough **run**. → Cuộc marathon là một cuộc **chạy** khó khăn.\",
+        \"They went for a quick **run** in the park. → Họ đi **chạy** nhanh trong công viên.\"
+      ]
+    }
+  ]
+}
+\`\`\`
 
-run /rʌn/ (UK), /rʌn/ (US)
-(động từ) chạy
-- He **runs** every morning. → Anh ấy **chạy** mỗi sáng.
-- She **ran** to catch the bus. → Cô ấy **chạy** để bắt xe buýt.
+  - For single words in languages without pronunciation variants, e.g., Chinese word '书' (shū) to Vietnamese:
 
-run /rʌn/ (UK), /rʌn/ (US)
-(danh từ) sự chạy, cuộc chạy
-- The marathon was a tough **run**. → Cuộc marathon là một cuộc **chạy** khó khăn.
-- They went for a quick **run** in the park. → Họ đi **chạy** nhanh trong công viên.
+\`\`\`json
+{
+  \"word\": \"书\",
+  \"meanings\": [
+    {
+      \"pronunciation\": \"shū\",
+      \"part_of_speech\": \"danh từ\",
+      \"translation\": \"sách\",
+      \"examples\": [
+        \"Tôi mua một **quyển sách** mới. → Wǒ mǎile yī běn xīn **shū**.\",
+        \"Thư viện có nhiều **sách** hay. → Túshūguǎn yǒu hěnduō hǎo **shū**.\"
+      ]
+    }
+  ]
+}
+\`\`\`
 
   - For same-language translation, e.g., English to English:
 
-resource /rɪˈzɔːs/ (UK), /ˈriːsɔːrs/ (US)
-(noun) A supply of money, materials, staff, or other assets; a source of help or information.
-- The country is rich in natural **resources** like oil and gas.
-- The library is an excellent **resource** for students.
+\`\`\`json
+{
+  \"word\": \"resource\",
+  \"meanings\": [
+    {
+      \"pronunciation\": {
+        \"UK\": \"/rɪˈzɔːs/\",
+        \"US\": \"/ˈriːsɔːrs/\"
+      },
+      \"part_of_speech\": \"noun\",
+      \"definition\": \"A supply of money, materials, staff, or other assets; a source of help or information.\",
+      \"examples\": [
+        \"The country is rich in natural **resources** like oil and gas.\",
+        \"The library is an excellent **resource** for students.\"
+      ]
+    }
+  ]
+}
+\`\`\`
+
+  - For phrases or sentences (more than two words):
+
+ \`\`\`json
+{
+  \"text\": \"Good morning!\",
+  \"translation\": \"Chào buổi sáng!\"
+}
+ \`\`\`
+
+  - For gibberish or non-language input, e.g., "asdkjhasd" to Vietnamese:
+
+\`\`\`json
+{
+  \"text\": \"asdkjhasd\",
+  \"translation\": \"Không có bản dịch.\"
+}
+\`\`\`
 
 - Do not add extra commentary or explanations.
 

@@ -1,186 +1,225 @@
 import React from "react";
 import {
-  getLineType,
-  parseExampleSentence,
-  parsePartOfSpeechAndMeaning,
-  parseVerbConjugation,
-  parseWordAndPronunciation,
+  MeaningEntry,
+  ParsedTranslation,
+  PhraseTranslation,
+  PronunciationVariants,
+  SingleWordTranslation,
+} from "../types/translation";
+import {
+  hasPronunciationVariants,
+  isPhraseTranslation,
+  isSingleWordTranslation,
   renderTextWithBold,
 } from "../utils/textParser";
 
 interface DictionaryRendererProps {
-  translation: string;
+  translation: ParsedTranslation;
 }
 
 /**
- * Component responsible for rendering dictionary-style translation content
+ * Renders pronunciation with proper styling for variants (original style)
+ */
+const PronunciationRenderer: React.FC<{
+  pronunciation: string | PronunciationVariants;
+}> = ({ pronunciation }) => {
+  if (hasPronunciationVariants(pronunciation)) {
+    return (
+      <span className="ml-2 inline-flex flex-wrap items-center gap-2">
+        {pronunciation.UK && (
+          <span className="inline-flex items-center gap-1">
+            <span className="rounded-full bg-blue-100 px-2 py-0.5 text-xs font-semibold text-blue-700">
+              UK
+            </span>
+            <span className="text-base text-gray-600">{pronunciation.UK}</span>
+          </span>
+        )}
+        {pronunciation.US && (
+          <span className="inline-flex items-center gap-1">
+            <span className="rounded-full bg-red-100 px-2 py-0.5 text-xs font-semibold text-red-700">
+              US
+            </span>
+            <span className="text-base text-gray-600">{pronunciation.US}</span>
+          </span>
+        )}
+      </span>
+    );
+  }
+
+  return (
+    <span className="ml-2 text-base text-gray-600">
+      {pronunciation as string}
+    </span>
+  );
+};
+
+/**
+ * Renders a single meaning entry (original style)
+ */
+const MeaningEntryRenderer: React.FC<{
+  entry: MeaningEntry;
+  word: string;
+}> = ({ entry, word }) => {
+  return (
+    <div className="mb-4">
+      {/* Word and Pronunciation Header (original style) */}
+      <div className="mb-2">
+        <h1 className="inline text-xl font-semibold text-blue-600">{word}</h1>
+        <PronunciationRenderer pronunciation={entry.pronunciation} />
+      </div>
+
+      {/* Part of Speech and Translation/Definition (original style) */}
+      <div className="mb-2">
+        <span className="rounded-full bg-green-50 px-2 py-1 text-xs font-medium text-green-600">
+          {entry.part_of_speech}
+        </span>
+        <p className="mt-1 text-sm font-medium text-gray-800">
+          {entry.translation || entry.definition}
+        </p>
+      </div>
+
+      {/* Examples (original style) */}
+      {entry.examples && entry.examples.length > 0 && (
+        <div className="space-y-2">
+          {entry.examples.map((example, exampleIndex) => {
+            // Check if example has translation (contains →)
+            const hasTranslation = example.includes("→");
+
+            if (hasTranslation) {
+              const [original, translation] = example
+                .split("→")
+                .map((s) => s.trim());
+              return (
+                <div
+                  key={exampleIndex}
+                  className="mb-3 ml-4 rounded-lg border-l-4 border-blue-200 bg-blue-50 p-3"
+                >
+                  <p className="mb-1 text-sm font-medium text-gray-800">
+                    {renderTextWithBold(original)}
+                  </p>
+                  <p className="text-sm font-normal text-blue-700">
+                    {renderTextWithBold(translation)}
+                  </p>
+                </div>
+              );
+            } else {
+              return (
+                <div
+                  key={exampleIndex}
+                  className="mb-2 ml-4 rounded-lg border-l-4 border-gray-200 bg-gray-50 p-3"
+                >
+                  <p className="text-sm text-gray-700">
+                    {renderTextWithBold(example)}
+                  </p>
+                </div>
+              );
+            }
+          })}
+        </div>
+      )}
+    </div>
+  );
+};
+
+/**
+ * Renders verb forms with original gradient styling
+ */
+const VerbFormsRenderer: React.FC<{ verbForms: string[] }> = ({
+  verbForms,
+}) => {
+  return (
+    <div className="mb-4">
+      <div className="rounded-xl border border-violet-200 bg-gradient-to-r from-violet-50 to-purple-50 p-4 shadow-sm">
+        <div className="mb-3 flex items-center space-x-2">
+          <div className="h-2 w-2 rounded-full bg-violet-400"></div>
+          <span className="rounded-full bg-violet-100 px-3 py-1 text-xs font-bold tracking-wide text-violet-700">
+            VERB FORMS
+          </span>
+        </div>
+        <div className="grid grid-cols-1 gap-2">
+          {verbForms.map((form, formIndex) => (
+            <div
+              key={formIndex}
+              className="rounded-lg border border-violet-200 bg-white px-4 py-2.5 text-center font-semibold text-violet-800 shadow-sm transition-shadow duration-200 hover:shadow-md"
+            >
+              <div className="text-sm font-medium">{form}</div>
+              {verbForms.length === 3 && (
+                <div className="mt-1 text-xs text-violet-500 opacity-75">
+                  {formIndex === 0 && "Infinitive"}
+                  {formIndex === 1 && "Past tense"}
+                  {formIndex === 2 && "Past participle"}
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+/**
+ * Main dictionary renderer component
  */
 export const DictionaryRenderer: React.FC<DictionaryRendererProps> = ({
   translation,
 }) => {
+  // Handle phrase translations (original style)
+  if (isPhraseTranslation(translation)) {
+    const phraseTranslation = translation as PhraseTranslation;
+    return (
+      <div className="dictionary-content">
+        <div className="mb-4">
+          <div className="flex items-start space-x-2">
+            <div className="mt-1 h-6 w-1 flex-shrink-0 rounded-full bg-blue-400"></div>
+            <p className="text-base leading-relaxed font-medium text-gray-800">
+              {renderTextWithBold(phraseTranslation.text)}
+            </p>
+          </div>
+          <div className="mt-2 flex items-start space-x-2">
+            <div className="mt-1 h-6 w-1 flex-shrink-0 rounded-full bg-blue-400"></div>
+            <p className="text-base leading-relaxed font-medium text-gray-800">
+              {renderTextWithBold(phraseTranslation.translation)}
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Handle single word translations (original style)
+  if (isSingleWordTranslation(translation)) {
+    const singleWordTranslation = translation as SingleWordTranslation;
+    return (
+      <div className="dictionary-content">
+        <div className="mb-4">
+          {/* Verb Forms (if present) */}
+          {singleWordTranslation.verb_forms &&
+            singleWordTranslation.verb_forms.length > 0 && (
+              <VerbFormsRenderer verbForms={singleWordTranslation.verb_forms} />
+            )}
+
+          {/* Meanings */}
+          {singleWordTranslation.meanings.map((meaning, index) => (
+            <MeaningEntryRenderer
+              key={index}
+              entry={meaning}
+              word={singleWordTranslation.word}
+            />
+          ))}
+        </div>
+      </div>
+    );
+  }
+
+  // Fallback for unknown format
   return (
     <div className="dictionary-content">
-      {translation.split("\n\n").map((section, index) => {
-        return (
-          <div key={index} className="mb-4">
-            {section.split("\n").map((line, lineIndex) => {
-              const lineType = getLineType(line);
-
-              switch (lineType) {
-                case "verb-conjugation": {
-                  const conjugations = parseVerbConjugation(line);
-                  if (conjugations.length > 0) {
-                    return (
-                      <div key={lineIndex} className="mb-4">
-                        <div className="rounded-xl border border-violet-200 bg-gradient-to-r from-violet-50 to-purple-50 p-4 shadow-sm">
-                          <div className="mb-3 flex items-center space-x-2">
-                            <div className="h-2 w-2 rounded-full bg-violet-400"></div>
-                            <span className="rounded-full bg-violet-100 px-3 py-1 text-xs font-bold tracking-wide text-violet-700">
-                              VERB FORMS
-                            </span>
-                          </div>
-                          <div className="grid grid-cols-1 gap-2">
-                            {conjugations.map((form, formIndex) => (
-                              <div
-                                key={formIndex}
-                                className="rounded-lg border border-violet-200 bg-white px-4 py-2.5 text-center font-semibold text-violet-800 shadow-sm transition-shadow duration-200 hover:shadow-md"
-                              >
-                                <div className="text-sm font-medium">
-                                  {form}
-                                </div>
-                                {conjugations.length === 3 && (
-                                  <div className="mt-1 text-xs text-violet-500 opacity-75">
-                                    {formIndex === 0 && "Infinitive"}
-                                    {formIndex === 1 && "Past tense"}
-                                    {formIndex === 2 && "Past participle"}
-                                  </div>
-                                )}
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-                      </div>
-                    );
-                  }
-                  break;
-                }
-
-                case "word-pronunciation": {
-                  const { word, singlePronunciation, pronunciationVariants } =
-                    parseWordAndPronunciation(line);
-                  return (
-                    <div key={lineIndex} className="mb-2">
-                      <h1 className="inline text-xl font-semibold text-blue-600">
-                        {word}
-                      </h1>
-                      {pronunciationVariants ? (
-                        <span className="ml-2 inline-flex items-center gap-2">
-                          {pronunciationVariants.map((variant, idx) => (
-                            <span
-                              key={idx}
-                              className="inline-flex items-center gap-1"
-                            >
-                              <span
-                                className={`rounded-full px-2 py-0.5 text-xs font-semibold ${
-                                  variant.region === "UK"
-                                    ? "bg-blue-100 text-blue-700"
-                                    : "bg-red-100 text-red-700"
-                                }`}
-                              >
-                                {variant.region}
-                              </span>
-                              <span className="text-base text-gray-600">
-                                {variant.ipa}
-                              </span>
-                            </span>
-                          ))}
-                        </span>
-                      ) : (
-                        <span className="ml-2 text-base text-gray-600">
-                          {singlePronunciation}
-                        </span>
-                      )}
-                    </div>
-                  );
-                }
-
-                case "part-of-speech": {
-                  const parsed = parsePartOfSpeechAndMeaning(line);
-                  if (parsed) {
-                    const { partOfSpeech, meaning } = parsed;
-                    return (
-                      <div key={lineIndex} className="mb-2">
-                        <span className="rounded-full bg-green-50 px-2 py-1 text-xs font-medium text-green-600">
-                          {partOfSpeech}
-                        </span>
-                        <p className="mt-1 text-sm font-medium text-gray-800">
-                          {meaning}
-                        </p>
-                      </div>
-                    );
-                  }
-                  break;
-                }
-
-                case "example": {
-                  const { original, translation: exampleTranslation } =
-                    parseExampleSentence(line);
-
-                  if (exampleTranslation) {
-                    // Format with translation: "- English example → Vietnamese translation"
-                    return (
-                      <div
-                        key={lineIndex}
-                        className="mb-3 ml-4 rounded-lg border-l-4 border-blue-200 bg-blue-50 p-3"
-                      >
-                        <p className="mb-1 text-sm font-medium text-gray-800">
-                          {renderTextWithBold(original)}
-                        </p>
-                        <p className="text-sm font-normal text-blue-700">
-                          {renderTextWithBold(exampleTranslation)}
-                        </p>
-                      </div>
-                    );
-                  } else {
-                    // Simple format: "- Example sentence only"
-                    return (
-                      <div
-                        key={lineIndex}
-                        className="mb-2 ml-4 rounded-lg border-l-4 border-gray-200 bg-gray-50 p-3"
-                      >
-                        <p className="text-sm text-gray-700">
-                          {renderTextWithBold(original)}
-                        </p>
-                      </div>
-                    );
-                  }
-                }
-
-                case "other":
-                default: {
-                  // Phrase/sentence translation - deserves better styling
-                  if (line.trim()) {
-                    return (
-                      <div
-                        className="flex items-start space-x-2"
-                        key={lineIndex}
-                      >
-                        <div className="mt-1 h-6 w-1 flex-shrink-0 rounded-full bg-blue-400"></div>
-                        <p className="text-base leading-relaxed font-medium text-gray-800">
-                          {renderTextWithBold(line)}
-                        </p>
-                      </div>
-                    );
-                  }
-                  return null;
-                }
-              }
-
-              return null;
-            })}
-          </div>
-        );
-      })}
+      <div className="text-gray-600">
+        <pre className="whitespace-pre-wrap">
+          {JSON.stringify(translation, null, 2)}
+        </pre>
+      </div>
     </div>
   );
 };
