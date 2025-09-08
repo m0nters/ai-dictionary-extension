@@ -8,7 +8,7 @@ import {
   Settings,
 } from "lucide-react";
 import { useEffect, useState } from "react";
-import { SUPPORTED_LANGUAGES } from "./constants/language";
+import { TRANSLATED_LANGUAGES } from "./constants/translatedLanguage";
 import { I18nProvider, useI18n } from "./i18n/I18nContext";
 
 function AppContent() {
@@ -125,7 +125,7 @@ function AppContent() {
                 onBlur={() => setIsDropdownOpen(false)}
                 className="w-full cursor-pointer appearance-none rounded-xl border-2 border-gray-200 bg-white p-3 shadow-sm transition-all duration-200 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100 focus:outline-none"
               >
-                {SUPPORTED_LANGUAGES.map((lang) => (
+                {TRANSLATED_LANGUAGES.map((lang) => (
                   <option key={lang.code} value={lang.code}>
                     {
                       messages.languages[

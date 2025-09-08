@@ -1,4 +1,4 @@
-export const SUPPORTED_LANGUAGES = [
+export const TRANSLATED_LANGUAGES = [
   { code: "vi", name: "Tiếng Việt" },
   { code: "en", name: "Tiếng Anh" },
   { code: "ja", name: "Tiếng Nhật" },

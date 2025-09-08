@@ -1,4 +1,4 @@
-import { SUPPORTED_LANGUAGES } from "../constants/language";
+import { TRANSLATED_LANGUAGES } from "../constants/translatedLanguage";
 
 // Hardcoded API key
 const API_KEY = "AIzaSyAWVSbmZSU-gR2TqJzifTfQL0AJDACPiFk";
@@ -7,7 +7,7 @@ const API_KEY = "AIzaSyAWVSbmZSU-gR2TqJzifTfQL0AJDACPiFk";
  * Gets the language name from language code
  */
 export const getLanguageName = (code: string): string => {
-  return SUPPORTED_LANGUAGES.find((lang) => lang.code === code)?.name || code;
+  return TRANSLATED_LANGUAGES.find((lang) => lang.code === code)?.name || code;
 };
 
 /**
@@ -15,25 +15,25 @@ export const getLanguageName = (code: string): string => {
  */
 export const generateTranslationPrompt = (
   text: string,
-  targetLanguage: string,
+  translatedLanguage: string,
 ): string => {
-  const targetLangName = getLanguageName(targetLanguage);
+  const translatedLangName = getLanguageName(translatedLanguage);
 
-  return `You are a multilingual dictionary and translation tool. Translate the user's text into ${targetLangName}, using the following rules and format:
+  return `You are a multilingual dictionary and translation tool. Translate the user's text into ${translatedLangName} (translated language), using the following rules and format:
 
 - **Single word input:**
   - Detect the source language.
-  - For the language that has variants in pronunciation (e.g., English UK/US, Spanish Spain/Latin America), provide both variants IPA.
-  - For languages without pronunciation variants (e.g., Chinese, where Pinyin is used), provide a single pronunciation in the pronunciation field as a string.
-  - Translate the meaning into the target language, specifying its part of speech (in the target language, e.g., "danh từ" for noun in Vietnamese, "名词" for noun in Chinese).
+  - For the source languages that have variants in pronunciation (e.g., English UK/US, Spanish Spain/Latin America), provide both variants IPA.
+  - For the source languages without pronunciation variants (e.g., Chinese, where Pinyin is used), provide a single pronunciation in the pronunciation field as a string.
+  - Translate the meaning into the translated language, specifying its part of speech (in the translated language, e.g., "danh từ" for noun in Vietnamese, "名词" for noun in Chinese).
   - For verbs in any conjugated form (e.g., if the text is "spelled" in English), translate the infinitive form (e.g., still translate the word "spell") and list key conjugations (e.g., infinitive, past tense, past participle for English; equivalent forms for other languages where applicable, like preterite and participle in Spanish).
-  - Include 2-3 example sentences in the target language, bold that word in the sentence. If that word is a verb and has many conjugations, give enough examples to illustrate the different forms.
+  - Include 2-3 example sentences in the translated language, bold that word in the sentence. If that word is a verb and has many conjugations, give enough examples to illustrate the different forms.
   - If the word has multiple meanings or pronunciations, list each separately in the same format.
-  - If the source and target languages are the same, provide the dictionary entry and example sentences in that language without translations.
+  - If the source and translated languages are the same, provide the dictionary entry and example sentences in that language without translations.
 - **Phrase or sentence input (more than two words):**
-  - Provide only the target language translation.
+  - Provide only the translated language translation.
 - **Gibberish or non-language input:**
-  - Respond with sentence like "No translation available." but in target language. (e.g., "Không có bản dịch" in Vietnamese, "没有可用的翻译" in Chinese)
+  - Respond with sentence like "No translation available." but in translated language. (e.g., "Không có bản dịch" in Vietnamese, "没有可用的翻译" in Chinese)
 - **Output Format:** Use JSON format with the structure following these examples below:
   - e.g., English "ran" to Vietnamese:
 
@@ -131,7 +131,7 @@ export const generateTranslationPrompt = (
 
 - Do not add extra commentary or explanations.
 
-Text for translation: "${text}"`;
+Finally, the text for translation is: "${text}"`;
 };
 
 /**
@@ -139,9 +139,9 @@ Text for translation: "${text}"`;
  */
 export const translateWithGemini = async (
   text: string,
-  targetLanguage: string,
+  translatedLanguage: string,
 ): Promise<string> => {
-  const prompt = generateTranslationPrompt(text, targetLanguage);
+  const prompt = generateTranslationPrompt(text, translatedLanguage);
 
   const response = await fetch(
     `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent`,
