@@ -42,6 +42,32 @@ async function getDictionaryButtonText(): Promise<string> {
   }
 }
 
+async function getCurrentAppLanguage(): Promise<string> {
+  try {
+    const data = await new Promise<any>((resolve, reject) => {
+      if (
+        typeof chrome !== "undefined" &&
+        chrome.storage &&
+        chrome.storage.sync
+      ) {
+        chrome.storage.sync.get(["appLanguage"], (result) => {
+          if (chrome.runtime.lastError) {
+            reject(chrome.runtime.lastError);
+          } else {
+            resolve(result);
+          }
+        });
+      } else {
+        resolve({ appLanguage: "en" });
+      }
+    });
+
+    return data.appLanguage || "en";
+  } catch (error) {
+    return "en"; // Fallback language
+  }
+}
+
 let dictionaryButton: HTMLElement | null = null;
 let dictionaryPopup: HTMLIFrameElement | null = null;
 let lastSelectedText: string = "";
@@ -156,7 +182,7 @@ async function showDictionaryButton(
     window.addEventListener("scroll", handleButtonScroll);
     (dictionaryButton as any).scrollHandler = handleButtonScroll;
 
-    dictionaryButton.addEventListener("click", (e) => {
+    dictionaryButton.addEventListener("click", async (e) => {
       // Prevent event bubbling
       e.stopPropagation();
       e.preventDefault();
@@ -173,7 +199,7 @@ async function showDictionaryButton(
       }
 
       // Use the proper iframe translation popup
-      showDictionaryPopup(selectedText, selectionX, selectionY);
+      await showDictionaryPopup(selectedText, selectionX, selectionY);
       // showDictionaryPopupDirect(selectedText); // test version removed
       removeDictionaryButton();
     });
@@ -227,9 +253,16 @@ function removeDictionaryButton() {
 }
 
 // Show the dictionary popup (iframe version)
-function showDictionaryPopup(selectedText: string, x?: number, y?: number) {
+async function showDictionaryPopup(
+  selectedText: string,
+  x?: number,
+  y?: number,
+) {
   // Remove existing popup if any
   removeDictionaryPopup();
+
+  // Pre-fetch the current app language
+  const currentAppLanguage = await getCurrentAppLanguage();
 
   try {
     dictionaryPopup = document.createElement("iframe");
@@ -385,6 +418,7 @@ function showDictionaryPopup(selectedText: string, x?: number, y?: number) {
           {
             type: "TRANSLATE_TEXT",
             text: selectedText,
+            appLanguage: currentAppLanguage,
           },
           "*",
         );
@@ -468,6 +502,7 @@ function showDictionaryPopup(selectedText: string, x?: number, y?: number) {
           {
             type: "TRANSLATE_TEXT",
             text: selectedText,
+            appLanguage: currentAppLanguage,
           },
           "*",
         );
@@ -483,6 +518,7 @@ function showDictionaryPopup(selectedText: string, x?: number, y?: number) {
             {
               type: "TRANSLATE_TEXT",
               text: selectedText,
+              appLanguage: currentAppLanguage,
             },
             "*",
           );

@@ -16,14 +16,32 @@ function DictionaryPopup() {
     // Listen for messages from content script
     const handleMessage = (event: MessageEvent) => {
       if (event.data.type === "TRANSLATE_TEXT") {
-        setResult((prev) => ({
-          ...prev,
-          text: event.data.text,
-          translation: "",
-          loading: true,
-          error: undefined,
-        }));
-        translateText(event.data.text);
+        // If app language is provided, change i18n language first
+        if (event.data.appLanguage) {
+          import("../config/i18n").then(({ changeLanguage }) => {
+            changeLanguage(event.data.appLanguage).then(() => {
+              // After language change, set the translation state
+              setResult((prev) => ({
+                ...prev,
+                text: event.data.text,
+                translation: "",
+                loading: true,
+                error: undefined,
+              }));
+              translateText(event.data.text);
+            });
+          });
+        } else {
+          // No app language provided, proceed normally
+          setResult((prev) => ({
+            ...prev,
+            text: event.data.text,
+            translation: "",
+            loading: true,
+            error: undefined,
+          }));
+          translateText(event.data.text);
+        }
       }
     };
 
