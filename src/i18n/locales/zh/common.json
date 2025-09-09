@@ -6,5 +6,7 @@
   "dictionaryButton": "词典",
   "loading": "加载中...",
   "noTranslationAvailable": "无可用翻译",
-  "selectTextToTranslate": "选择页面上的文本进行翻译"
+  "selectTextToTranslate": "选择页面上的文本进行翻译",
+  "on": "开",
+  "off": "关"
 }

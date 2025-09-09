@@ -4,5 +4,7 @@
   "translateTo": "Übersetzen nach",
   "appLanguage": "App-Sprache",
   "detectedLanguage": "Erkannte Sprache:",
-  "saved": "Gespeichert!"
+  "saved": "Gespeichert!",
+  "extensionDisabled": "Extension Deaktiviert",
+  "toggleToEnable": "Verwenden Sie den Schalter oben, um zu aktivieren"
 }

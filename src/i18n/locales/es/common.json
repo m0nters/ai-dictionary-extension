@@ -6,5 +6,7 @@
   "dictionaryButton": "diccionario",
   "loading": "Cargando...",
   "noTranslationAvailable": "No hay traducción disponible",
-  "selectTextToTranslate": "Selecciona texto en la página para traducir"
+  "selectTextToTranslate": "Selecciona texto en la página para traducir",
+  "on": "ENCENDIDO",
+  "off": "APAGADO"
 }

@@ -4,5 +4,7 @@
   "translateTo": "번역 대상",
   "appLanguage": "앱 언어",
   "detectedLanguage": "감지된 언어:",
-  "saved": "저장됨!"
+  "saved": "저장됨!",
+  "extensionDisabled": "확장 프로그램 비활성화",
+  "toggleToEnable": "위의 토글을 사용하여 활성화"
 }

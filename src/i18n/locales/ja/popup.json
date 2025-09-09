@@ -4,5 +4,7 @@
   "translateTo": "翻訳先",
   "appLanguage": "アプリ言語",
   "detectedLanguage": "検出された言語:",
-  "saved": "保存しました！"
+  "saved": "保存しました！",
+  "extensionDisabled": "拡張機能が無効になっています",
+  "toggleToEnable": "上のトグルを使用して有効にします"
 }

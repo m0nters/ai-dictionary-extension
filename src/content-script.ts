@@ -48,6 +48,49 @@ let lastSelectedText: string = "";
 let selectionChangeTimeout: number | null = null;
 let buttonOriginalPosition: { x: number; y: number } | null = null;
 let popupOriginalPosition: { x: number; y: number } | null = null;
+let extensionEnabled: boolean = true; // Default to enabled
+
+// Check if extension is enabled
+async function isExtensionEnabled(): Promise<boolean> {
+  try {
+    const data = await new Promise<any>((resolve, reject) => {
+      if (
+        typeof chrome !== "undefined" &&
+        chrome.storage &&
+        chrome.storage.sync
+      ) {
+        chrome.storage.sync.get(["extensionEnabled"], (result) => {
+          if (chrome.runtime.lastError) {
+            reject(chrome.runtime.lastError);
+          } else {
+            resolve(result);
+          }
+        });
+      } else {
+        resolve({ extensionEnabled: true });
+      }
+    });
+
+    return data.extensionEnabled !== false; // Default to true if not set
+  } catch (error) {
+    return true; // Default to enabled on error
+  }
+}
+
+// Listen for extension toggle messages
+chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
+  if (message.type === "EXTENSION_TOGGLE") {
+    extensionEnabled = message.enabled;
+
+    // If extension is disabled, remove any existing button/popup
+    if (!extensionEnabled) {
+      removeDictionaryButton();
+      removeDictionaryPopup();
+    }
+
+    sendResponse({ success: true });
+  }
+});
 
 // Create and show the dictionary button
 async function showDictionaryButton(
@@ -527,6 +570,12 @@ document.addEventListener("mouseup", async (e) => {
     return;
   }
 
+  // Check if extension is enabled
+  const enabled = await isExtensionEnabled();
+  if (!enabled) {
+    return;
+  }
+
   const selection = window.getSelection();
   const selectedText = selection?.toString().trim();
 
@@ -553,6 +602,12 @@ document.addEventListener("selectionchange", () => {
 
   // Debounce the selection change event
   selectionChangeTimeout = window.setTimeout(async () => {
+    // Check if extension is enabled
+    const enabled = await isExtensionEnabled();
+    if (!enabled) {
+      return;
+    }
+
     const selection = window.getSelection();
     const selectedText = selection?.toString().trim();
 
@@ -601,3 +656,8 @@ document.addEventListener("click", (e) => {
     }
   }
 });
+
+// Initialize extension state on load
+(async () => {
+  extensionEnabled = await isExtensionEnabled();
+})();

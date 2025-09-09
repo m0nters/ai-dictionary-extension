@@ -6,5 +6,7 @@
   "dictionaryButton": "辞書",
   "loading": "読み込み中...",
   "noTranslationAvailable": "翻訳がありません",
-  "selectTextToTranslate": "翻訳するページのテキストを選択してください"
+  "selectTextToTranslate": "翻訳するページのテキストを選択してください",
+  "on": "オン",
+  "off": "オフ"
 }

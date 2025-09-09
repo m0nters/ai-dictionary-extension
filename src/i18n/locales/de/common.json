@@ -6,5 +6,7 @@
   "dictionaryButton": "Wörterbuch",
   "loading": "Wird geladen...",
   "noTranslationAvailable": "Keine Übersetzung verfügbar",
-  "selectTextToTranslate": "Wählen Sie Text auf der Seite zum Übersetzen aus"
+  "selectTextToTranslate": "Wählen Sie Text auf der Seite zum Übersetzen aus",
+  "on": "AN",
+  "off": "AUS"
 }

@@ -4,5 +4,7 @@
   "translateTo": "Dịch sang",
   "appLanguage": "Ngôn ngữ ứng dụng",
   "detectedLanguage": "Ngôn ngữ phát hiện:",
-  "saved": "Đã lưu!"
+  "saved": "Đã lưu!",
+  "extensionDisabled": "Tiện ích mở rộng bị vô hiệu hóa",
+  "toggleToEnable": "Sử dụng công tắc ở trên để kích hoạt"
 }

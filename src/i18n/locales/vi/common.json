@@ -6,5 +6,7 @@
   "dictionaryButton": "tra từ điển",
   "loading": "Đang tải...",
   "noTranslationAvailable": "Không có bản dịch khả dụng",
-  "selectTextToTranslate": "Chọn văn bản trên trang để dịch"
+  "selectTextToTranslate": "Chọn văn bản trên trang để dịch",
+  "on": "BẬT",
+  "off": "TẮT"
 }

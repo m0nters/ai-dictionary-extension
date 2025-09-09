@@ -6,5 +6,7 @@
   "dictionaryButton": "dictionary",
   "loading": "Loading...",
   "noTranslationAvailable": "No translation available",
-  "selectTextToTranslate": "Select text on the page to translate"
+  "selectTextToTranslate": "Select text on the page to translate",
+  "on": "ON",
+  "off": "OFF"
 }

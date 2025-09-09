@@ -4,5 +4,7 @@
   "translateTo": "Translate to",
   "appLanguage": "App Language",
   "detectedLanguage": "Detected Language:",
-  "saved": "Saved!"
+  "saved": "Saved!",
+  "extensionDisabled": "Extension Disabled",
+  "toggleToEnable": "Use the toggle above to enable"
 }

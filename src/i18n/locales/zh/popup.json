@@ -4,5 +4,7 @@
   "translateTo": "翻译为",
   "appLanguage": "应用语言",
   "detectedLanguage": "检测到的语言:",
-  "saved": "已保存！"
+  "saved": "已保存！",
+  "extensionDisabled": "扩展已禁用",
+  "toggleToEnable": "使用上面的开关启用"
 }

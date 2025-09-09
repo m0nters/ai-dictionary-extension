@@ -47,6 +47,8 @@ export interface TranslationMessages {
   appLanguage: string;
   detectedLanguage: string;
   saved: string;
+  extensionDisabled: string;
+  toggleToEnable: string;
 
   // Common context
   howToUse: string;
@@ -57,6 +59,8 @@ export interface TranslationMessages {
   loading: string;
   noTranslationAvailable: string;
   selectTextToTranslate: string;
+  on: string;
+  off: string;
 
   // Thank You page context
   thankYou: {
