@@ -1,4 +1,4 @@
-import { LANGUAGE_IN_ENGLISH_NAME } from "../constants/languageMapping";
+import { AVAILABLE_LANGUAGES } from "../constants/availableLanguages";
 
 // Hardcoded API key
 const API_KEY = "AIzaSyAWVSbmZSU-gR2TqJzifTfQL0AJDACPiFk";
@@ -7,9 +7,7 @@ const API_KEY = "AIzaSyAWVSbmZSU-gR2TqJzifTfQL0AJDACPiFk";
  * Gets the language name from language code
  */
 export const getLanguageName = (code: string): string => {
-  return (
-    LANGUAGE_IN_ENGLISH_NAME.find((lang) => lang.code === code)?.name || code
-  );
+  return AVAILABLE_LANGUAGES.find((lang) => lang.code === code)?.name || code;
 };
 
 /**

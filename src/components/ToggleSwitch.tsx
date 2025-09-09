@@ -1,6 +1,6 @@
 import { Power } from "lucide-react";
 import { useEffect, useState } from "react";
-import { useI18n } from "../i18n/I18nContext";
+import { useTranslation } from "react-i18next";
 
 interface ToggleSwitchProps {
   initialValue?: boolean;
@@ -26,7 +26,7 @@ export function ToggleSwitch({
     onChange?.(newState);
   };
 
-  const { messages } = useI18n();
+  const { t } = useTranslation();
 
   return (
     <div className="flex items-center space-x-2">
@@ -58,7 +58,7 @@ export function ToggleSwitch({
           enabled ? "text-gray-700" : "text-gray-400"
         }`}
       >
-        {enabled ? messages.on : messages.off}
+        {enabled ? t("common:on") : t("common:off")}
       </span>
     </div>
   );

@@ -4,9 +4,9 @@ A Chrome extension that provides instant translation using Google's Gemini AI wh
 
 ## Features
 
-- 📱 **Instant Translation**: Select any text and click "tra từ điển" to get translations
+- 📱 **Instant Translation**: Select any text and click "dictionary" to get translations
 - 🌍 **Multiple Languages**: Support for Vietnamese, English, Japanese, Korean, Chinese, French, German, and Spanish
-- 🎯 **Smart Detection**: Automatically detects the source language
+- 🎯 **Smart Detection**: Automatically detects any language
 - 📚 **Dictionary Mode**: For single words, shows pronunciation, meaning, and example sentences just like professional dictionary standards
 - 💬 **Sentence Translation**: For phrases and sentences, provides clean translations
 - ⚡ **Fast & Lightweight**: Built with React and Vite
@@ -30,7 +30,7 @@ npm run build
 ## Usage
 
 1. **Select text** on any webpage
-2. **Click the "tra từ điển" button** that appears above the selected text
+2. **Click the "dictionary" button** that appears above the selected text
 3. **View the translation** in the popup window
 4. **Change target language** using the dropdown in the popup header
 

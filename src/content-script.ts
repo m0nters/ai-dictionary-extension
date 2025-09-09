@@ -3,14 +3,14 @@
 // Reference: https://stackoverflow.com/questions/48104433/how-to-import-es6-modules-in-content-script-for-chrome-extension
 
 const TRANSLATIONS = {
-  en: { dictionaryButton: "dictionary" },
-  vi: { dictionaryButton: "tra từ điển" },
-  zh: { dictionaryButton: "词典" },
-  ja: { dictionaryButton: "辞書" },
-  ko: { dictionaryButton: "사전" },
-  fr: { dictionaryButton: "dictionnaire" },
-  es: { dictionaryButton: "diccionario" },
-  de: { dictionaryButton: "Wörterbuch" },
+  en: "dictionary",
+  vi: "tra từ điển",
+  zh: "词典",
+  ja: "辞書",
+  ko: "사전",
+  fr: "dictionnaire",
+  es: "diccionario",
+  de: "Wörterbuch",
 } as const;
 
 async function getDictionaryButtonText(): Promise<string> {
@@ -29,16 +29,16 @@ async function getDictionaryButtonText(): Promise<string> {
           }
         });
       } else {
-        resolve({ appLanguage: "vi" });
+        resolve({ appLanguage: "en" });
       }
     });
 
-    const currentLang = data.appLanguage || "vi";
+    const currentLang = data.appLanguage || "en";
     const translation =
-      TRANSLATIONS[currentLang as keyof typeof TRANSLATIONS] || TRANSLATIONS.vi;
-    return translation.dictionaryButton;
+      TRANSLATIONS[currentLang as keyof typeof TRANSLATIONS] || TRANSLATIONS.en;
+    return translation;
   } catch (error) {
-    return "tra từ điển"; // Fallback text
+    return "dictionary"; // Fallback text
   }
 }
 

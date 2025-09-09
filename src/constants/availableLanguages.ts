@@ -1,4 +1,4 @@
-export const LANGUAGE_IN_ENGLISH_NAME = [
+export const AVAILABLE_LANGUAGES = [
   { code: "en", name: "English" },
   { code: "vi", name: "Vietnamese" },
   { code: "zh", name: "Chinese" },

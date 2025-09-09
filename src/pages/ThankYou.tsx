@@ -1,16 +1,21 @@
 import { SiFacebook, SiGithub } from "@icons-pack/react-simple-icons";
 import { CheckCircle, Globe, Languages, Shield, Zap } from "lucide-react";
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { DropdownMenu } from "../components/DropdownMenu";
-import { useI18n } from "../i18n/I18nContext";
+import { changeLanguage } from "../config/i18n";
+import { APP_LANGUAGES } from "../constants/appLanguage";
 
 function ThankYou() {
-  const { messages, currentLanguage, changeLanguage, availableLanguages } =
-    useI18n();
+  const { t, i18n } = useTranslation();
   const [isVisible, setIsVisible] = useState(false);
 
+  const handleLanguageChange = async (value: string) => {
+    await changeLanguage(value);
+  };
+
   // Create language options for dropdown
-  const languageOptions = availableLanguages.map((lang) => ({
+  const languageOptions = APP_LANGUAGES.map((lang) => ({
     value: lang.code,
     label: lang.nativeName,
   }));
@@ -18,23 +23,23 @@ function ThankYou() {
   const features = [
     {
       icon: <Zap className="h-6 w-6" />,
-      title: messages.thankYou.features.aiTranslation.title,
-      description: messages.thankYou.features.aiTranslation.description,
+      title: t("thankYou:features.aiTranslation.title"),
+      description: t("thankYou:features.aiTranslation.description"),
     },
     {
       icon: <Globe className="h-6 w-6" />,
-      title: messages.thankYou.features.multiLanguage.title,
-      description: messages.thankYou.features.multiLanguage.description,
+      title: t("thankYou:features.multiLanguage.title"),
+      description: t("thankYou:features.multiLanguage.description"),
     },
     {
       icon: <Shield className="h-6 w-6" />,
-      title: messages.thankYou.features.professional.title,
-      description: messages.thankYou.features.professional.description,
+      title: t("thankYou:features.professional.title"),
+      description: t("thankYou:features.professional.description"),
     },
     {
       icon: <CheckCircle className="h-6 w-6" />,
-      title: messages.thankYou.features.everywhere.title,
-      description: messages.thankYou.features.everywhere.description,
+      title: t("thankYou:features.everywhere.title"),
+      description: t("thankYou:features.everywhere.description"),
     },
   ];
 
@@ -66,9 +71,9 @@ function ThankYou() {
       {/* Language Switcher */}
       <div className="absolute top-4 right-4 z-20">
         <DropdownMenu
-          value={currentLanguage}
+          value={i18n.language}
           options={languageOptions}
-          onChange={changeLanguage}
+          onChange={handleLanguageChange}
           placeholder="Language"
           className="min-w-[140px]"
           focusColor="indigo"
@@ -89,12 +94,12 @@ function ThankYou() {
 
           <h1 className="mb-4 text-5xl font-bold text-gray-800 md:text-6xl">
             <span className="bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
-              {messages.thankYou.title}
+              {t("thankYou:title")}
             </span>
           </h1>
 
           <p className="mx-auto max-w-md text-xl leading-relaxed text-gray-600">
-            {messages.thankYou.subtitle}
+            {t("thankYou:subtitle")}
           </p>
         </div>
 
@@ -102,7 +107,7 @@ function ThankYou() {
         <div className="mb-8 rounded-3xl border border-gray-200 bg-white p-8 shadow-lg">
           <h2 className="mb-6 flex items-center justify-center gap-2 text-center text-2xl font-bold text-gray-800">
             <Zap className="h-6 w-6 text-indigo-500" />
-            {messages.thankYou.featuresTitle}
+            {t("thankYou:featuresTitle")}
           </h2>
 
           {/* Static feature grid */}
@@ -134,10 +139,10 @@ function ThankYou() {
             </div>
             <div>
               <h3 className="mb-2 text-lg font-semibold text-gray-800">
-                {messages.howToUse}
+                {t("common:howToUse")}
               </h3>
               <p className="leading-relaxed text-gray-600">
-                {messages.thankYou.usageDescription}
+                {t("thankYou:usageDescription")}
               </p>
             </div>
           </div>
@@ -171,7 +176,7 @@ function ThankYou() {
 
         {/* Footer note */}
         <div className="mt-8 flex items-end justify-center gap-1 text-center">
-          <p className="text-sm text-gray-500">{messages.thankYou.author}</p>
+          <p className="text-sm text-gray-500">{t("thankYou:author")}</p>
           <a
             href="https://github.com/m0nters"
             className="text-sm text-indigo-600 hover:text-indigo-800 hover:underline"

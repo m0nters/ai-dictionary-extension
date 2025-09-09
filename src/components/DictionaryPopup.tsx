@@ -1,15 +1,16 @@
 import { X } from "lucide-react";
 import { useEffect } from "react";
 import { createRoot } from "react-dom/client";
+import { useTranslation as useReactI18next } from "react-i18next";
+import "../config/i18n"; // Initialize i18n
 import { useTranslation } from "../hooks/useTranslation";
-import { I18nProvider, useI18n } from "../i18n/I18nContext";
 import "../index.css";
 import { parseTranslationContent } from "../utils/textParser";
 import { DictionaryRenderer } from "./DictionaryRenderer";
 
 function DictionaryPopup() {
   const { result, translateText, setResult } = useTranslation();
-  const { messages } = useI18n();
+  const { t } = useReactI18next();
 
   useEffect(() => {
     // Listen for messages from content script
@@ -65,7 +66,7 @@ function DictionaryPopup() {
             <div className="flex items-center justify-center py-12">
               <div className="h-6 w-6 animate-spin rounded-full border-b-2 border-blue-500"></div>
               <span className="ml-2 text-sm text-gray-500">
-                {messages.loading}
+                {t("common:loading")}
               </span>
             </div>
           )}
@@ -85,13 +86,13 @@ function DictionaryPopup() {
             !result.translation &&
             result.text && (
               <p className="py-8 text-center text-sm text-gray-400">
-                {messages.noTranslationAvailable}
+                {t("common:noTranslationAvailable")}
               </p>
             )}
 
           {!result.text && (
             <p className="py-8 text-center text-sm text-gray-400">
-              {messages.selectTextToTranslate}
+              {t("common:selectTextToTranslate")}
             </p>
           )}
         </div>
@@ -104,9 +105,5 @@ function DictionaryPopup() {
 const container = document.getElementById("root");
 if (container) {
   const root = createRoot(container);
-  root.render(
-    <I18nProvider>
-      <DictionaryPopup />
-    </I18nProvider>,
-  );
+  root.render(<DictionaryPopup />);
 }
