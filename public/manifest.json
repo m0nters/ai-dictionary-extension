@@ -1,8 +1,14 @@
 {
   "manifest_version": 3,
-  "name": "Từ điển AI",
-  "description": "Tra từ nhanh chóng với AI. Ưu việt hơn so từ điển truyền thống hay Google Translate khi có thể dịch từ, cụm từ hay cả câu với tiên đoán ngữ nghĩa chính xác. Từ điển được trình bày chuyên nghiệp theo tiêu chuẩn với phiên âm, định nghĩa, biến ngôi và các ví dụ minh họa.",
+  "name": "AI Dictionary",
+  "description": "Look up words quickly with AI. Better than traditional dictionaries or Google Translate when it can translate words, phrases or whole sentences with accurate semantic predictions. The dictionary is professionally presented according to standards with transcriptions, definitions, conjugations and illustrative examples.",
   "version": "1.0.0",
+  "icons": {
+    "16": "icons/icon16.png",
+    "32": "icons/icon32.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
   "background": {
     "service_worker": "background.js"
   },

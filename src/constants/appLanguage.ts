@@ -15,4 +15,4 @@ export const APP_LANGUAGES: AppLanguage[] = [
   { code: "de", name: "German", nativeName: "Deutsch" },
 ];
 
-export const DEFAULT_APP_LANGUAGE = "vi";
+export const DEFAULT_APP_LANGUAGE = "en";
