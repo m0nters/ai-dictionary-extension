@@ -9,7 +9,7 @@ import {
 import { useEffect, useState } from "react";
 import { DropdownMenu } from "./components/DropdownMenu";
 import { ToggleSwitch } from "./components/ToggleSwitch";
-import { TRANSLATED_LANGUAGES } from "./constants/translatedLanguage";
+import { LANGUAGE_IN_ENGLISH_NAME } from "./constants/languageMapping";
 import { I18nProvider, useI18n } from "./i18n/I18nContext";
 
 function AppContent() {
@@ -168,7 +168,7 @@ function AppContent() {
 
             <DropdownMenu
               value={targetLanguage}
-              options={TRANSLATED_LANGUAGES.map((lang) => ({
+              options={LANGUAGE_IN_ENGLISH_NAME.map((lang) => ({
                 value: lang.code,
                 label:
                   messages.languages[
