@@ -32,7 +32,7 @@ npm run build
 1. **Select text** on any webpage
 2. **Click the "dictionary" button** that appears above the selected text
 3. **View the translation** in the popup window
-4. **Change target language** using the dropdown in the popup header
+4. **Change translated language** using the dropdown in the popup header
 
 ## Supported Languages
 
@@ -57,3 +57,9 @@ npm run dev
 # Build for production
 npm run build
 ```
+
+## Some drawbacks of the app
+
+- The AI model takes a while to load responses. We could switch to a lighter model to speed things up, but this might lead to less accurate results in some cases.
+- Since the output is AI-generated, each response is unique, so the results aren’t consistent every time.
+- Generating responses uses tokens, which means if the app goes into production, it won’t—and shouldn’t—be free. The reality is, users will often seek out free alternatives, so the business model for this kind of app isn’t guaranteed to succeed.

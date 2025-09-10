@@ -1,5 +1,4 @@
 import { createElement } from "react";
-import { UNKNOWN_SOURCE_LANGUAGE } from "../constants/sourceLanguages";
 import {
   ParsedTranslation,
   PhraseTranslation,
@@ -27,7 +26,7 @@ export const renderTextWithBold = (text: string) => {
 export const isSingleWordTranslation = (
   translation: ParsedTranslation,
 ): translation is SingleWordTranslation => {
-  return "word" in translation && "meanings" in translation;
+  return "word" in translation;
 };
 
 /**
@@ -36,11 +35,7 @@ export const isSingleWordTranslation = (
 export const isPhraseTranslation = (
   translation: ParsedTranslation,
 ): translation is PhraseTranslation => {
-  return (
-    "text" in translation &&
-    "translation" in translation &&
-    !("word" in translation)
-  );
+  return "text" in translation;
 };
 
 /**
@@ -65,7 +60,7 @@ export const parseTranslationContent = (content: string): ParsedTranslation => {
 
     // Use the AI-provided source language directly, with fallback if missing
     if (!parsed.source_language) {
-      parsed.source_language = UNKNOWN_SOURCE_LANGUAGE;
+      parsed.source_language = "Unknown";
     }
 
     // Validate the structure
@@ -86,7 +81,7 @@ export const parseTranslationContent = (content: string): ParsedTranslation => {
     return {
       text: content.substring(0, 100) + (content.length > 100 ? "..." : ""),
       translation: content,
-      source_language: UNKNOWN_SOURCE_LANGUAGE,
+      source_language: "Unknown",
     } as PhraseTranslation;
   }
 };

@@ -16,16 +16,19 @@ import { AVAILABLE_LANGUAGES } from "./constants/availableLanguages";
 
 function App() {
   const { t, i18n } = useTranslation();
-  const [targetLanguage, setTargetLanguage] =
+  const [translatedLanguage, setTranslatedLanguage] =
     useState<string>(DEFAULT_APP_LANGUAGE);
   const [saved, setSaved] = useState(false);
   const [extensionEnabled, setExtensionEnabled] = useState(true);
 
   useEffect(() => {
     // Load saved settings
-    chrome.storage.sync.get(["targetLanguage", "appLanguage"], (data) => {
-      if (data.targetLanguage && data.targetLanguage !== DEFAULT_APP_LANGUAGE) {
-        setTargetLanguage(data.targetLanguage);
+    chrome.storage.sync.get(["translatedLanguage", "appLanguage"], (data) => {
+      if (
+        data.translatedLanguage &&
+        data.translatedLanguage !== DEFAULT_APP_LANGUAGE
+      ) {
+        setTranslatedLanguage(data.translatedLanguage);
       }
 
       if (data.appLanguage && data.appLanguage !== i18n.language) {
@@ -35,9 +38,9 @@ function App() {
   }, []);
 
   const handleChangeLanguage = (value: string) => {
-    setTargetLanguage(value);
+    setTranslatedLanguage(value);
 
-    chrome.storage.sync.set({ targetLanguage: value }, () => {
+    chrome.storage.sync.set({ translatedLanguage: value }, () => {
       setSaved(true);
       setTimeout(() => setSaved(false), 5000);
     });
@@ -171,7 +174,7 @@ function App() {
             </label>
 
             <DropdownMenu
-              value={targetLanguage}
+              value={translatedLanguage}
               options={AVAILABLE_LANGUAGES.map((lang) => ({
                 value: lang.code,
                 label: t(`languages:${lang.code}`),
