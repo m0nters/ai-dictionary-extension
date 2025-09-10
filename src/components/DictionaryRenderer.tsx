@@ -15,6 +15,25 @@ import {
 
 interface DictionaryRendererProps {
   translation: ParsedTranslation;
+  targetLanguage?: string;
+}
+
+/**
+ * Get synonyms label in the target language
+ */
+function getSynonymsLabel(languageCode: string): string {
+  const synonymsLabels: Record<string, string> = {
+    en: "Synonyms",
+    vi: "Từ đồng nghĩa",
+    zh: "同义词",
+    fr: "Synonymes",
+    es: "Sinónimos",
+    de: "Synonyme",
+    ja: "類義語",
+    ko: "동의어",
+  };
+
+  return synonymsLabels[languageCode] || synonymsLabels.en;
 }
 
 /**
@@ -87,10 +106,14 @@ function PronunciationRenderer({
 function MeaningEntryRenderer({
   entry,
   word,
+  targetLanguage,
 }: {
   entry: MeaningEntry;
   word: string;
+  targetLanguage?: string;
 }) {
+  const { t } = useTranslation();
+
   return (
     <div className="mb-4">
       {/* Word and Pronunciation Header (original style) */}
@@ -132,6 +155,29 @@ function MeaningEntryRenderer({
               )}
             </div>
           ))}
+        </div>
+      )}
+
+      {/* Synonyms Section */}
+      {entry.synonyms && entry.synonyms.length > 0 && (
+        <div className="mb-3">
+          <div className="mb-2 flex items-center space-x-2">
+            <span className="rounded-full bg-purple-50 px-2 py-1 text-xs font-medium text-purple-600">
+              {targetLanguage
+                ? getSynonymsLabel(targetLanguage)
+                : t("popup:synonyms")}
+            </span>
+          </div>
+          <div className="ml-2 flex flex-wrap gap-1">
+            {entry.synonyms.map((synonym, index) => (
+              <span
+                key={index}
+                className="inline-block rounded-full bg-gray-100 px-2 py-1 text-xs text-gray-700 transition-colors duration-200 hover:bg-gray-200"
+              >
+                {synonym}
+              </span>
+            ))}
+          </div>
         </div>
       )}
     </div>
@@ -176,7 +222,10 @@ function VerbFormsRenderer({ verbForms }: { verbForms: string[] }) {
 /**
  * Main dictionary renderer component
  */
-export function DictionaryRenderer({ translation }: DictionaryRendererProps) {
+export function DictionaryRenderer({
+  translation,
+  targetLanguage,
+}: DictionaryRendererProps) {
   // Handle phrase translations (original style)
   if (isPhraseTranslation(translation)) {
     const phraseTranslation = translation as PhraseTranslation;
@@ -217,6 +266,7 @@ export function DictionaryRenderer({ translation }: DictionaryRendererProps) {
               key={index}
               entry={meaning}
               word={singleWordTranslation.word}
+              targetLanguage={targetLanguage}
             />
           ))}
         </div>

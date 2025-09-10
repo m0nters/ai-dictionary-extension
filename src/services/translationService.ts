@@ -29,15 +29,18 @@ export const generateTranslationPrompt = (
   - For ambiguous text (e.g., Chinese vs Japanese characters), make your best determination and specify it clearly.
   - Example: If detecting English and app language is Vietnamese, use "Tiếng Anh". If detecting Chinese and app language is English, use "Chinese".
 
-- **Single word input:**
+- **Single word/Collocation/Idiom input:**
   - For languages with pronunciation variants (e.g., English UK/US), provide IPA for both. For others (e.g., Chinese), use a single pronunciation (e.g., Pinyin).
-  - Translate the meaning into the translated language, specifying its part of speech (in the translated language, e.g., "danh từ" for noun in Vietnamese, "名词" for noun in Chinese).
+  - Translate the meaning into the translated language, specifying its part of speech (in the translated language too, e.g., "danh từ" for noun in Vietnamese, "名词" for noun in Chinese, "idiome" for idiom in French,...).
   - For verbs in any conjugated form (e.g., if the text is "spelled" in English), translate the infinitive form (e.g., still translate the word "spell") and list key conjugations (e.g., infinitive, past tense, past participle for English; equivalent forms for other languages where applicable, like preterite and participle in Spanish).
-  - Include 2-3 example sentences as objects with "text" (in source language) and "translation" (in translated language). For non-Latin script languages (Chinese, Japanese, Arabic, etc.), also include "pronunciation" field with romanization (pinyin, romaji, etc.).
+  - Include at least 2-3 example sentences as objects with "text" (in source language) and "translation" (in translated language). For non-Latin script languages (Chinese, Japanese, Arabic, etc.), also include "pronunciation" field with romanization (pinyin, romaji, etc.).
+  - **Synonyms:** For each meaning entry, include a "synonyms" field containing an array of words, phrases, collocations, or phrasal verbs that have similar meanings in the source language. Generate comprehensive synonyms when available (aim for 3-6 synonyms per meaning if they exist). If no synonyms exist for a particular meaning, use an empty array []. Examples: for "dash" meaning "run quickly" → ["rush", "race", "sprint", "hurry", "bolt"]; for "dash" meaning "strike forcefully" → ["hurl", "smash", "crash", "slam", "fling"].
   - If that word is a verb and has many conjugations, give enough examples to illustrate the different forms.
   - If the word has multiple meanings or pronunciations, list each separately in the same format.
   - If the source and translated languages are the same, provide the dictionary entry and example sentences in that language without translations.
+  - NOTE: distinguish between collocations (e.g., "make a decision") and idioms (e.g., "kick the bucket") carefully, they are not the same.
 - **Phrase or sentence input (more than two words):**
+  - NOTE: "phrase" or a "sentence" in this context should not be an idiom or collocations since they are handled using the rules above.
   - Provide only the translated language translation.
 - **Vulgar/Explicit content (words or sentences):**
   - Translate accurately and completely, including all profanity, slang, and explicit language without censorship or modification.
@@ -61,6 +64,7 @@ export const generateTranslationPrompt = (
       },
       \"part_of_speech\": \"động từ\",
       \"translation\": \"chạy\",
+      \"synonyms\": [\"sprint\", \"dash\", \"jog\", \"race\", \"hurry\"],
       \"examples\": [
         {
           \"text\": \"He **runs** every morning.\",
@@ -79,6 +83,7 @@ export const generateTranslationPrompt = (
       },
       \"part_of_speech\": \"danh từ\",
       \"translation\": \"sự chạy, cuộc chạy\",
+      \"synonyms\": [\"jog\", \"sprint\", \"dash\"],
       \"examples\": [
         {
           \"text\": \"The marathon was a tough **run**.\",
@@ -105,6 +110,7 @@ export const generateTranslationPrompt = (
       \"pronunciation\": \"shū\",
       \"part_of_speech\": \"danh từ\",
       \"translation\": \"sách\",
+      \"synonyms\": [\"书籍\", \"图书\", \"读物\"],
       \"examples\": [
         {
           \"text\": \"我买了一本新**书**。\",
@@ -136,6 +142,7 @@ export const generateTranslationPrompt = (
       },
       \"part_of_speech\": \"noun\",
       \"definition\": \"A supply of money, materials, staff, or other assets; a source of help or information.\",
+      \"synonyms\": [\"asset\", \"material\", \"supply\", \"source\", \"reserve\", \"stockpile\"],
       \"examples\": [
         {
           \"text\": \"The country is rich in natural **resources** like oil and gas.\"

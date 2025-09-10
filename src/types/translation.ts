@@ -21,6 +21,7 @@ export interface MeaningEntry {
   part_of_speech: string;
   translation?: string; // For translations to other languages
   definition?: string; // For same-language definitions
+  synonyms?: string[]; // Array of synonyms in the source language
   examples: ExampleSentence[];
 }
 

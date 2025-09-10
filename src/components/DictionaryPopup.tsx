@@ -9,7 +9,8 @@ import { parseTranslationContent } from "../utils/textParser";
 import { DictionaryRenderer } from "./DictionaryRenderer";
 
 function DictionaryPopup() {
-  const { result, translateText, setResult } = useTranslation();
+  const { result, translateText, setResult, translatedLanguage } =
+    useTranslation();
   const { t } = useReactI18next();
 
   useEffect(() => {
@@ -96,7 +97,10 @@ function DictionaryPopup() {
           )}
 
           {!result.loading && !result.error && parsedTranslation && (
-            <DictionaryRenderer translation={parsedTranslation} />
+            <DictionaryRenderer
+              translation={parsedTranslation}
+              targetLanguage={translatedLanguage}
+            />
           )}
 
           {!result.loading &&
