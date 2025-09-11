@@ -23,7 +23,7 @@ async function getCurrentAppLanguage(): Promise<string> {
         chrome.storage &&
         chrome.storage.sync
       ) {
-        chrome.storage.sync.get(["appLanguage"], (result) => {
+        chrome.storage.sync.get(["appLangCode"], (result) => {
           if (chrome.runtime.lastError) {
             reject(chrome.runtime.lastError);
           } else {
@@ -31,11 +31,11 @@ async function getCurrentAppLanguage(): Promise<string> {
           }
         });
       } else {
-        resolve({ appLanguage: "en" });
+        resolve({ appLangCode: "en" });
       }
     });
 
-    return data.appLanguage || "en";
+    return data.appLangCode || "en";
   } catch (error) {
     console.error("Error getting current app language:", error);
     return "en"; // Fallback language

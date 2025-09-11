@@ -12,13 +12,13 @@ export const useTranslation = () => {
     translation: "",
     loading: false,
   });
-  const [translatedLanguage, setTranslatedLanguage] = useState("vi");
+  const [translatedLangCode, setTranslatedLangCode] = useState("vi");
 
   // Load saved translated language from Chrome storage
   useEffect(() => {
-    chrome.storage.sync.get(["translatedLanguage"], (data) => {
-      if (data.translatedLanguage) {
-        setTranslatedLanguage(data.translatedLanguage);
+    chrome.storage.sync.get(["translatedLangCode"], (data) => {
+      if (data.translatedLangCode) {
+        setTranslatedLangCode(data.translatedLangCode);
       }
     });
   }, []);
@@ -46,20 +46,19 @@ export const useTranslation = () => {
   const translateText = async (text: string) => {
     // Get the latest translated language and app language from storage to avoid closure issues
     const storageData = await new Promise<{
-      translatedLanguage?: string;
-      appLanguage?: string;
+      translatedLangCode?: string;
     }>((resolve) => {
-      chrome.storage.sync.get(["translatedLanguage", "appLanguage"], (data) => {
+      chrome.storage.sync.get(["translatedLangCode"], (data) => {
         resolve(data);
       });
     });
 
-    const currentTranslatedLanguage = storageData.translatedLanguage || "vi";
-    const currentAppLanguage = storageData.appLanguage || "en";
+    const currentTranslatedLanguageCode =
+      storageData.translatedLangCode || "vi";
 
     // Update state if it's different
-    if (currentTranslatedLanguage !== translatedLanguage) {
-      setTranslatedLanguage(currentTranslatedLanguage);
+    if (currentTranslatedLanguageCode !== translatedLangCode) {
+      setTranslatedLangCode(currentTranslatedLanguageCode);
     }
 
     setResult((prev) => ({
@@ -73,8 +72,7 @@ export const useTranslation = () => {
     try {
       const translation = await translateWithGemini(
         text,
-        currentTranslatedLanguage,
-        currentAppLanguage,
+        currentTranslatedLanguageCode,
       );
 
       setResult((prev) => ({
@@ -99,7 +97,7 @@ export const useTranslation = () => {
 
   return {
     result,
-    translatedLanguage,
+    translatedLangCode,
     translateText,
     setResult,
   };

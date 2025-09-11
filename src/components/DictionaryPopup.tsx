@@ -2,14 +2,14 @@ import { X } from "lucide-react";
 import { useEffect } from "react";
 import { createRoot } from "react-dom/client";
 import { useTranslation as useReactI18next } from "react-i18next";
-import "../config/i18n"; // Initialize i18n
+import { changeLanguage } from "../config/i18n"; // Initialize i18n
 import { useTranslation } from "../hooks/useTranslation";
 import "../index.css";
 import { parseTranslationContent } from "../utils/textParser";
 import { DictionaryRenderer } from "./DictionaryRenderer";
 
 function DictionaryPopup() {
-  const { result, translateText, setResult, translatedLanguage } =
+  const { result, translateText, setResult, translatedLangCode } =
     useTranslation();
   const { t } = useReactI18next();
 
@@ -19,18 +19,16 @@ function DictionaryPopup() {
       if (event.data.type === "TRANSLATE_TEXT") {
         // If app language is provided, change i18n language first
         if (event.data.appLanguage) {
-          import("../config/i18n").then(({ changeLanguage }) => {
-            changeLanguage(event.data.appLanguage).then(() => {
-              // After language change, set the translation state
-              setResult((prev) => ({
-                ...prev,
-                text: event.data.text,
-                translation: "",
-                loading: true,
-                error: undefined,
-              }));
-              translateText(event.data.text);
-            });
+          changeLanguage(event.data.appLanguage).then(() => {
+            // After language change, set the translation state
+            setResult((prev) => ({
+              ...prev,
+              text: event.data.text,
+              translation: "",
+              loading: true,
+              error: undefined,
+            }));
+            translateText(event.data.text);
           });
         } else {
           // No app language provided, proceed normally
@@ -99,7 +97,7 @@ function DictionaryPopup() {
           {!result.loading && !result.error && parsedTranslation && (
             <DictionaryRenderer
               translation={parsedTranslation}
-              translatedLanguage={translatedLanguage}
+              translatedLangCode={translatedLangCode}
             />
           )}
 

@@ -17,17 +17,15 @@ export const getLanguageEnglishName = (code: string): string => {
  */
 export const generateTranslationPrompt = (
   text: string,
-  translatedLanguage: string,
-  appLanguage: string = "en",
+  translatedLangCode: string,
 ): string => {
-  const translatedLangName = getLanguageEnglishName(translatedLanguage);
-  const appLangName = getLanguageEnglishName(appLanguage);
+  const translatedLangName = getLanguageEnglishName(translatedLangCode);
 
   return `You are a multilingual dictionary and translation tool. Translate the user's text into ${translatedLangName} (translated language), using the following rules and format:
 
 - **Source Language Detection:**
   - Always detect and specify the source language of the input text.
-  - Include the source_language field as a string with the name of the detected source language, written in the user's app language (e.g., if the app language is English, use "Chinese" for Chinese input; if the app language is Vietnamese, use "Tiếng Trung" for Chinese input). And the current app language is ${appLangName}.
+  - Include the source_language field as a string which is that language code (e.g. English is "en", Vietnamese is "vi", Chinese is "zh", Japanese is "ja",...).
   - For ambiguous text (e.g., Chinese vs Japanese characters), make your best determination and specify it clearly.
   - Example: If detecting English and app language is Vietnamese, use "Tiếng Anh". If detecting Chinese and app language is English, use "Chinese".
 
@@ -50,6 +48,7 @@ export const generateTranslationPrompt = (
   - Do not add warnings, disclaimers, or euphemisms - provide direct, faithful translations.
 - **Gibberish or non-language input:**
   - Return "No translation available." but in translated language. (e.g., "Không có bản dịch" in Vietnamese, "没有可用的翻译" in Chinese)
+  - \`source_language\` must be "unknown"
 - **Output Format:** Use JSON format with the structure following these examples below:
   - e.g., English "ran" to Vietnamese, app language is French:
 
@@ -57,7 +56,7 @@ export const generateTranslationPrompt = (
 {
   \"word\": \"run\",
   \"verb_forms\": [\"run\", \"ran\", \"run\"],
-  \"source_language\": \"Englais\",
+  \"source_language\": \"en\",
   \"meanings\": [
     {
       \"pronunciation\": {
@@ -106,7 +105,7 @@ export const generateTranslationPrompt = (
 \`\`\`json
 {
   \"word\": \"书\",
-  \"source_language\": \"Chinese\",
+  \"source_language\": \"zh\",
   \"meanings\": [
     {
       \"pronunciation\": \"shū\",
@@ -135,7 +134,7 @@ export const generateTranslationPrompt = (
 \`\`\`json
 {
   \"word\": \"resource\",
-  \"source_language\": \"Tiếng Anh\",
+  \"source_language\": \"en\",
   \"meanings\": [
     {
       \"pronunciation\": {
@@ -163,7 +162,7 @@ export const generateTranslationPrompt = (
  \`\`\`json
 {
   \"text\": \"Good morning!\",
-  \"source_language\": \"Englisch\",
+  \"source_language\": \"en\",
   \"translation\": \"Chào buổi sáng!\"
 }
  \`\`\`
@@ -173,7 +172,7 @@ export const generateTranslationPrompt = (
 \`\`\`json
 {
   \"text\": \"asdkjhasd\",
-  \"source_language\": \"Unknown\",
+  \"source_language\": \"unknown\",
   \"translation\": \"Không có bản dịch.\"
 }
 \`\`\`
@@ -188,14 +187,9 @@ Finally, the text for translation is: "${text}"`;
  */
 export const translateWithGemini = async (
   text: string,
-  translatedLanguage: string,
-  appLanguage: string = "en",
+  translatedLangCode: string,
 ): Promise<string> => {
-  const prompt = generateTranslationPrompt(
-    text,
-    translatedLanguage,
-    appLanguage,
-  );
+  const prompt = generateTranslationPrompt(text, translatedLangCode);
 
   const response = await fetch(
     `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent`,

@@ -15,7 +15,7 @@ import {
 
 interface DictionaryRendererProps {
   translation: ParsedTranslation;
-  translatedLanguage?: string;
+  translatedLangCode?: string;
 }
 
 /**
@@ -60,7 +60,7 @@ function SourceLanguageRenderer({
           {t("popup:detectedLanguage")}
         </div>
         <div className="text-sm font-medium text-blue-600">
-          {sourceLanguage}
+          {t(`languages:${sourceLanguage}`)}
         </div>
       </div>
     </div>
@@ -111,14 +111,12 @@ function PronunciationRenderer({
 function MeaningEntryRenderer({
   entry,
   word,
-  translatedLanguage,
+  translatedLangCode,
 }: {
   entry: MeaningEntry;
   word: string;
-  translatedLanguage?: string;
+  translatedLangCode?: string;
 }) {
-  const { t } = useTranslation();
-
   return (
     <div className="mb-4">
       {/* Word and Pronunciation Header (original style) */}
@@ -168,9 +166,9 @@ function MeaningEntryRenderer({
         <div className="mb-3">
           <div className="mb-2 flex items-center space-x-2">
             <span className="rounded-full bg-purple-50 px-2 py-1 text-xs font-medium text-purple-600">
-              {translatedLanguage
-                ? getSynonymsLabel(translatedLanguage)
-                : t("popup:synonyms")}
+              {translatedLangCode
+                ? getSynonymsLabel(translatedLangCode)
+                : getSynonymsLabel("en")}
             </span>
           </div>
           <div className="ml-2 flex flex-wrap gap-1">
@@ -229,7 +227,7 @@ function VerbFormsRenderer({ verbForms }: { verbForms: string[] }) {
  */
 export function DictionaryRenderer({
   translation,
-  translatedLanguage,
+  translatedLangCode,
 }: DictionaryRendererProps) {
   // Handle phrase translations (original style)
   if (isPhraseTranslation(translation)) {
@@ -271,7 +269,7 @@ export function DictionaryRenderer({
               key={index}
               entry={meaning}
               word={singleWordTranslation.word}
-              translatedLanguage={translatedLanguage}
+              translatedLangCode={translatedLangCode}
             />
           ))}
         </div>
