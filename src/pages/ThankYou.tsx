@@ -1,21 +1,30 @@
 import { SiFacebook, SiGithub } from "@icons-pack/react-simple-icons";
-import { CheckCircle, Globe, Languages, Shield, Zap } from "lucide-react";
+import { CheckCircle, Globe, Info, Languages, Shield, Zap } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { DropdownMenu } from "../components/DropdownMenu";
 import { changeLanguage } from "../config/i18n";
-import { APP_LANGUAGES } from "../constants/appLanguage";
+import { AVAILABLE_LANGUAGES } from "../constants/availableLanguages";
 
 function ThankYou() {
+  const [selectedLanguage, setSelectedLanguage] = useState<string>("en");
   const { t, i18n } = useTranslation();
   const [isVisible, setIsVisible] = useState(false);
 
   const handleLanguageChange = async (value: string) => {
+    if (value === selectedLanguage) return;
+    setSelectedLanguage(value);
+    setIsVisible(false);
+    await new Promise((r) => setTimeout(r, 800));
     await changeLanguage(value);
+    // Trigger the fade-in animation after language change
+    setTimeout(() => {
+      setIsVisible(true);
+    }, 0);
   };
 
   // Create language options for dropdown
-  const languageOptions = APP_LANGUAGES.map((lang) => ({
+  const languageOptions = AVAILABLE_LANGUAGES.map((lang) => ({
     value: lang.code,
     label: lang.nativeName,
   }));
@@ -134,8 +143,8 @@ function ThankYou() {
         {/* How to use */}
         <div className="mb-8 rounded-2xl border border-gray-200 bg-white p-6 shadow-md">
           <div className="flex items-start gap-4">
-            <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-indigo-100 text-sm font-bold text-indigo-600">
-              !
+            <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-indigo-100 text-indigo-600">
+              <Info className="h-4 w-4" />
             </div>
             <div>
               <h3 className="mb-2 text-lg font-semibold text-gray-800">

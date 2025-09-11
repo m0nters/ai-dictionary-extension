@@ -6,8 +6,10 @@ const API_KEY = "AIzaSyAWVSbmZSU-gR2TqJzifTfQL0AJDACPiFk";
 /**
  * Gets the language name from language code
  */
-export const getLanguageName = (code: string): string => {
-  return AVAILABLE_LANGUAGES.find((lang) => lang.code === code)?.name || code;
+export const getLanguageEnglishName = (code: string): string => {
+  return (
+    AVAILABLE_LANGUAGES.find((lang) => lang.code === code)?.englishName || code
+  );
 };
 
 /**
@@ -18,8 +20,8 @@ export const generateTranslationPrompt = (
   translatedLanguage: string,
   appLanguage: string = "en",
 ): string => {
-  const translatedLangName = getLanguageName(translatedLanguage);
-  const appLangName = getLanguageName(appLanguage);
+  const translatedLangName = getLanguageEnglishName(translatedLanguage);
+  const appLangName = getLanguageEnglishName(appLanguage);
 
   return `You are a multilingual dictionary and translation tool. Translate the user's text into ${translatedLangName} (translated language), using the following rules and format:
 

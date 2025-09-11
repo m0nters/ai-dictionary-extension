@@ -15,25 +15,30 @@ import {
 
 interface DictionaryRendererProps {
   translation: ParsedTranslation;
-  targetLanguage?: string;
+  translatedLanguage?: string;
 }
 
 /**
- * Get synonyms label in the target language
+ * Get synonyms label in the translated language
  */
-function getSynonymsLabel(languageCode: string): string {
-  const synonymsLabels: Record<string, string> = {
-    en: "Synonyms",
-    vi: "Từ đồng nghĩa",
-    zh: "同义词",
-    fr: "Synonymes",
-    es: "Sinónimos",
-    de: "Synonyme",
-    ja: "類義語",
-    ko: "동의어",
-  };
 
-  return synonymsLabels[languageCode] || synonymsLabels.en;
+// in case for further questions: Why don't we put in .json files and use i18n?
+// ANSWER: this label needs to be matched with the TRANSLATED LANGUAGE, while
+// using i18n means it needs to be matched with the APP LANGUAGE
+
+const SYNONYMS: Record<string, string> = {
+  en: "Synonyms",
+  vi: "Từ đồng nghĩa",
+  zh: "同义词",
+  fr: "Synonymes",
+  es: "Sinónimos",
+  de: "Synonyme",
+  ja: "類義語",
+  ko: "동의어",
+};
+
+function getSynonymsLabel(languageCode: string): string {
+  return SYNONYMS[languageCode] || SYNONYMS.en;
 }
 
 /**
@@ -106,11 +111,11 @@ function PronunciationRenderer({
 function MeaningEntryRenderer({
   entry,
   word,
-  targetLanguage,
+  translatedLanguage,
 }: {
   entry: MeaningEntry;
   word: string;
-  targetLanguage?: string;
+  translatedLanguage?: string;
 }) {
   const { t } = useTranslation();
 
@@ -163,8 +168,8 @@ function MeaningEntryRenderer({
         <div className="mb-3">
           <div className="mb-2 flex items-center space-x-2">
             <span className="rounded-full bg-purple-50 px-2 py-1 text-xs font-medium text-purple-600">
-              {targetLanguage
-                ? getSynonymsLabel(targetLanguage)
+              {translatedLanguage
+                ? getSynonymsLabel(translatedLanguage)
                 : t("popup:synonyms")}
             </span>
           </div>
@@ -224,7 +229,7 @@ function VerbFormsRenderer({ verbForms }: { verbForms: string[] }) {
  */
 export function DictionaryRenderer({
   translation,
-  targetLanguage,
+  translatedLanguage,
 }: DictionaryRendererProps) {
   // Handle phrase translations (original style)
   if (isPhraseTranslation(translation)) {
@@ -266,7 +271,7 @@ export function DictionaryRenderer({
               key={index}
               entry={meaning}
               word={singleWordTranslation.word}
-              targetLanguage={targetLanguage}
+              translatedLanguage={translatedLanguage}
             />
           ))}
         </div>

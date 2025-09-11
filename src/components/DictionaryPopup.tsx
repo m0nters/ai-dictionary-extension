@@ -99,7 +99,7 @@ function DictionaryPopup() {
           {!result.loading && !result.error && parsedTranslation && (
             <DictionaryRenderer
               translation={parsedTranslation}
-              targetLanguage={translatedLanguage}
+              translatedLanguage={translatedLanguage}
             />
           )}
 

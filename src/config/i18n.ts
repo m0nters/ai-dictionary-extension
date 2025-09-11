@@ -1,8 +1,10 @@
 import i18n from "i18next";
 import Backend from "i18next-http-backend";
 import { initReactI18next } from "react-i18next";
-import { DEFAULT_APP_LANGUAGE } from "../constants/appLanguage";
-import { AVAILABLE_LANGUAGES } from "../constants/availableLanguages";
+import {
+  AVAILABLE_LANGUAGES,
+  DEFAULT_LANGUAGE_CODE,
+} from "../constants/availableLanguages";
 
 // Define namespaces
 export const NAMESPACES = ["common", "popup", "languages", "thankYou"];
@@ -12,7 +14,7 @@ i18n
   .use(Backend)
   .use(initReactI18next)
   .init({
-    lng: DEFAULT_APP_LANGUAGE,
+    lng: DEFAULT_LANGUAGE_CODE,
     fallbackLng: "en",
 
     // Namespaces configuration
@@ -37,7 +39,7 @@ i18n
 
     // Chrome extension specific setup
     load: "currentOnly", // Only load current language to reduce bundle size
-    preload: [DEFAULT_APP_LANGUAGE], // Preload default language
+    preload: [DEFAULT_LANGUAGE_CODE], // Preload default language
 
     // Only allow supported languages
     supportedLngs: AVAILABLE_LANGUAGES.map((lang) => lang.code),

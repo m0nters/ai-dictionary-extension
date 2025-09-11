@@ -11,13 +11,16 @@ import { useTranslation } from "react-i18next";
 import { DropdownMenu } from "./components/DropdownMenu";
 import { ToggleSwitch } from "./components/ToggleSwitch";
 import { changeLanguage } from "./config/i18n";
-import { APP_LANGUAGES, DEFAULT_APP_LANGUAGE } from "./constants/appLanguage";
-import { AVAILABLE_LANGUAGES } from "./constants/availableLanguages";
+import {
+  AVAILABLE_LANGUAGES,
+  DEFAULT_LANGUAGE_CODE,
+} from "./constants/availableLanguages";
 
 function App() {
   const { t, i18n } = useTranslation();
-  const [translatedLanguage, setTranslatedLanguage] =
-    useState<string>(DEFAULT_APP_LANGUAGE);
+  const [translatedLanguage, setTranslatedLanguage] = useState<string>(
+    DEFAULT_LANGUAGE_CODE,
+  );
   const [saved, setSaved] = useState(false);
   const [extensionEnabled, setExtensionEnabled] = useState(true);
 
@@ -26,7 +29,7 @@ function App() {
     chrome.storage.sync.get(["translatedLanguage", "appLanguage"], (data) => {
       if (
         data.translatedLanguage &&
-        data.translatedLanguage !== DEFAULT_APP_LANGUAGE
+        data.translatedLanguage !== DEFAULT_LANGUAGE_CODE
       ) {
         setTranslatedLanguage(data.translatedLanguage);
       }
@@ -37,7 +40,8 @@ function App() {
     });
   }, []);
 
-  const handleChangeLanguage = (value: string) => {
+  const handleChangeTranslatedLanguage = (value: string) => {
+    if (value === translatedLanguage) return;
     setTranslatedLanguage(value);
 
     chrome.storage.sync.set({ translatedLanguage: value }, () => {
@@ -46,7 +50,8 @@ function App() {
     });
   };
 
-  const handleAppLanguageChange = async (value: string) => {
+  const handleChangeAppLanguage = async (value: string) => {
+    if (value === i18n.language) return;
     await changeLanguage(value);
     setSaved(true);
     setTimeout(() => setSaved(false), 5000);
@@ -149,11 +154,11 @@ function App() {
 
             <DropdownMenu
               value={i18n.language}
-              options={APP_LANGUAGES.map((lang) => ({
+              options={AVAILABLE_LANGUAGES.map((lang) => ({
                 value: lang.code,
                 label: lang.nativeName,
               }))}
-              onChange={handleAppLanguageChange}
+              onChange={handleChangeAppLanguage}
               focusColor="purple"
             />
           </div>
@@ -179,7 +184,7 @@ function App() {
                 value: lang.code,
                 label: t(`languages:${lang.code}`),
               }))}
-              onChange={handleChangeLanguage}
+              onChange={handleChangeTranslatedLanguage}
               focusColor="indigo"
             />
           </div>

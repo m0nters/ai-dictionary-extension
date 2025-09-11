@@ -1,8 +1,10 @@
 // We have to define translations in here like this instead of in i18n `locales`
-// folder because content script has issues with ES module. Google sucks!
+// folder because content script has issues with ES module. There are some
+// workarounds with this but they are all unsafe.
+// Google sucks!
 // Reference: https://stackoverflow.com/questions/48104433/how-to-import-es6-modules-in-content-script-for-chrome-extension
 
-const TRANSLATIONS = {
+const DICTIONARY = {
   en: "dictionary",
   vi: "tra từ điển",
   zh: "词典",
@@ -12,35 +14,6 @@ const TRANSLATIONS = {
   es: "diccionario",
   de: "Wörterbuch",
 } as const;
-
-async function getDictionaryButtonText(): Promise<string> {
-  try {
-    const data = await new Promise<any>((resolve, reject) => {
-      if (
-        typeof chrome !== "undefined" &&
-        chrome.storage &&
-        chrome.storage.sync
-      ) {
-        chrome.storage.sync.get(["appLanguage"], (result) => {
-          if (chrome.runtime.lastError) {
-            reject(chrome.runtime.lastError);
-          } else {
-            resolve(result);
-          }
-        });
-      } else {
-        resolve({ appLanguage: "en" });
-      }
-    });
-
-    const currentLang = data.appLanguage || "en";
-    const translation =
-      TRANSLATIONS[currentLang as keyof typeof TRANSLATIONS] || TRANSLATIONS.en;
-    return translation;
-  } catch (error) {
-    return "dictionary"; // Fallback text
-  }
-}
 
 async function getCurrentAppLanguage(): Promise<string> {
   try {
@@ -64,7 +37,20 @@ async function getCurrentAppLanguage(): Promise<string> {
 
     return data.appLanguage || "en";
   } catch (error) {
+    console.error("Error getting current app language:", error);
     return "en"; // Fallback language
+  }
+}
+
+async function getDictionaryButtonText(): Promise<string> {
+  try {
+    const currentLang =
+      (await getCurrentAppLanguage()) as keyof typeof DICTIONARY;
+    const translation = DICTIONARY[currentLang];
+    return translation;
+  } catch (error) {
+    console.error("Error getting dictionary button text:", error);
+    return "dictionary"; // Fallback text
   }
 }
 
@@ -103,7 +89,7 @@ async function isExtensionEnabled(): Promise<boolean> {
   }
 }
 
-// Listen for extension toggle messages
+// Listen for extension toggle messages (from App.tsx)
 chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
   if (message.type === "EXTENSION_TOGGLE") {
     extensionEnabled = message.enabled;

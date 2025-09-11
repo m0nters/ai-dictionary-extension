@@ -3,27 +3,86 @@
 import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
+import { AVAILABLE_LANGUAGES } from "../src/constants/availableLanguages.ts";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const LOCALES_DIR = path.join(__dirname, "../public/locales");
 const REFERENCE_LANG = "en";
-const REQUIRED_FILES = [
-  "common.json",
-  "languages.json",
-  "popup.json",
-  "thankYou.json",
-];
+const referenceDir = path.join(LOCALES_DIR, REFERENCE_LANG);
+
+interface ValidationResult {
+  language: string;
+  valid: boolean;
+  missingFiles: string[];
+  missingKeys: Record<string, string[]>;
+  extraKeys: Record<string, string[]>;
+  errors: string[];
+}
+
+/**
+ * Get the English name for a language code
+ */
+function getLanguageName(langCode: string): string {
+  const language = AVAILABLE_LANGUAGES.find((lang) => lang.code === langCode);
+  return language ? language.englishName : langCode.toUpperCase();
+}
+
+/**
+ * Get all JSON files from the reference language directory (recursively)
+ */
+function getRequiredFiles(): string[] {
+  /**
+   * Recursively scan directory for JSON files
+   */
+  function scanDirectory(dir: string, relativePath: string = ""): string[] {
+    let files: string[] = [];
+
+    try {
+      const items = fs.readdirSync(dir);
+
+      for (const item of items) {
+        const fullPath = path.join(dir, item);
+        const relativeFilePath = relativePath
+          ? path.join(relativePath, item)
+          : item;
+        const stat = fs.statSync(fullPath);
+
+        if (stat.isDirectory()) {
+          // Recursively scan subdirectory
+          files = files.concat(scanDirectory(fullPath, relativeFilePath));
+        } else if (
+          stat.isFile() &&
+          path.extname(item).toLowerCase() === ".json"
+        ) {
+          // Add JSON file to the list
+          files.push(relativeFilePath);
+        }
+      }
+    } catch (error) {
+      console.error(`Error scanning directory ${dir}:`, error.message);
+    }
+
+    return files;
+  }
+
+  try {
+    return scanDirectory(referenceDir).sort();
+  } catch (error) {
+    console.error(
+      `Error reading reference directory (${REFERENCE_LANG}):`,
+      error.message,
+    );
+    return [];
+  }
+}
 
 /**
  * Recursively get all keys from an object, including nested keys
- * @param {object} obj - The object to extract keys from
- * @param {string} prefix - The current key prefix for nested objects
- * @returns {string[]} - Array of all keys (with dot notation for nested)
  */
-function getAllKeys(obj, prefix = "") {
-  let keys = [];
+function getAllKeys(obj: any, prefix: string = ""): string[] {
+  let keys: string[] = [];
 
   for (const [key, value] of Object.entries(obj)) {
     const fullKey = prefix ? `${prefix}.${key}` : key;
@@ -39,10 +98,8 @@ function getAllKeys(obj, prefix = "") {
 
 /**
  * Load and parse a JSON file
- * @param {string} filePath - Path to the JSON file
- * @returns {object|null} - Parsed JSON object or null if error
  */
-function loadJsonFile(filePath) {
+function loadJsonFile(filePath: string): any | null {
   try {
     const content = fs.readFileSync(filePath, "utf8");
     return JSON.parse(content);
@@ -53,9 +110,8 @@ function loadJsonFile(filePath) {
 
 /**
  * Get all available language codes from the locales directory
- * @returns {string[]} - Array of language codes
  */
-function getAvailableLanguages() {
+function getAvailableLanguages(): string[] {
   try {
     return fs
       .readdirSync(LOCALES_DIR)
@@ -72,12 +128,13 @@ function getAvailableLanguages() {
 
 /**
  * Validate a single language against the reference
- * @param {string} langCode - Language code to validate
- * @param {object} referenceStructure - Reference structure from English
- * @returns {object} - Validation results
  */
-function validateLanguage(langCode, referenceStructure) {
-  const results = {
+function validateLanguage(
+  langCode: string,
+  referenceStructure: Record<string, string[]>,
+  requiredFiles: string[],
+): ValidationResult {
+  const results: ValidationResult = {
     language: langCode,
     valid: true,
     missingFiles: [],
@@ -96,7 +153,7 @@ function validateLanguage(langCode, referenceStructure) {
   }
 
   // Check each required file
-  for (const fileName of REQUIRED_FILES) {
+  for (const fileName of requiredFiles) {
     const filePath = path.join(langDir, fileName);
 
     if (!fs.existsSync(filePath)) {
@@ -142,13 +199,26 @@ function validateLanguage(langCode, referenceStructure) {
 function validateLocales() {
   console.log("🌍 Validating locale files...\n");
 
+  // Get required files dynamically from reference language
+  const requiredFiles = getRequiredFiles();
+
+  if (requiredFiles.length === 0) {
+    console.error(
+      `❌ No JSON files found in reference language directory: ${REFERENCE_LANG}`,
+    );
+    process.exit(1);
+  }
+
+  console.log(
+    `📂 Auto-detected ${requiredFiles.length} JSON files: ${requiredFiles.join(", ")}\n`,
+  );
+
   // Load reference structure (English)
-  const referenceDir = path.join(LOCALES_DIR, REFERENCE_LANG);
   const referenceStructure = {};
 
   console.log(`📚 Loading reference language: ${REFERENCE_LANG}`);
 
-  for (const fileName of REQUIRED_FILES) {
+  for (const fileName of requiredFiles) {
     const filePath = path.join(referenceDir, fileName);
     const content = loadJsonFile(filePath);
 
@@ -176,11 +246,15 @@ function validateLocales() {
   }
 
   let allValid = true;
-  const validationResults = [];
+  const validationResults: ValidationResult[] = [];
 
   // Validate each language
   for (const langCode of languages) {
-    const result = validateLanguage(langCode, referenceStructure);
+    const result = validateLanguage(
+      langCode,
+      referenceStructure,
+      requiredFiles,
+    );
     validationResults.push(result);
 
     if (!result.valid) {
@@ -188,7 +262,8 @@ function validateLocales() {
     }
 
     // Print results for this language
-    console.log(`📝 ${langCode.toUpperCase()} (${langCode}):`);
+    const languageName = getLanguageName(langCode);
+    console.log(`📝 ${languageName} (${langCode}):`);
 
     if (result.valid) {
       console.log("   ✅ All validations passed");
@@ -222,6 +297,7 @@ function validateLocales() {
   // Summary
   console.log("📊 Validation Summary:");
   console.log(`   Total languages: ${languages.length}`);
+  console.log(`   Files per language: ${requiredFiles.length}`);
   console.log(`   Valid: ${validationResults.filter((r) => r.valid).length}`);
   console.log(
     `   Invalid: ${validationResults.filter((r) => !r.valid).length}`,
@@ -240,5 +316,3 @@ function validateLocales() {
 
 // Run validation if this script is executed directly
 validateLocales();
-
-export { getAllKeys, loadJsonFile, validateLocales };
