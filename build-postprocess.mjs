@@ -6,6 +6,8 @@ import {
   writeFileSync,
 } from "fs";
 
+console.log("Running post-processing build...");
+
 // Copy CSS file
 copyFileSync("public/content-script.css", "dist/content-script.css");
 
@@ -41,27 +43,7 @@ if (backgroundScriptFile) {
 }
 writeFileSync("dist/manifest.json", JSON.stringify(manifest, null, 2));
 
-// Fix paths in HTML files to use relative paths
-const indexHtml = readFileSync("dist/index.html", "utf-8");
-const fixedIndexHtml = indexHtml
-  .replace(/src="\/assets\//g, 'src="./assets/')
-  .replace(/href="\/assets\//g, 'href="./assets/')
-  .replace(/<title>.*<\/title>/, "<title>Dictionary Extension</title>");
-writeFileSync("dist/index.html", fixedIndexHtml);
-
-const popupHtml = readFileSync("dist/dictionary-popup.html", "utf-8");
-const fixedPopupHtml = popupHtml
-  .replace(/src="\/assets\//g, 'src="./assets/')
-  .replace(/href="\/assets\//g, 'href="./assets/');
-writeFileSync("dist/dictionary-popup.html", fixedPopupHtml);
-
-// Fix thank you page paths
-const thankYouHtml = readFileSync("dist/thank-you.html", "utf-8");
-const fixedThankYouHtml = thankYouHtml
-  .replace(/src="\/assets\//g, 'src="./assets/')
-  .replace(/href="\/assets\//g, 'href="./assets/')
-  .replace(/<title>.*<\/title>/, "<title>Thank You - Từ điển AI</title>");
-writeFileSync("dist/thank-you.html", fixedThankYouHtml);
-
 // Clean up
 rmSync("dist/public", { recursive: true, force: true });
+
+console.log("Post-processing complete.");
