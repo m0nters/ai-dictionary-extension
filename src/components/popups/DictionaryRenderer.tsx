@@ -236,18 +236,20 @@ function VerbFormsRenderer({ verbForms }: { verbForms: string[] }) {
 export function DictionaryRenderer({
   translation,
   translatedLangCode,
-  isHistoryDetailView: isHistoryDetail = false,
+  isHistoryDetailView = false,
 }: DictionaryRendererProps) {
   // Handle phrase translations (original style)
   if (isPhraseTranslation(translation)) {
     const phraseTranslation = translation as PhraseTranslation;
     return (
       <div className="dictionary-content">
-        <SourceLanguageRenderer
-          sourceLangCode={phraseTranslation.source_language_code}
-        />
+        {!isHistoryDetailView && (
+          <SourceLanguageRenderer
+            sourceLangCode={phraseTranslation.source_language_code}
+          />
+        )}
 
-        {isHistoryDetail && (
+        {isHistoryDetailView && (
           <div className="mt-2 flex items-start space-x-2">
             <div className="mt-1 h-6 w-1 flex-shrink-0 rounded-full bg-blue-400"></div>
             <p className="text-base leading-relaxed font-medium text-gray-800">
@@ -271,9 +273,11 @@ export function DictionaryRenderer({
     const singleWordTranslation = translation as SingleWordTranslation;
     return (
       <div className="dictionary-content">
-        <SourceLanguageRenderer
-          sourceLangCode={singleWordTranslation.source_language_code}
-        />
+        {!isHistoryDetailView && (
+          <SourceLanguageRenderer
+            sourceLangCode={singleWordTranslation.source_language_code}
+          />
+        )}
         <div className="mb-4">
           {/* Verb Forms (if present) */}
           {singleWordTranslation.verb_forms &&

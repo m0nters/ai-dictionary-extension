@@ -99,7 +99,7 @@ function App() {
 
   return (
     <MemoryRouter>
-      <div className="relative h-full w-100 overflow-hidden">
+      <div className="relative h-[600px] w-100 overflow-hidden">
         <Routes>
           <Route
             path="/"

@@ -36,7 +36,7 @@ export function MainScreen({
   const navigate = useNavigate();
 
   return (
-    <div className="animate-slide-in-right relative w-100 overflow-x-hidden overflow-y-auto bg-gradient-to-br from-indigo-50 to-purple-50 select-none">
+    <div className="animate-slide-in-right relative h-full w-100 overflow-x-hidden overflow-y-auto bg-gradient-to-br from-indigo-50 to-purple-50 select-none">
       {/* Background decoration */}
       <div className="absolute inset-0 z-0">
         <div className="animate-blob-slow absolute top-0 right-0 h-32 w-32 translate-x-16 -translate-y-16 rounded-full bg-gradient-to-br from-indigo-300 to-purple-300 opacity-50"></div>
