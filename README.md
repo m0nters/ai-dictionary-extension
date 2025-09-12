@@ -21,6 +21,7 @@ A Chrome extension that provides instant translation using Google's Gemini AI wh
 - 🎯 **Smart Detection**: Automatically detects any language
 - 📚 **Dictionary Mode**: For single words, shows pronunciation, meaning, and example sentences just like professional dictionary standards
 - 💬 **Sentence Translation**: For phrases and sentences, provides clean translations
+- 📖 **Translation History**: Automatically saves your last 20 translations with search functionality
 - ⚡ **Fast & Lightweight**: Built with React and Vite
 
 ---
@@ -45,10 +46,22 @@ npm run build
 
 ## Usage
 
+### Basic Translation
+
 1. **Select text** on any webpage
 2. **Click the "dictionary" button** that appears above the selected text
 3. **View the translation** in the popup window
 4. **Change translated language** using the dropdown in the popup header
+
+### Using Translation History
+
+1. **Open the extension popup** by clicking the extension icon in Chrome toolbar
+2. **Click the "History" button** to view your recent translations
+3. **Search your history** using the search bar (searches text, translations, and language pairs)
+4. **Click any history entry** to view the full translation details
+5. **Delete entries** by clicking the trash icon next to any translation
+
+**Note**: The extension automatically saves your last 20 translations locally in your browser.
 
 ---
 
