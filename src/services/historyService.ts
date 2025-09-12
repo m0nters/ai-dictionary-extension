@@ -62,41 +62,11 @@ export class HistoryService {
     return entries.filter((entry) => {
       const { translation } = entry;
 
-      // Search in language codes (e.g., "en", "vi", "en->vi")
-      const langSearch = `${translation.source_language_code}->${translation.translated_language_code}`;
-      if (langSearch.toLowerCase().includes(searchTerm)) {
-        return true;
-      }
-
-      // Search based on translation type
       if (isSingleWordTranslation(translation)) {
-        // Search in word
-        if (translation.word.toLowerCase().includes(searchTerm)) {
-          return true;
-        }
-
-        // Search in definitions and examples
-        return translation.meanings.some((meaning) => {
-          const definitionMatch = meaning.definition
-            .toLowerCase()
-            .includes(searchTerm);
-          const exampleMatch = meaning.examples.some(
-            (example) =>
-              example.text.toLowerCase().includes(searchTerm) ||
-              (example.translation &&
-                example.translation.toLowerCase().includes(searchTerm)),
-          );
-          return definitionMatch || exampleMatch;
-        });
-      } else if (isPhraseTranslation(translation)) {
-        // Search in original text and translation
-        return (
-          translation.text.toLowerCase().includes(searchTerm) ||
-          translation.translation.toLowerCase().includes(searchTerm)
-        );
+        return translation.word.toLowerCase().includes(searchTerm);
+      } else {
+        return translation.text.toLowerCase().includes(searchTerm);
       }
-
-      return false;
     });
   }
 

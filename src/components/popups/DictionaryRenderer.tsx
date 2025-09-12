@@ -76,24 +76,31 @@ function PronunciationRenderer({
 }: {
   pronunciation: string | PronunciationVariants;
 }) {
+  const styleMap = {
+    UK: "bg-blue-100 text-blue-700",
+    US: "bg-red-100 text-red-700",
+  };
+
   if (hasPronunciationVariants(pronunciation)) {
     return (
       <span className="ml-2 inline-flex flex-wrap items-center gap-2">
-        {pronunciation.UK && (
-          <span className="inline-flex items-center gap-1">
-            <span className="rounded-full bg-blue-100 px-2 py-0.5 text-xs font-semibold text-blue-700">
-              UK
-            </span>
-            <span className="text-base text-gray-600">{pronunciation.UK}</span>
-          </span>
-        )}
-        {pronunciation.US && (
-          <span className="inline-flex items-center gap-1">
-            <span className="rounded-full bg-red-100 px-2 py-0.5 text-xs font-semibold text-red-700">
-              US
-            </span>
-            <span className="text-base text-gray-600">{pronunciation.US}</span>
-          </span>
+        {Object.keys(pronunciation).map(
+          (key) =>
+            pronunciation[key as keyof PronunciationVariants] && (
+              <span key={key} className="inline-flex items-center gap-1">
+                <span
+                  className={`rounded-full px-2 py-0.5 text-xs font-semibold ${
+                    styleMap[key as keyof PronunciationVariants] ||
+                    "bg-gray-100 text-gray-700"
+                  }`}
+                >
+                  {key}
+                </span>
+                <span className="text-base text-gray-600">
+                  {pronunciation[key as keyof PronunciationVariants]}
+                </span>
+              </span>
+            ),
         )}
       </span>
     );

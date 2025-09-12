@@ -5,9 +5,3 @@ export interface HistoryEntry {
   timestamp: number;
   translation: ParsedTranslation;
 }
-
-export interface HistoryState {
-  entries: HistoryEntry[];
-  searchQuery: string;
-  selectedEntry: HistoryEntry | null;
-}
