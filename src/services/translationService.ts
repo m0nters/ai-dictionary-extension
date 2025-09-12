@@ -25,10 +25,11 @@ export const generateTranslationPrompt = (
 
 - **Source Language Detection:**
   - Always detect and specify the source language of the input text.
-  - Include the source_language field as a string which is that language code (e.g. English is "en", Vietnamese is "vi", Chinese is "zh", Japanese is "ja",...).
+  - Include the \`source_language\` field as a string which is that language code (e.g. English is "en", Vietnamese is "vi", Chinese is "zh", Japanese is "ja",...).
   - For ambiguous text (e.g., Chinese vs Japanese characters), make your best determination and specify it clearly.
-  - Example: If detecting English and app language is Vietnamese, use "Tiếng Anh". If detecting Chinese and app language is English, use "Chinese".
-
+- **Translated Language**
+  - Include the \`translated_language\` field as a string which is that language code (e.g. English is "en", Vietnamese is "vi", Chinese is "zh", Japanese is "ja",...).
+  - In this context, it's "${translatedLangCode}".
 - **Single word/Collocation/Idiom input:**
   - For languages with pronunciation variants (e.g., English UK/US), provide IPA for both. For others (e.g., Chinese), use a single pronunciation (e.g., Pinyin).
   - Translate the meaning into the translated language, specifying its part of speech (in the translated language too, e.g., "danh từ" for noun in Vietnamese, "名词" for noun in Chinese, "idiome" for idiom in French,...).
@@ -54,9 +55,10 @@ export const generateTranslationPrompt = (
 
 \`\`\`json
 {
+  \"source_language\": \"en\",
+  \"translated_language\": \"vi\",
   \"word\": \"run\",
   \"verb_forms\": [\"run\", \"ran\", \"run\"],
-  \"source_language\": \"en\",
   \"meanings\": [
     {
       \"pronunciation\": {
@@ -64,7 +66,7 @@ export const generateTranslationPrompt = (
         \"US\": \"/rʌn/\"
       },
       \"part_of_speech\": \"động từ\",
-      \"translation\": \"chạy\",
+      \"definition\": \"chạy\",
       \"synonyms\": [\"sprint\", \"dash\", \"jog\", \"race\", \"hurry\"],
       \"examples\": [
         {
@@ -83,7 +85,7 @@ export const generateTranslationPrompt = (
         \"US\": \"/rʌn/\"
       },
       \"part_of_speech\": \"danh từ\",
-      \"translation\": \"sự chạy, cuộc chạy\",
+      \"definition\": \"sự chạy, cuộc chạy\",
       \"synonyms\": [\"jog\", \"sprint\", \"dash\"],
       \"examples\": [
         {
@@ -104,13 +106,14 @@ export const generateTranslationPrompt = (
 
 \`\`\`json
 {
-  \"word\": \"书\",
   \"source_language\": \"zh\",
+  \"translated_language\": \"vi\",
+  \"word\": \"书\",
   \"meanings\": [
     {
       \"pronunciation\": \"shū\",
       \"part_of_speech\": \"danh từ\",
-      \"translation\": \"sách\",
+      \"definition\": \"sách\",
       \"synonyms\": [\"书籍\", \"图书\", \"读物\"],
       \"examples\": [
         {
@@ -133,8 +136,9 @@ export const generateTranslationPrompt = (
 
 \`\`\`json
 {
-  \"word\": \"resource\",
   \"source_language\": \"en\",
+  \"translated_language\": \"en\",
+  \"word\": \"resource\",
   \"meanings\": [
     {
       \"pronunciation\": {
@@ -157,22 +161,24 @@ export const generateTranslationPrompt = (
 }
 \`\`\`
 
-  - For phrases or sentences (more than two words), app language is Deutsch:
+  - For phrases or sentences (more than two words), e.g. translate English -> Vietnamese, app language is Deutsch:
 
  \`\`\`json
 {
-  \"text\": \"Good morning!\",
   \"source_language\": \"en\",
+  \"translated_language\": \"vi\",
+  \"text\": \"Good morning!\",
   \"translation\": \"Chào buổi sáng!\"
 }
  \`\`\`
 
-  - For gibberish or non-language input, e.g., "asdkjhasd" to Vietnamese:
+  - For gibberish or non-language input, e.g., translate "asdkjhasd" to Vietnamese:
 
 \`\`\`json
 {
-  \"text\": \"asdkjhasd\",
   \"source_language\": \"unknown\",
+  \"translated_language\": \"vi\",
+  \"text\": \"asdkjhasd\",
   \"translation\": \"Không có bản dịch.\"
 }
 \`\`\`

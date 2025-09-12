@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { DEFAULT_LANGUAGE_CODE } from "../constants/availableLanguages";
 import { translateWithGemini } from "../services/translationService";
 import { TranslationResult } from "../types/translation";
 import { updatePopupHeight } from "../utils/popupHeight";
@@ -12,7 +13,9 @@ export const useTranslation = () => {
     translation: "",
     loading: false,
   });
-  const [translatedLangCode, setTranslatedLangCode] = useState("vi");
+  const [translatedLangCode, setTranslatedLangCode] = useState(
+    DEFAULT_LANGUAGE_CODE,
+  );
 
   // Load saved translated language from Chrome storage
   useEffect(() => {
@@ -53,12 +56,12 @@ export const useTranslation = () => {
       });
     });
 
-    const currentTranslatedLanguageCode =
-      storageData.translatedLangCode || "vi";
+    const currentTranslatedLangCode =
+      storageData.translatedLangCode || DEFAULT_LANGUAGE_CODE;
 
     // Update state if it's different
-    if (currentTranslatedLanguageCode !== translatedLangCode) {
-      setTranslatedLangCode(currentTranslatedLanguageCode);
+    if (currentTranslatedLangCode !== translatedLangCode) {
+      setTranslatedLangCode(currentTranslatedLangCode);
     }
 
     setResult((prev) => ({
@@ -72,7 +75,7 @@ export const useTranslation = () => {
     try {
       const translation = await translateWithGemini(
         text,
-        currentTranslatedLanguageCode,
+        currentTranslatedLangCode,
       );
 
       setResult((prev) => ({

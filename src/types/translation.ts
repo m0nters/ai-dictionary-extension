@@ -19,23 +19,25 @@ export interface ExampleSentence {
 export interface MeaningEntry {
   pronunciation: string | PronunciationVariants;
   part_of_speech: string;
-  translation?: string; // For translations to other languages
-  definition?: string; // For same-language definitions
+  definition: string;
   synonyms?: string[]; // Array of synonyms in the source language
   examples: ExampleSentence[];
 }
 
-export interface SingleWordTranslation {
+interface BaseTranslation {
+  source_language_code: string;
+  translated_language_code: string;
+}
+
+export interface SingleWordTranslation extends BaseTranslation {
   word: string;
   verb_forms?: string[];
   meanings: MeaningEntry[];
-  source_language?: string;
 }
 
-export interface PhraseTranslation {
+export interface PhraseTranslation extends BaseTranslation {
   text: string;
   translation: string;
-  source_language?: string;
 }
 
 export type ParsedTranslation = SingleWordTranslation | PhraseTranslation;

@@ -45,13 +45,13 @@ function getSynonymsLabel(languageCode: string): string {
  * Renders the source language information
  */
 function SourceLanguageRenderer({
-  sourceLanguage,
+  sourceLangCode,
 }: {
-  sourceLanguage?: string;
+  sourceLangCode?: string;
 }) {
   const { t } = useTranslation();
 
-  if (!sourceLanguage) return null;
+  if (!sourceLangCode) return null;
 
   return (
     <div className="mb-4 flex items-center justify-center rounded-lg border border-gray-200 bg-gradient-to-r from-gray-50 to-blue-50 p-3 shadow-sm">
@@ -60,7 +60,7 @@ function SourceLanguageRenderer({
           {t("popup:detectedLanguage")}
         </div>
         <div className="text-sm font-medium text-blue-600">
-          {t(`languages:${sourceLanguage}`)}
+          {t(`languages:${sourceLangCode}`)}
         </div>
       </div>
     </div>
@@ -131,7 +131,7 @@ function MeaningEntryRenderer({
           {entry.part_of_speech}
         </span>
         <p className="mt-1 text-sm font-medium text-gray-800">
-          {entry.translation || entry.definition}
+          {entry.definition}
         </p>
       </div>
 
@@ -235,7 +235,7 @@ export function DictionaryRenderer({
     return (
       <div className="dictionary-content">
         <SourceLanguageRenderer
-          sourceLanguage={phraseTranslation.source_language}
+          sourceLangCode={phraseTranslation.source_language_code}
         />
 
         <div className="mt-2 flex items-start space-x-2">
@@ -254,7 +254,7 @@ export function DictionaryRenderer({
     return (
       <div className="dictionary-content">
         <SourceLanguageRenderer
-          sourceLanguage={singleWordTranslation.source_language}
+          sourceLangCode={singleWordTranslation.source_language_code}
         />
         <div className="mb-4">
           {/* Verb Forms (if present) */}

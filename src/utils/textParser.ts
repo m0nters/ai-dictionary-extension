@@ -60,15 +60,13 @@ export const parseTranslationContent = (content: string): ParsedTranslation => {
 
     // Use the AI-provided source language directly, with fallback if missing
     if (!parsed.source_language) {
-      parsed.source_language = "Unknown";
+      parsed.source_language = "unknown";
     }
 
     // Validate the structure
-    if (parsed.word && parsed.meanings) {
-      // Single word translation
+    if (parsed.word) {
       return parsed as SingleWordTranslation;
-    } else if (parsed.text && parsed.translation) {
-      // Phrase translation
+    } else if (parsed.text) {
       return parsed as PhraseTranslation;
     } else {
       throw new Error("Invalid JSON structure - missing required fields");
@@ -81,7 +79,7 @@ export const parseTranslationContent = (content: string): ParsedTranslation => {
     return {
       text: content.substring(0, 100) + (content.length > 100 ? "..." : ""),
       translation: content,
-      source_language: "Unknown",
+      source_language_code: "unknown",
     } as PhraseTranslation;
   }
 };
