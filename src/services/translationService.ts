@@ -67,7 +67,6 @@ export const generateTranslationPrompt = (
       },
       \"part_of_speech\": \"động từ\",
       \"definition\": \"chạy\",
-      \"synonyms\": [\"sprint\", \"dash\", \"jog\", \"race\", \"hurry\"],
       \"examples\": [
         {
           \"text\": \"He **runs** every morning.\",
@@ -77,7 +76,8 @@ export const generateTranslationPrompt = (
           \"text\": \"She **ran** to catch the bus.\",
           \"translation\": \"Cô ấy **chạy** để bắt xe buýt.\"
         }
-      ]
+      ],
+      \"synonyms\": [\"sprint\", \"dash\", \"jog\", \"race\", \"hurry\"],
     },
     {
       \"pronunciation\": {
@@ -86,7 +86,6 @@ export const generateTranslationPrompt = (
       },
       \"part_of_speech\": \"danh từ\",
       \"definition\": \"sự chạy, cuộc chạy\",
-      \"synonyms\": [\"jog\", \"sprint\", \"dash\"],
       \"examples\": [
         {
           \"text\": \"The marathon was a tough **run**.\",
@@ -96,7 +95,8 @@ export const generateTranslationPrompt = (
           \"text\": \"They went for a quick **run** in the park.\",
           \"translation\": \"Họ đi **chạy** nhanh trong công viên.\"
         }
-      ]
+      ],
+      \"synonyms\": [\"jog\", \"sprint\", \"dash\"],
     }
   ]
 }
@@ -114,7 +114,6 @@ export const generateTranslationPrompt = (
       \"pronunciation\": \"shū\",
       \"part_of_speech\": \"danh từ\",
       \"definition\": \"sách\",
-      \"synonyms\": [\"书籍\", \"图书\", \"读物\"],
       \"examples\": [
         {
           \"text\": \"我买了一本新**书**。\",
@@ -126,7 +125,8 @@ export const generateTranslationPrompt = (
           \"pronunciation\": \"Túshūguǎn yǒu hěnduō hǎo **shū**.\",
           \"translation\": \"Thư viện có nhiều sách hay.\"
         }
-      ]
+      ],
+      \"synonyms\": [\"书籍\", \"图书\", \"读物\"],
     }
   ]
 }
@@ -147,7 +147,6 @@ export const generateTranslationPrompt = (
       },
       \"part_of_speech\": \"noun\",
       \"definition\": \"A supply of money, materials, staff, or other assets; a source of help or information.\",
-      \"synonyms\": [\"asset\", \"material\", \"supply\", \"source\", \"reserve\", \"stockpile\"],
       \"examples\": [
         {
           \"text\": \"The country is rich in natural **resources** like oil and gas.\"
@@ -155,7 +154,8 @@ export const generateTranslationPrompt = (
         {
           \"text\": \"The library is an excellent **resource** for students.\"
         }
-      ]
+      ],
+      \"synonyms\": [\"asset\", \"material\", \"supply\", \"source\", \"reserve\", \"stockpile\"],
     }
   ]
 }

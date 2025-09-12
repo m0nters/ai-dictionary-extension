@@ -83,9 +83,9 @@ export function HistoryScreen({ onSelectEntry, onBack }: HistoryScreenProps) {
   };
 
   return (
-    <div className="animate-slide-in-right absolute inset-0 z-20 bg-gradient-to-br from-indigo-50 to-purple-50">
+    <div className="animate-slide-in-right absolute inset-0 overflow-y-auto bg-gradient-to-br from-indigo-50 to-purple-50">
       {/* Header */}
-      <div className="border-b border-indigo-100 bg-white/70 backdrop-blur-sm">
+      <div className="sticky top-0 z-10 border-b border-indigo-100 bg-white/70 backdrop-blur-sm">
         <div className="flex items-center justify-between p-4">
           <div className="flex items-center space-x-3">
             <BackButton onClick={onBack} />
@@ -124,7 +124,7 @@ export function HistoryScreen({ onSelectEntry, onBack }: HistoryScreenProps) {
       </div>
 
       {/* Content */}
-      <div className="flex-1 overflow-y-auto p-4">
+      <div className="flex-1 p-4">
         {loading ? (
           <div className="flex items-center justify-center py-12">
             <div className="text-center">
