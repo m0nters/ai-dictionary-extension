@@ -1,4 +1,4 @@
-import { changeLanguage } from "@/config/i18n"; // Initialize i18n
+import { changeLanguage } from "@/config/";
 import { useTranslation } from "@/hooks/";
 import "@/index.css";
 import { parseTranslationContent } from "@/utils/";

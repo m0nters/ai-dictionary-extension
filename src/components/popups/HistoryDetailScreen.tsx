@@ -2,17 +2,13 @@ import { BackButton } from "@/components";
 import { HistoryEntry } from "@/types";
 import React from "react";
 import { useTranslation } from "react-i18next";
+import { useLocation, useNavigate } from "react-router-dom";
 import { DictionaryRenderer } from "./DictionaryRenderer";
 
-interface HistoryDetailScreenProps {
-  entry: HistoryEntry;
-  onBack: () => void;
-}
-
-export const HistoryDetailScreen: React.FC<HistoryDetailScreenProps> = ({
-  entry,
-  onBack,
-}) => {
+export const HistoryDetailScreen: React.FC = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
+  const entry = location.state?.entry as HistoryEntry;
   const { t, i18n } = useTranslation();
 
   const formatDate = (timestamp: number, locale: string) => {
@@ -26,13 +22,19 @@ export const HistoryDetailScreen: React.FC<HistoryDetailScreenProps> = ({
     });
   };
 
+  // If no entry is found, navigate back to history
+  if (!entry) {
+    navigate("/history");
+    return null;
+  }
+
   return (
-    <div className="animate-slide-in-right absolute inset-0 overflow-y-auto bg-gradient-to-br from-indigo-50 to-purple-50">
+    <div className="animate-slide-in-right h-full w-full overflow-y-auto bg-gradient-to-br from-indigo-50 to-purple-50">
       {/* Header */}
       <div className="sticky top-0 z-10 border-b border-indigo-100 bg-white/70 backdrop-blur-sm">
         <div className="flex items-center justify-between p-4">
           <div className="flex items-center space-x-3">
-            <BackButton onClick={onBack} />
+            <BackButton />
             <div>
               <h1 className="text-lg font-semibold text-gray-800">
                 {t("history:translationDetail")}
@@ -51,6 +53,7 @@ export const HistoryDetailScreen: React.FC<HistoryDetailScreenProps> = ({
           <DictionaryRenderer
             translation={entry.translation}
             translatedLangCode={entry.translation.translated_language_code}
+            isHistoryDetailView={true}
           />
         </div>
       </div>

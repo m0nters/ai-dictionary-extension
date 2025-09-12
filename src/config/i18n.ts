@@ -62,10 +62,18 @@ export const changeLanguage = async (languageCode: string) => {
 
     // Save to Chrome storage if available
     if (typeof chrome !== "undefined" && chrome.storage) {
-      chrome.storage.sync.set({ appLangCode: languageCode });
+      chrome.storage.sync.set({ appLangCode: languageCode }, () => {
+        if (chrome.runtime.lastError) {
+          console.error(
+            "Failed to save app language to storage:",
+            chrome.runtime.lastError,
+          );
+          return;
+        }
+      });
     }
   } catch (error) {
-    console.error("Failed to change language:", error);
+    console.error("Failed to change app language:", error);
   }
 };
 

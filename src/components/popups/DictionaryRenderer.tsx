@@ -16,6 +16,7 @@ import { useTranslation } from "react-i18next";
 interface DictionaryRendererProps {
   translation: ParsedTranslation;
   translatedLangCode?: string;
+  isHistoryDetailView?: boolean;
 }
 
 /**
@@ -228,6 +229,7 @@ function VerbFormsRenderer({ verbForms }: { verbForms: string[] }) {
 export function DictionaryRenderer({
   translation,
   translatedLangCode,
+  isHistoryDetailView: isHistoryDetail = false,
 }: DictionaryRendererProps) {
   // Handle phrase translations (original style)
   if (isPhraseTranslation(translation)) {
@@ -237,6 +239,15 @@ export function DictionaryRenderer({
         <SourceLanguageRenderer
           sourceLangCode={phraseTranslation.source_language_code}
         />
+
+        {isHistoryDetail && (
+          <div className="mt-2 flex items-start space-x-2">
+            <div className="mt-1 h-6 w-1 flex-shrink-0 rounded-full bg-blue-400"></div>
+            <p className="text-base leading-relaxed font-medium text-gray-800">
+              {renderTextWithBold(phraseTranslation.text)}
+            </p>
+          </div>
+        )}
 
         <div className="mt-2 flex items-start space-x-2">
           <div className="mt-1 h-6 w-1 flex-shrink-0 rounded-full bg-blue-400"></div>

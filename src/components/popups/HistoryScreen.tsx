@@ -5,14 +5,11 @@ import { HistoryEntry } from "@/types";
 import { Clock, Globe, Search, Trash2 } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
 
-interface HistoryScreenProps {
-  onSelectEntry: (entry: HistoryEntry) => void;
-  onBack: () => void;
-}
-
-export function HistoryScreen({ onSelectEntry, onBack }: HistoryScreenProps) {
+export function HistoryScreen() {
   const { t, i18n } = useTranslation();
+  const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
   const [entries, setEntries] = useState<HistoryEntry[]>([]);
   const [loading, setLoading] = useState(true);
@@ -83,12 +80,12 @@ export function HistoryScreen({ onSelectEntry, onBack }: HistoryScreenProps) {
   };
 
   return (
-    <div className="animate-slide-in-right absolute inset-0 overflow-y-auto bg-gradient-to-br from-indigo-50 to-purple-50">
+    <div className="animate-slide-in-right h-full w-full overflow-y-auto bg-gradient-to-br from-indigo-50 to-purple-50">
       {/* Header */}
       <div className="sticky top-0 z-10 border-b border-indigo-100 bg-white/70 backdrop-blur-sm">
         <div className="flex items-center justify-between p-4">
           <div className="flex items-center space-x-3">
-            <BackButton onClick={onBack} />
+            <BackButton />
             <div className="flex items-center space-x-2">
               <Clock className="h-5 w-5 text-indigo-600" />
               <h1 className="text-lg font-semibold text-gray-800">
@@ -159,7 +156,9 @@ export function HistoryScreen({ onSelectEntry, onBack }: HistoryScreenProps) {
               return (
                 <div
                   key={entry.id}
-                  onClick={() => onSelectEntry(entry)}
+                  onClick={() =>
+                    navigate(`/history/${entry.id}`, { state: { entry } })
+                  }
                   className="group cursor-pointer rounded-xl border border-white/50 bg-white/60 p-4 transition-all duration-200 hover:border-indigo-200 hover:bg-white/80 hover:shadow-md"
                 >
                   <div className="flex items-center justify-between">
