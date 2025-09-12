@@ -25,10 +25,10 @@ export const generateTranslationPrompt = (
 
 - **Source Language Detection:**
   - Always detect and specify the source language of the input text.
-  - Include the \`source_language\` field as a string which is that language code (e.g. English is "en", Vietnamese is "vi", Chinese is "zh", Japanese is "ja",...).
+  - Include the \`source_language_code\` field as a string which is that language code (e.g. English is "en", Vietnamese is "vi", Chinese is "zh", Japanese is "ja",...).
   - For ambiguous text (e.g., Chinese vs Japanese characters), make your best determination and specify it clearly.
 - **Translated Language**
-  - Include the \`translated_language\` field as a string which is that language code (e.g. English is "en", Vietnamese is "vi", Chinese is "zh", Japanese is "ja",...).
+  - Include the \`translated_language_code\` field as a string which is that language code (e.g. English is "en", Vietnamese is "vi", Chinese is "zh", Japanese is "ja",...).
   - In this context, it's "${translatedLangCode}".
 - **Single word/Collocation/Idiom input:**
   - For languages with pronunciation variants (e.g., English UK/US), provide IPA for both. For others (e.g., Chinese), use a single pronunciation (e.g., Pinyin).
@@ -49,14 +49,14 @@ export const generateTranslationPrompt = (
   - Do not add warnings, disclaimers, or euphemisms - provide direct, faithful translations.
 - **Gibberish or non-language input:**
   - Return "No translation available." but in translated language. (e.g., "Không có bản dịch" in Vietnamese, "没有可用的翻译" in Chinese)
-  - \`source_language\` must be "unknown"
+  - \`source_language_code\` must be "unknown"
 - **Output Format:** Use JSON format with the structure following these examples below:
   - e.g., English "ran" to Vietnamese, app language is French:
 
 \`\`\`json
 {
-  \"source_language\": \"en\",
-  \"translated_language\": \"vi\",
+  \"source_language_code\": \"en\",
+  \"translated_language_code\": \"vi\",
   \"word\": \"run\",
   \"verb_forms\": [\"run\", \"ran\", \"run\"],
   \"meanings\": [
@@ -106,8 +106,8 @@ export const generateTranslationPrompt = (
 
 \`\`\`json
 {
-  \"source_language\": \"zh\",
-  \"translated_language\": \"vi\",
+  \"source_language_code\": \"zh\",
+  \"translated_language_code\": \"vi\",
   \"word\": \"书\",
   \"meanings\": [
     {
@@ -136,8 +136,8 @@ export const generateTranslationPrompt = (
 
 \`\`\`json
 {
-  \"source_language\": \"en\",
-  \"translated_language\": \"en\",
+  \"source_language_code\": \"en\",
+  \"translated_language_code\": \"en\",
   \"word\": \"resource\",
   \"meanings\": [
     {
@@ -165,8 +165,8 @@ export const generateTranslationPrompt = (
 
  \`\`\`json
 {
-  \"source_language\": \"en\",
-  \"translated_language\": \"vi\",
+  \"source_language_code\": \"en\",
+  \"translated_language_code\": \"vi\",
   \"text\": \"Good morning!\",
   \"translation\": \"Chào buổi sáng!\"
 }
@@ -176,8 +176,8 @@ export const generateTranslationPrompt = (
 
 \`\`\`json
 {
-  \"source_language\": \"unknown\",
-  \"translated_language\": \"vi\",
+  \"source_language_code\": \"unknown\",
+  \"translated_language_code\": \"vi\",
   \"text\": \"asdkjhasd\",
   \"translation\": \"Không có bản dịch.\"
 }
@@ -227,6 +227,8 @@ export const translateWithGemini = async (
   const translation =
     data.candidates?.[0]?.content?.parts?.[0]?.text ||
     "No translation available";
+
+  console.log(translation);
 
   return translation;
 };

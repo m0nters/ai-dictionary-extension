@@ -1,0 +1,11 @@
+{
+  "title": "Historique",
+  "viewRecentTranslations": "Voir les traductions récentes",
+  "translationDetail": "Détails de la traduction",
+  "searchPlaceholder": "Rechercher des traductions...",
+  "loading": "Chargement de l'historique...",
+  "emptyHistory": "Aucun historique de traduction pour l'instant",
+  "noSearchResults": "Aucun résultat trouvé",
+  "clearAll": "Tout effacer",
+  "confirmClearAll": "Êtes-vous sûr de vouloir supprimer tout l'historique des traductions ? Cette action est irréversible."
+}

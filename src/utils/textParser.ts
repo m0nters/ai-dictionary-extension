@@ -59,8 +59,8 @@ export const parseTranslationContent = (content: string): ParsedTranslation => {
     const parsed = JSON.parse(jsonString);
 
     // Use the AI-provided source language directly, with fallback if missing
-    if (!parsed.source_language) {
-      parsed.source_language = "unknown";
+    if (!parsed.source_language_code) {
+      parsed.source_language_code = "unknown";
     }
 
     // Validate the structure

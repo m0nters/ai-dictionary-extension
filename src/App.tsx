@@ -1,5 +1,7 @@
 import {
   Check,
+  ChevronRight,
+  Clock,
   Globe,
   Info,
   Languages,
@@ -9,12 +11,17 @@ import {
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { DropdownMenu } from "./components/DropdownMenu";
+import { HistoryDetailScreen } from "./components/HistoryDetailScreen";
+import { HistoryScreen } from "./components/HistoryScreen";
 import { ToggleSwitch } from "./components/ToggleSwitch";
 import { changeLanguage } from "./config/i18n";
 import {
   AVAILABLE_LANGUAGES,
   DEFAULT_LANGUAGE_CODE,
 } from "./constants/availableLanguages";
+import { HistoryEntry } from "./types";
+
+type Screen = "main" | "history" | "historyDetail";
 
 function App() {
   const { t, i18n } = useTranslation();
@@ -23,6 +30,11 @@ function App() {
   );
   const [saved, setSaved] = useState(false);
   const [extensionEnabled, setExtensionEnabled] = useState(true);
+
+  // Screen navigation state
+  const [currentScreen, setCurrentScreen] = useState<Screen>("main");
+  const [selectedHistoryEntry, setSelectedHistoryEntry] =
+    useState<HistoryEntry | null>(null);
 
   useEffect(() => {
     // Load saved settings
@@ -78,6 +90,48 @@ function App() {
     });
   };
 
+  // Navigation handlers
+  const handleShowHistory = () => {
+    setCurrentScreen("history");
+  };
+
+  const handleHistoryBack = () => {
+    setCurrentScreen("main");
+    setSelectedHistoryEntry(null);
+  };
+
+  const handleSelectHistoryEntry = (entry: HistoryEntry) => {
+    setSelectedHistoryEntry(entry);
+    setCurrentScreen("historyDetail");
+  };
+
+  const handleHistoryDetailBack = () => {
+    setCurrentScreen("history");
+  };
+
+  // Render appropriate screen
+  if (currentScreen === "history") {
+    return (
+      <div className="relative h-[600px] w-100 overflow-hidden">
+        <HistoryScreen
+          onBack={handleHistoryBack}
+          onSelectEntry={handleSelectHistoryEntry}
+        />
+      </div>
+    );
+  }
+
+  if (currentScreen === "historyDetail" && selectedHistoryEntry) {
+    return (
+      <div className="relative h-[600px] w-100 overflow-hidden">
+        <HistoryDetailScreen
+          entry={selectedHistoryEntry}
+          onBack={handleHistoryDetailBack}
+        />
+      </div>
+    );
+  }
+
   return (
     <div className="relative w-100 overflow-x-hidden overflow-y-auto bg-gradient-to-br from-indigo-50 to-purple-50 select-none">
       {/* Background decoration */}
@@ -118,25 +172,28 @@ function App() {
           !extensionEnabled ? "pointer-events-none opacity-50" : ""
         }`}
       >
-        <div
-          className={`rounded-2xl border border-white/20 bg-white/70 p-5 shadow-xl backdrop-blur-sm transition-all duration-300 ${
-            !extensionEnabled ? "border-gray-300/30 bg-gray-100/70" : ""
-          }`}
-        >
-          {/* Extension disabled overlay */}
-          {!extensionEnabled && (
-            <div className="absolute inset-0 z-10 flex items-center justify-center rounded-2xl bg-gray-900/10 backdrop-blur-xs">
-              <div className="text-center">
-                <div className="mb-1 text-sm font-semibold text-black">
-                  {t("popup:extensionDisabled")}
-                </div>
-                <div className="text-xs text-gray-900">
-                  {t("popup:toggleToEnable")}
-                </div>
+        {/* Extension disabled overlay */}
+        {!extensionEnabled && (
+          <div className="absolute inset-0 z-10 flex items-center justify-center rounded-2xl bg-gray-900/10 backdrop-blur-xs">
+            <div className="text-center">
+              <div className="mb-1 text-sm font-semibold text-black">
+                {t("popup:extensionDisabled")}
+              </div>
+              <div className="text-xs text-gray-900">
+                {t("popup:toggleToEnable")}
               </div>
             </div>
-          )}
+          </div>
+        )}
 
+        {/* Languages Setting */}
+        <div
+          className={`rounded-2xl border-2 p-5 transition-all duration-300 ${
+            !extensionEnabled
+              ? "border-gray-300/30 bg-gray-100/70"
+              : "border-gray-200 bg-gray-50"
+          }`}
+        >
           {/* App Language Selector */}
           <div className="mb-4">
             <label
@@ -200,6 +257,54 @@ function App() {
               <span className="text-xs font-medium">{t("popup:saved")}</span>
             </div>
           </div>
+        </div>
+
+        {/* History Button */}
+        <div className="mt-4">
+          <button
+            onClick={handleShowHistory}
+            disabled={!extensionEnabled}
+            className={`flex w-full items-center justify-between rounded-xl border-2 p-4 transition-all duration-300 ${
+              !extensionEnabled
+                ? "cursor-not-allowed border-gray-300/30 bg-gray-100/70"
+                : "cursor-pointer border-gray-200 bg-gray-50 hover:bg-gray-100 hover:shadow-md"
+            }`}
+          >
+            <div className="flex items-center space-x-3">
+              <div
+                className={`flex h-8 w-8 items-center justify-center rounded-lg transition-colors duration-300 ${
+                  !extensionEnabled ? "bg-gray-300/50" : "bg-purple-100"
+                }`}
+              >
+                <Clock
+                  className={`h-4 w-4 transition-colors duration-300 ${
+                    !extensionEnabled ? "text-gray-400" : "text-purple-600"
+                  }`}
+                />
+              </div>
+              <div className="text-left">
+                <h3
+                  className={`text-sm font-semibold transition-colors duration-300 ${
+                    !extensionEnabled ? "text-gray-400" : "text-gray-700"
+                  }`}
+                >
+                  {t("history:title")}
+                </h3>
+                <p
+                  className={`text-xs transition-colors duration-300 ${
+                    !extensionEnabled ? "text-gray-400" : "text-gray-600"
+                  }`}
+                >
+                  {t("history:viewRecentTranslations")}
+                </p>
+              </div>
+            </div>
+            <ChevronRight
+              className={`h-5 w-5 transition-colors duration-300 ${
+                !extensionEnabled ? "text-gray-300" : "text-gray-400"
+              }`}
+            />
+          </button>
         </div>
 
         {/* Usage instructions */}

@@ -46,6 +46,17 @@
     }
   }
 
+  @keyframes slide-in-right {
+    0% {
+      opacity: 0;
+      transform: translateX(100%);
+    }
+    100% {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
   /* Blob animation for thank you page */
   @keyframes blob {
     0% {
@@ -69,6 +80,8 @@
   --animate-slideDown: slideDown 0.3s ease-out;
 
   --animate-slideUp: slideUp 0.3s ease-out;
+
+  --animate-slide-in-right: slide-in-right 0.3s ease-out;
 
   --animate-blob: blob 7s infinite;
 

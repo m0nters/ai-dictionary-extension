@@ -7,7 +7,13 @@ import {
 } from "../constants/availableLanguages";
 
 // Define namespaces
-export const NAMESPACES = ["common", "popup", "languages", "thankYou"];
+export const NAMESPACES = [
+  "common",
+  "popup",
+  "languages",
+  "thankYou",
+  "history",
+];
 
 // i18n configuration
 i18n

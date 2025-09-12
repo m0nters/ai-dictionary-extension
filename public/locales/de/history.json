@@ -1,0 +1,11 @@
+{
+  "title": "Verlauf",
+  "viewRecentTranslations": "Letzte Übersetzungen anzeigen",
+  "translationDetail": "Übersetzungsdetails",
+  "searchPlaceholder": "Übersetzungen suchen...",
+  "loading": "Verlauf wird geladen...",
+  "emptyHistory": "Noch kein Übersetzungsverlauf",
+  "noSearchResults": "Keine Ergebnisse gefunden",
+  "clearAll": "Alles löschen",
+  "confirmClearAll": "Sind Sie sicher, dass Sie den gesamten Übersetzungsverlauf löschen möchten? Diese Aktion kann nicht rückgängig gemacht werden."
+}

@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import { DEFAULT_LANGUAGE_CODE } from "../constants/availableLanguages";
+import { HistoryService } from "../services/historyService";
 import { translateWithGemini } from "../services/translationService";
 import { TranslationResult } from "../types/translation";
 import { updatePopupHeight } from "../utils/popupHeight";
+import { parseTranslationContent } from "../utils/textParser";
 
 /**
  * Custom hook for managing translation state and functionality
@@ -83,6 +85,17 @@ export const useTranslation = () => {
         translation,
         loading: false,
       }));
+
+      // Parse and save translation to history
+      try {
+        const parsedTranslation = parseTranslationContent(translation);
+        if (parsedTranslation) {
+          await HistoryService.saveTranslation(parsedTranslation);
+        }
+      } catch (historyError) {
+        console.error("Failed to save translation to history:", historyError);
+        // Don't fail the translation if history saving fails
+      }
 
       // Update popup height after translation is set
       updatePopupHeight();
