@@ -1,10 +1,8 @@
+import { DEFAULT_LANGUAGE_CODE } from "@/constants/";
+import { HistoryService, translateWithGemini } from "@/services/";
+import { TranslationResult } from "@/types/";
+import { parseTranslationContent, updatePopupHeight } from "@/utils/";
 import { useEffect, useState } from "react";
-import { DEFAULT_LANGUAGE_CODE } from "../constants/availableLanguages";
-import { HistoryService } from "../services/historyService";
-import { translateWithGemini } from "../services/translationService";
-import { TranslationResult } from "../types/translation";
-import { updatePopupHeight } from "../utils/popupHeight";
-import { parseTranslationContent } from "../utils/textParser";
 
 /**
  * Custom hook for managing translation state and functionality

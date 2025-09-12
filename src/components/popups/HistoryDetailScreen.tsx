@@ -1,7 +1,7 @@
+import { BackButton } from "@/components";
+import { HistoryEntry } from "@/types";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { HistoryEntry } from "../types";
-import { BackButton } from "./BackButton";
 import { DictionaryRenderer } from "./DictionaryRenderer";
 
 interface HistoryDetailScreenProps {

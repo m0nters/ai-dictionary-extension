@@ -1,10 +1,10 @@
-import { createElement } from "react";
 import {
   ParsedTranslation,
   PhraseTranslation,
   PronunciationVariants,
   SingleWordTranslation,
-} from "../types/translation";
+} from "@/types/";
+import { createElement } from "react";
 
 /**
  * Renders text with **bold** markdown as JSX

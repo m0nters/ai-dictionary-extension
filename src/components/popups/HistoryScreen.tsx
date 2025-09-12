@@ -1,10 +1,10 @@
+import { BackButton } from "@/components";
+import { useDebounce } from "@/hooks";
+import { HistoryService } from "@/services";
+import { HistoryEntry } from "@/types";
 import { Clock, Globe, Search, Trash2 } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDebounce } from "../hooks";
-import { HistoryService } from "../services";
-import { HistoryEntry } from "../types";
-import { BackButton } from "./BackButton";
 
 interface HistoryScreenProps {
   onSelectEntry: (entry: HistoryEntry) => void;

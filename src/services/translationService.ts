@@ -1,4 +1,4 @@
-import { AVAILABLE_LANGUAGES } from "../constants/availableLanguages";
+import { AVAILABLE_LANGUAGES } from "@/constants/";
 
 // Hardcoded API key
 const API_KEY = "AIzaSyAWVSbmZSU-gR2TqJzifTfQL0AJDACPiFk";

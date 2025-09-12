@@ -1,5 +1,5 @@
-import { HistoryEntry, ParsedTranslation } from "../types";
-import { isPhraseTranslation, isSingleWordTranslation } from "../utils";
+import { HistoryEntry, ParsedTranslation } from "@/types";
+import { isPhraseTranslation, isSingleWordTranslation } from "@/utils";
 
 const HISTORY_STORAGE_KEY = "translationHistory";
 const MAX_HISTORY_ENTRIES = 20;

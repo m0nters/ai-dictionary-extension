@@ -1,17 +1,17 @@
-import { useTranslation } from "react-i18next";
 import {
   MeaningEntry,
   ParsedTranslation,
   PhraseTranslation,
   PronunciationVariants,
   SingleWordTranslation,
-} from "../types/translation";
+} from "@/types/";
 import {
   hasPronunciationVariants,
   isPhraseTranslation,
   isSingleWordTranslation,
   renderTextWithBold,
-} from "../utils/textParser";
+} from "@/utils/";
+import { useTranslation } from "react-i18next";
 
 interface DictionaryRendererProps {
   translation: ParsedTranslation;

@@ -1,14 +1,14 @@
+import { changeLanguage } from "@/config/i18n"; // Initialize i18n
+import { useTranslation } from "@/hooks/";
+import "@/index.css";
+import { parseTranslationContent } from "@/utils/";
 import { X } from "lucide-react";
 import { useEffect } from "react";
 import { createRoot } from "react-dom/client";
 import { useTranslation as useReactI18next } from "react-i18next";
-import { changeLanguage } from "../config/i18n"; // Initialize i18n
-import { useTranslation } from "../hooks/useTranslation";
-import "../index.css";
-import { parseTranslationContent } from "../utils/textParser";
 import { DictionaryRenderer } from "./DictionaryRenderer";
 
-function DictionaryPopup() {
+export function DictionaryPopup() {
   const { result, translateText, setResult, translatedLangCode } =
     useTranslation();
   const { t } = useReactI18next();

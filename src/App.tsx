@@ -10,10 +10,10 @@ import {
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { DropdownMenu } from "./components/DropdownMenu";
-import { HistoryDetailScreen } from "./components/HistoryDetailScreen";
-import { HistoryScreen } from "./components/HistoryScreen";
-import { ToggleSwitch } from "./components/ToggleSwitch";
+import { HistoryDetailScreen } from "./components/popups/HistoryDetailScreen";
+import { HistoryScreen } from "./components/popups/HistoryScreen";
+import { DropdownMenu } from "./components/ui/DropdownMenu";
+import { ToggleSwitch } from "./components/ui/ToggleSwitch";
 import { changeLanguage } from "./config/i18n";
 import {
   AVAILABLE_LANGUAGES,
