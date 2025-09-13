@@ -9,7 +9,7 @@ import { createElement } from "react";
 /**
  * Renders text with **bold** markdown as JSX
  */
-export const renderTextWithBold = (text: string) => {
+const renderBoldText = (text: string) => {
   const parts = text.split(/(\*\*.*?\*\*)/g);
   return parts.map((part, index) => {
     if (part.startsWith("**") && part.endsWith("**")) {
@@ -18,6 +18,28 @@ export const renderTextWithBold = (text: string) => {
     }
     return part;
   });
+};
+
+/**
+ * Renders text in total
+ */
+export const renderText = (text: string) => {
+  // First, split by newlines
+  const lines = text.split("\n");
+
+  return lines.reduce(
+    (acc, line, lineIndex) => {
+      const processedLine = renderBoldText(line);
+      acc.push(...processedLine);
+      // Add line break if not the last line
+      if (lineIndex < lines.length - 1) {
+        acc.push(createElement("br", { key: `br-${lineIndex}` }));
+      }
+
+      return acc;
+    },
+    [] as (string | React.ReactElement)[],
+  );
 };
 
 /**

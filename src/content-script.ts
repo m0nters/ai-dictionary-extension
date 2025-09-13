@@ -599,7 +599,7 @@ document.addEventListener("mouseup", async (e) => {
   }
 
   const selection = window.getSelection();
-  const selectedText = selection?.toString().trim();
+  const selectedText = selection?.toString().replace(/ +/g, " ").trim(); // Normalize spaces
 
   if (selectedText && selectedText.length > 0) {
     const rect = selection?.getRangeAt(0).getBoundingClientRect();
@@ -631,7 +631,7 @@ document.addEventListener("selectionchange", () => {
     }
 
     const selection = window.getSelection();
-    const selectedText = selection?.toString().trim();
+    const selectedText = selection?.toString().replace(/ +/g, " ").trim(); // Normalize spaces
 
     // Only proceed if text is different from what we already have
     if (

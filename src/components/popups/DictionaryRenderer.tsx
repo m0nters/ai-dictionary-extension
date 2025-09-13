@@ -9,7 +9,7 @@ import {
   hasPronunciationVariants,
   isPhraseTranslation,
   isSingleWordTranslation,
-  renderTextWithBold,
+  renderText,
 } from "@/utils/";
 import { useTranslation } from "react-i18next";
 
@@ -152,16 +152,16 @@ function MeaningEntryRenderer({
               className="mb-3 ml-4 rounded-lg border-l-4 border-blue-200 bg-blue-50 p-3"
             >
               <p className="mb-1 text-sm font-medium text-gray-800">
-                {renderTextWithBold(example.text)}
+                {renderText(example.text)}
               </p>
               {example.pronunciation && (
                 <p className="mb-1 text-xs text-gray-600 italic">
-                  {renderTextWithBold(example.pronunciation)}
+                  {renderText(example.pronunciation)}
                 </p>
               )}
               {example.translation && (
                 <p className="text-sm font-normal text-blue-700">
-                  {renderTextWithBold(example.translation)}
+                  {renderText(example.translation)}
                 </p>
               )}
             </div>
@@ -253,7 +253,7 @@ export function DictionaryRenderer({
           <div className="mt-2 flex items-start space-x-2">
             <div className="mt-1 h-6 w-1 flex-shrink-0 rounded-full bg-blue-400"></div>
             <p className="text-base leading-relaxed font-medium text-gray-800">
-              {renderTextWithBold(phraseTranslation.text)}
+              {renderText(phraseTranslation.text)}
             </p>
           </div>
         )}
@@ -261,7 +261,7 @@ export function DictionaryRenderer({
         <div className="mt-2 flex items-start space-x-2">
           <div className="mt-1 h-6 w-1 flex-shrink-0 rounded-full bg-blue-400"></div>
           <p className="text-base leading-relaxed font-medium text-gray-800">
-            {renderTextWithBold(phraseTranslation.translation)}
+            {renderText(phraseTranslation.translation)}
           </p>
         </div>
       </div>
