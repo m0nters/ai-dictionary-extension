@@ -6,7 +6,7 @@ import { CheckCircle, Globe, Info, Languages, Shield, Zap } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
-function ThankYou() {
+export function ThankYou() {
   const [selectedLanguage, setSelectedLanguage] = useState<string>("en");
   const { t, i18n } = useTranslation();
   const [isVisible, setIsVisible] = useState(false);
@@ -199,5 +199,3 @@ function ThankYou() {
     </div>
   );
 }
-
-export default ThankYou;

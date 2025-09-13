@@ -1,11 +1,9 @@
-import { MainScreen } from "@/components/popups/MainScreen";
+import { HistoryDetailScreen, HistoryScreen, MainScreen } from "@/components/";
+import { changeLanguage } from "@/config/";
+import { DEFAULT_LANGUAGE_CODE } from "@/constants/";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
-import { HistoryDetailScreen } from "./components/popups/HistoryDetailScreen";
-import { HistoryScreen } from "./components/popups/HistoryScreen";
-import { changeLanguage } from "./config/i18n";
-import { DEFAULT_LANGUAGE_CODE } from "./constants/availableLanguages";
 
 function App() {
   const { i18n } = useTranslation();
@@ -81,17 +79,36 @@ function App() {
 
     // Save to chrome storage
     chrome.storage.sync.set({ extensionEnabled: enabled }, () => {
+      if (chrome.runtime.lastError) {
+        console.warn(
+          "Failed to save extension enabled state:",
+          chrome.runtime.lastError,
+        );
+        return;
+      }
       // Send message to content script to update state
       chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-        if (tabs[0]?.id) {
-          chrome.tabs
-            .sendMessage(tabs[0].id, {
-              type: "EXTENSION_TOGGLE",
-              enabled: enabled,
-            })
-            .catch(() => {
-              console.error("Content script not loaded");
-            });
+        const activeTab = tabs[0];
+        if (activeTab?.id && activeTab.url) {
+          // Skip special Chrome pages where content scripts can't run
+          const isSpecialPage =
+            activeTab.url.startsWith("chrome://") ||
+            activeTab.url.startsWith("chrome-extension://") ||
+            activeTab.url.startsWith("moz-extension://") ||
+            activeTab.url.startsWith("about:") ||
+            activeTab.url.startsWith("file://");
+
+          if (!isSpecialPage) {
+            chrome.tabs
+              .sendMessage(activeTab.id, {
+                type: "EXTENSION_TOGGLE",
+                enabled: enabled,
+              })
+              .catch(() => {
+                // Silently handle content script not being available
+                // This is normal for pages where content scripts don't run
+              });
+          }
         }
       });
     });
@@ -99,7 +116,7 @@ function App() {
 
   return (
     <MemoryRouter>
-      <div className="relative h-[600px] w-100 overflow-hidden">
+      <div className="relative h-[574px] w-100 overflow-hidden">
         <Routes>
           <Route
             path="/"
