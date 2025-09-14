@@ -1,12 +1,12 @@
 {
   "howToUse": "使い方",
-  "step1": "ウェブページでテキストを選択",
-  "step2": "表示される\"辞書\"ボタンをクリック",
+  "step1": "ウェブページ上のテキストをハイライト",
+  "step2": "表示される「辞書」ボタンをクリック",
   "step3": "発音付きの詳細な翻訳を表示",
-  "dictionaryButton": "辞書",
   "loading": "読み込み中...",
   "noTranslationAvailable": "翻訳がありません",
-  "selectTextToTranslate": "翻訳するページのテキストを選択してください",
+  "selectTextToTranslate": "ページ上のテキストを選択して翻訳",
   "on": "オン",
-  "off": "オフ"
+  "off": "オフ",
+  "cancel": "キャンセル"
 }

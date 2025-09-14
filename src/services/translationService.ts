@@ -228,7 +228,7 @@ export const translateWithGemini = async (
     data.candidates?.[0]?.content?.parts?.[0]?.text ||
     "No translation available";
 
-  console.log(translation);
+  // console.log(translation);
 
   return translation;
 };

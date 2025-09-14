@@ -1,4 +1,5 @@
 import { BackButton } from "@/components";
+import { ConfirmDialog } from "@/components/ui";
 import { useDebounce } from "@/hooks";
 import { HistoryService } from "@/services";
 import { HistoryEntry } from "@/types";
@@ -13,6 +14,7 @@ export function HistoryScreen() {
   const [searchQuery, setSearchQuery] = useState("");
   const [entries, setEntries] = useState<HistoryEntry[]>([]);
   const [loading, setLoading] = useState(true);
+  const [showConfirmDialog, setShowConfirmDialog] = useState(false);
 
   const debouncedSearchQuery = useDebounce(searchQuery, 300);
 
@@ -35,14 +37,16 @@ export function HistoryScreen() {
     loadEntries();
   }, [debouncedSearchQuery]);
 
-  const handleClearHistory = async () => {
-    if (window.confirm(t("history:confirmClearAll"))) {
-      try {
-        await HistoryService.clearHistory();
-        setEntries([]);
-      } catch (error) {
-        console.error("Failed to clear history:", error);
-      }
+  const handleClearHistory = () => {
+    setShowConfirmDialog(true);
+  };
+
+  const handleConfirmClearHistory = async () => {
+    try {
+      await HistoryService.clearHistory();
+      setEntries([]);
+    } catch (error) {
+      console.error("Failed to clear history:", error);
     }
   };
 
@@ -204,6 +208,18 @@ export function HistoryScreen() {
           </div>
         )}
       </div>
+
+      {/* Confirm Dialog */}
+      <ConfirmDialog
+        isOpen={showConfirmDialog}
+        onClose={() => setShowConfirmDialog(false)}
+        onConfirm={handleConfirmClearHistory}
+        title={t("history:confirmClearTitle")}
+        message={t("history:confirmClearAll")}
+        confirmText={t("history:clearAll")}
+        cancelText={t("common:cancel")}
+        variant="danger"
+      />
     </div>
   );
 }

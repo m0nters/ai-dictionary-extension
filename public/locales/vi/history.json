@@ -4,8 +4,9 @@
   "translationDetail": "Chi tiết bản dịch",
   "searchPlaceholder": "Tìm kiếm bản dịch...",
   "loading": "Đang tải lịch sử...",
-  "emptyHistory": "Chưa có lịch sử bản dịch",
+  "emptyHistory": "Chưa có lịch sử dịch",
   "noSearchResults": "Không tìm thấy kết quả",
   "clearAll": "Xóa tất cả",
-  "confirmClearAll": "Bạn có chắc chắn muốn xóa toàn bộ lịch sử bản dịch không? Hành động này không thể hoàn tác."
+  "confirmClearAll": "Bạn có chắc chắn muốn xóa toàn bộ lịch sử dịch không? Hành động này không thể hoàn tác.",
+  "confirmClearTitle": "Xóa lịch sử"
 }

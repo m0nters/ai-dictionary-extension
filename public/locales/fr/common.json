@@ -1,12 +1,12 @@
 {
   "howToUse": "Comment utiliser",
-  "step1": "Sélectionnez du texte sur les pages web",
-  "step2": "Cliquez sur le bouton \"dictionnaire\" qui apparaît",
-  "step3": "Voir la traduction détaillée avec prononciation",
-  "dictionaryButton": "dictionnaire",
+  "step1": "Surligner du texte sur les pages web",
+  "step2": "Cliquer sur le bouton « dictionnaire » qui apparaît",
+  "step3": "Voir la traduction détaillée avec la prononciation",
   "loading": "Chargement...",
   "noTranslationAvailable": "Aucune traduction disponible",
-  "selectTextToTranslate": "Sélectionnez du texte sur la page à traduire",
+  "selectTextToTranslate": "Sélectionner du texte sur la page pour traduire",
   "on": "ACTIVÉ",
-  "off": "DÉSACTIVÉ"
+  "off": "DÉSACTIVÉ",
+  "cancel": "Annuler"
 }

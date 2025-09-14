@@ -1,12 +1,12 @@
 {
-  "howToUse": "Verwendung",
+  "howToUse": "So wird's gemacht",
   "step1": "Text auf Webseiten markieren",
-  "step2": "Auf den erscheinenden \"Wörterbuch\"-Button klicken",
+  "step2": "Auf die Schaltfläche \"Wörterbuch\" klicken, die angezeigt wird",
   "step3": "Detaillierte Übersetzung mit Aussprache anzeigen",
-  "dictionaryButton": "Wörterbuch",
-  "loading": "Wird geladen...",
+  "loading": "Laden...",
   "noTranslationAvailable": "Keine Übersetzung verfügbar",
-  "selectTextToTranslate": "Wählen Sie Text auf der Seite zum Übersetzen aus",
+  "selectTextToTranslate": "Text auf der Seite auswählen, um zu übersetzen",
   "on": "AN",
-  "off": "AUS"
+  "off": "AUS",
+  "cancel": "Abbrechen"
 }

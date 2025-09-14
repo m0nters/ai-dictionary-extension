@@ -1,11 +1,12 @@
 {
   "title": "历史记录",
-  "viewRecentTranslations": "查看最近翻译",
+  "viewRecentTranslations": "查看近期翻译",
   "translationDetail": "翻译详情",
   "searchPlaceholder": "搜索翻译...",
   "loading": "正在加载历史记录...",
-  "emptyHistory": "暂无翻译历史记录",
+  "emptyHistory": "暂无翻译历史",
   "noSearchResults": "未找到结果",
-  "clearAll": "清除所有",
-  "confirmClearAll": "您确定要清除所有翻译历史记录吗？此操作无法撤销。"
+  "clearAll": "全部清除",
+  "confirmClearAll": "您确定要清除所有翻译历史吗？此操作无法撤销。",
+  "confirmClearTitle": "清除历史记录"
 }

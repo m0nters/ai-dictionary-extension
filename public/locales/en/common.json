@@ -3,10 +3,10 @@
   "step1": "Highlight text on web pages",
   "step2": "Click the \"dictionary\" button that appears",
   "step3": "View detailed translation with pronunciation",
-  "dictionaryButton": "dictionary",
   "loading": "Loading...",
   "noTranslationAvailable": "No translation available",
   "selectTextToTranslate": "Select text on the page to translate",
   "on": "ON",
-  "off": "OFF"
+  "off": "OFF",
+  "cancel": "Cancel"
 }

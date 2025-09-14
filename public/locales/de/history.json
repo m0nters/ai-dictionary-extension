@@ -7,5 +7,6 @@
   "emptyHistory": "Noch kein Übersetzungsverlauf",
   "noSearchResults": "Keine Ergebnisse gefunden",
   "clearAll": "Alles löschen",
-  "confirmClearAll": "Sind Sie sicher, dass Sie den gesamten Übersetzungsverlauf löschen möchten? Diese Aktion kann nicht rückgängig gemacht werden."
+  "confirmClearAll": "Sind Sie sicher, dass Sie den gesamten Übersetzungsverlauf löschen möchten? Diese Aktion kann nicht rückgängig gemacht werden.",
+  "confirmClearTitle": "Verlauf löschen"
 }
