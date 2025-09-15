@@ -10,5 +10,8 @@
   "confirmClearAll": "翻訳履歴をすべて削除しますか？この操作は元に戻せません。",
   "confirmClearTitle": "履歴の削除",
   "searchBySourceLanguage": "元の言語で検索：{{language}}",
-  "searchByTargetLanguage": "対象の言語で検索：{{language}}"
+  "searchByTargetLanguage": "対象の言語で検索：{{language}}",
+  "pinEntry": "エントリをピン留め",
+  "unpinEntry": "エントリのピン留めを解除",
+  "removeEntry": "エントリを削除"
 }

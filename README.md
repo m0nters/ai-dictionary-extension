@@ -10,7 +10,7 @@ A Chrome extension that provides instant translation using Google's Gemini AI wh
 - [Supported Languages](#supported-languages)
 - [Development](#development)
 - [Adding Language](#adding-language)
-- [Drawbacks](#drawbacks)
+- [Drawbacks (Developer log)](#drawbacks-developer-log)
 
 ---
 
@@ -21,7 +21,7 @@ A Chrome extension that provides instant translation using Google's Gemini AI wh
 - 🎯 **Smart Detection**: Automatically detects any language
 - 📚 **Dictionary Mode**: For single words, shows pronunciation, meaning, and example sentences just like professional dictionary standards
 - 💬 **Sentence Translation**: For phrases and sentences, provides clean translations
-- 📖 **Translation History**: Automatically saves your last 20 translations with search functionality
+- 📖 **Translation History**: Automatically saves your last 20 translations with search functionality, you can delete or pin any of them as you wish
 - ⚡ **Fast & Lightweight**: Built with React and Vite
 
 ---
@@ -59,7 +59,8 @@ npm run build
 2. **Click the "History" button** to view your recent translations
 3. **Search your history** using the search bar (searches text, translations, and language pairs)
 4. **Click any history entry** to view the full translation details
-5. **Delete entries** by clicking the trash icon next to any translation
+5. **Pin entries** by clicking the pin icon next to any translation
+6. **Delete entries** by clicking the trash icon next to any translation
 
 **Note**: The extension automatically saves your last 20 translations locally in your browser.
 
@@ -141,7 +142,7 @@ Update `README.md` at [Supported Languages](#supported-languages) section
 
 ---
 
-## Some Drawbacks of The App (Developer log)
+## Drawbacks (Developer log)
 
 - The AI model takes a while to load responses. We could switch to a lighter model to speed things up, but this might lead to less accurate results in some cases.
 - Since the output is AI-generated, each response is unique, so the results aren’t consistent every time.

@@ -10,5 +10,8 @@
   "confirmClearAll": "Êtes-vous sûr de vouloir supprimer tout l'historique des traductions ? Cette action est irréversible.",
   "confirmClearTitle": "Effacer l'historique",
   "searchBySourceLanguage": "Rechercher par langue source : {{language}}",
-  "searchByTargetLanguage": "Rechercher par langue cible : {{language}}"
+  "searchByTargetLanguage": "Rechercher par langue cible : {{language}}",
+  "pinEntry": "Épingler l'entrée",
+  "unpinEntry": "Désépingler l'entrée",
+  "removeEntry": "Supprimer l'entrée"
 }

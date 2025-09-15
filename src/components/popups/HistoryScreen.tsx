@@ -5,11 +5,13 @@ import { useDebounce } from "@/hooks";
 import {
   clearHistory,
   getDisplayText,
+  getHistory,
   removeHistoryEntry,
   searchHistory,
+  togglePinEntry,
 } from "@/services";
 import { HistoryEntry } from "@/types";
-import { ArrowRight, Clock, Globe, Search, Trash2, X } from "lucide-react";
+import { ArrowRight, Clock, Globe, Pin, Search, Trash2, X } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
@@ -58,9 +60,21 @@ export function HistoryScreen() {
     event.stopPropagation(); // Prevent triggering the entry selection
     try {
       await removeHistoryEntry(entryId);
-      setEntries((prev) => prev.filter((entry) => entry.id !== entryId));
+      const newHistory = await getHistory();
+      setEntries(newHistory);
     } catch (error) {
       console.error("Failed to remove history entry:", error);
+    }
+  };
+
+  const handlePinEntry = async (entryId: string, event: React.MouseEvent) => {
+    event.stopPropagation(); // Prevent triggering the entry selection
+    try {
+      await togglePinEntry(entryId);
+      const newEntries = await getHistory();
+      setEntries(newEntries);
+    } catch (error) {
+      console.error("Failed to toggle pin status:", error);
     }
   };
 
@@ -101,6 +115,7 @@ export function HistoryScreen() {
     // Check if this operator already exists in the search
     const operatorRegex = new RegExp(`\\b${operatorType}:[a-zA-Z-]+\\b`, "gi");
 
+    // Check if the operator already exists
     if (operatorRegex.test(currentQuery)) return;
 
     // Add new operator
@@ -268,13 +283,36 @@ export function HistoryScreen() {
                       </div>
                     </div>
 
-                    {/* Delete button */}
-                    <button
-                      onClick={(e) => handleRemoveEntry(entry.id, e)}
-                      className="cursor-pointer rounded-lg border border-red-200 bg-red-50 p-3 text-red-500 transition-all duration-200 hover:bg-red-100 hover:shadow-sm"
-                    >
-                      <Trash2 className="h-4 w-4" />
-                    </button>
+                    {/* Action buttons */}
+                    <div className="flex flex-col justify-center space-y-2">
+                      {/* Pin button */}
+                      <button
+                        onClick={(e) => handlePinEntry(entry.id, e)}
+                        className={`cursor-pointer rounded-lg border p-3 transition-all duration-200 hover:shadow-sm ${
+                          entry.pinned
+                            ? "border-amber-200 bg-amber-50 text-amber-600 hover:bg-amber-100"
+                            : "border-gray-300 bg-gray-100 text-gray-500 hover:bg-gray-200"
+                        }`}
+                        title={
+                          entry.pinned
+                            ? t("history:unpinEntry")
+                            : t("history:pinEntry")
+                        }
+                      >
+                        <Pin
+                          className={`h-4 w-4 ${entry.pinned ? "fill-current" : ""}`}
+                        />
+                      </button>
+
+                      {/* Delete button */}
+                      <button
+                        onClick={(e) => handleRemoveEntry(entry.id, e)}
+                        className="cursor-pointer rounded-lg border border-red-200 bg-red-50 p-3 text-red-500 transition-all duration-200 hover:bg-red-100 hover:shadow-sm"
+                        title={t("history:removeEntry")}
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </button>
+                    </div>
                   </div>
                 </div>
               );

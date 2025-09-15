@@ -10,5 +10,8 @@
   "confirmClearAll": "Are you sure you want to clear all translation history? This action cannot be undone.",
   "confirmClearTitle": "Clear History",
   "searchBySourceLanguage": "Search by source language: {{language}}",
-  "searchByTargetLanguage": "Search by target language: {{language}}"
+  "searchByTargetLanguage": "Search by target language: {{language}}",
+  "pinEntry": "Pin entry",
+  "unpinEntry": "Unpin entry",
+  "removeEntry": "Remove entry"
 }

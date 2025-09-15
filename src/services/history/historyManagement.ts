@@ -1,0 +1,85 @@
+import { HistoryEntry, ParsedTranslation } from "@/types";
+import {
+  getHistory,
+  HISTORY_STORAGE_KEY,
+  MAX_HISTORY_ENTRIES,
+  saveHistoryToStorage,
+  sortHistoryEntries,
+} from "./historyStorage";
+
+/**
+ * Save a new translation to history
+ * Maintains maximum of `MAX_HISTORY_ENTRIES` entries, removing oldest when necessary
+ */
+export const saveTranslation = async (
+  translation: ParsedTranslation,
+): Promise<void> => {
+  try {
+    const entries = await getHistory();
+
+    // Create new entry
+    const newEntry: HistoryEntry = {
+      id: crypto.randomUUID(),
+      timestamp: Date.now(),
+      translation,
+    };
+
+    // Add new entry at the beginning (most recent first)
+    const updatedEntries = sortHistoryEntries([newEntry, ...entries]);
+
+    // Keep only the most recent entries
+    const trimmedEntries = updatedEntries.slice(0, MAX_HISTORY_ENTRIES);
+
+    // Save to chrome storage
+    await saveHistoryToStorage(trimmedEntries);
+  } catch (error) {
+    console.error("Failed to save translation to history:", error);
+  }
+};
+
+/**
+ * Clear all history
+ */
+export const clearHistory = async (): Promise<void> => {
+  try {
+    await chrome.storage.sync.remove([HISTORY_STORAGE_KEY]);
+  } catch (error) {
+    console.error("Failed to clear history:", error);
+  }
+};
+
+/**
+ * Remove a specific history entry
+ */
+export const removeHistoryEntry = async (id: string): Promise<void> => {
+  try {
+    const entries = await getHistory();
+    const updatedEntries = entries.filter((entry) => entry.id !== id);
+    await saveHistoryToStorage(updatedEntries);
+  } catch (error) {
+    console.error("Failed to remove history entry:", error);
+  }
+};
+
+/**
+ * Toggle pin status of a history entry
+ */
+export const togglePinEntry = async (id: string): Promise<void> => {
+  try {
+    const entries = await getHistory();
+    const updatedEntries = entries.map((entry) => {
+      if (entry.id === id) {
+        const newPinnedState = !entry.pinned;
+        return {
+          ...entry,
+          pinned: newPinnedState,
+          pinnedAt: newPinnedState ? Date.now() : undefined,
+        };
+      }
+      return entry;
+    });
+    await saveHistoryToStorage(updatedEntries);
+  } catch (error) {
+    console.error("Failed to toggle pin status:", error);
+  }
+};
