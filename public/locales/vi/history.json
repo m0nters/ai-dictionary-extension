@@ -8,5 +8,7 @@
   "noSearchResults": "Không tìm thấy kết quả",
   "clearAll": "Xóa tất cả",
   "confirmClearAll": "Bạn có chắc chắn muốn xóa toàn bộ lịch sử dịch không? Hành động này không thể hoàn tác.",
-  "confirmClearTitle": "Xóa lịch sử"
+  "confirmClearTitle": "Xóa lịch sử",
+  "searchBySourceLanguage": "Tìm kiếm theo ngôn ngữ nguồn: {{language}}",
+  "searchByTargetLanguage": "Tìm kiếm theo ngôn ngữ đích: {{language}}"
 }

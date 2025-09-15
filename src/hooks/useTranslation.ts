@@ -1,5 +1,5 @@
 import { DEFAULT_LANGUAGE_CODE } from "@/constants/";
-import { HistoryService, translateWithGemini } from "@/services/";
+import { saveTranslation, translateWithGemini } from "@/services/";
 import { TranslationResult } from "@/types/";
 import { parseTranslationContent, updatePopupHeight } from "@/utils/";
 import { useEffect, useState } from "react";
@@ -88,7 +88,7 @@ export const useTranslation = () => {
       try {
         const parsedTranslation = parseTranslationContent(translation);
         if (parsedTranslation) {
-          await HistoryService.saveTranslation(parsedTranslation);
+          await saveTranslation(parsedTranslation);
         }
       } catch (historyError) {
         console.error("Failed to save translation to history:", historyError);

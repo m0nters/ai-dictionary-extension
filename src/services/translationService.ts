@@ -1,7 +1,7 @@
 import { AVAILABLE_LANGUAGES } from "@/constants/";
 
 // Hardcoded API key
-const API_KEY = "AIzaSyAWVSbmZSU-gR2TqJzifTfQL0AJDACPiFk";
+const API_KEY = "AIzaSyAbBsq9RX1ilZ4szjbjmXXC5goWfMa9d-k";
 
 /**
  * Gets the language name from language code

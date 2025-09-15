@@ -8,5 +8,7 @@
   "noSearchResults": "Aucun résultat trouvé",
   "clearAll": "Tout effacer",
   "confirmClearAll": "Êtes-vous sûr de vouloir supprimer tout l'historique des traductions ? Cette action est irréversible.",
-  "confirmClearTitle": "Effacer l'historique"
+  "confirmClearTitle": "Effacer l'historique",
+  "searchBySourceLanguage": "Rechercher par langue source : {{language}}",
+  "searchByTargetLanguage": "Rechercher par langue cible : {{language}}"
 }

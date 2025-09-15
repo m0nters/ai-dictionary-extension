@@ -8,5 +8,7 @@
   "noSearchResults": "Keine Ergebnisse gefunden",
   "clearAll": "Alles löschen",
   "confirmClearAll": "Sind Sie sicher, dass Sie den gesamten Übersetzungsverlauf löschen möchten? Diese Aktion kann nicht rückgängig gemacht werden.",
-  "confirmClearTitle": "Verlauf löschen"
+  "confirmClearTitle": "Verlauf löschen",
+  "searchBySourceLanguage": "Nach Ausgangssprache suchen: {{language}}",
+  "searchByTargetLanguage": "Nach Zielsprache suchen: {{language}}"
 }

@@ -1,9 +1,15 @@
 import { BackButton } from "@/components";
 import { ConfirmDialog } from "@/components/ui";
+import { SearchOperatorType } from "@/constants";
 import { useDebounce } from "@/hooks";
-import { HistoryService } from "@/services";
+import {
+  clearHistory,
+  getDisplayText,
+  removeHistoryEntry,
+  searchHistory,
+} from "@/services";
 import { HistoryEntry } from "@/types";
-import { Clock, Globe, Search, Trash2 } from "lucide-react";
+import { ArrowRight, Clock, Globe, Search, Trash2, X } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
@@ -23,8 +29,7 @@ export function HistoryScreen() {
     const loadEntries = async () => {
       setLoading(true);
       try {
-        const historyEntries =
-          await HistoryService.searchHistory(debouncedSearchQuery);
+        const historyEntries = await searchHistory(debouncedSearchQuery);
         setEntries(historyEntries);
       } catch (error) {
         console.error("Failed to load history:", error);
@@ -37,13 +42,9 @@ export function HistoryScreen() {
     loadEntries();
   }, [debouncedSearchQuery]);
 
-  const handleClearHistory = () => {
-    setShowConfirmDialog(true);
-  };
-
   const handleConfirmClearHistory = async () => {
     try {
-      await HistoryService.clearHistory();
+      await clearHistory();
       setEntries([]);
     } catch (error) {
       console.error("Failed to clear history:", error);
@@ -56,7 +57,7 @@ export function HistoryScreen() {
   ) => {
     event.stopPropagation(); // Prevent triggering the entry selection
     try {
-      await HistoryService.removeHistoryEntry(entryId);
+      await removeHistoryEntry(entryId);
       setEntries((prev) => prev.filter((entry) => entry.id !== entryId));
     } catch (error) {
       console.error("Failed to remove history entry:", error);
@@ -68,19 +69,43 @@ export function HistoryScreen() {
     const now = new Date();
     const diffInHours = (now.getTime() - date.getTime()) / (1000 * 60 * 60);
 
+    const timeString = date.toLocaleTimeString(locale, {
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+
     if (diffInHours < 24) {
-      return date.toLocaleTimeString(locale, {
-        hour: "2-digit",
-        minute: "2-digit",
-      });
+      return timeString;
     } else if (diffInHours < 24 * 7) {
-      return date.toLocaleDateString(locale, { weekday: "short" });
+      const weekday = date.toLocaleDateString(locale, { weekday: "short" });
+      return `${weekday} ${timeString}`; // Weekday + time
     } else {
-      return date.toLocaleDateString(locale, {
+      const dateString = date.toLocaleDateString(locale, {
         month: "short",
         day: "numeric",
       });
+      return `${dateString} ${timeString}`; // Month day + time
     }
+  };
+
+  const handleLanguageBadgeClick = (
+    event: React.MouseEvent,
+    operatorType: SearchOperatorType,
+    langCode: string,
+  ) => {
+    event.stopPropagation(); // Prevent triggering the entry click
+
+    const operator = `${operatorType}:${langCode}`;
+    const currentQuery = searchQuery.trim();
+
+    // Check if this operator already exists in the search
+    const operatorRegex = new RegExp(`\\b${operatorType}:[a-zA-Z-]+\\b`, "gi");
+
+    if (operatorRegex.test(currentQuery)) return;
+
+    // Add new operator
+    const newQuery = currentQuery ? `${operator} ${currentQuery}` : operator;
+    setSearchQuery(newQuery);
   };
 
   return (
@@ -100,11 +125,11 @@ export function HistoryScreen() {
 
           {entries.length > 0 && (
             <button
-              onClick={handleClearHistory}
-              className="flex cursor-pointer items-center space-x-1 rounded-lg bg-red-100 px-4 py-2 text-sm text-red-600 transition-colors hover:bg-red-200"
+              onClick={() => setShowConfirmDialog(true)}
+              className="flex cursor-pointer items-center space-x-1 rounded-lg border border-red-200 bg-red-50 px-3 py-1.5 text-xs text-red-500 transition-all duration-200 hover:bg-red-100 hover:shadow-sm"
             >
               <Trash2 className="h-4 w-4" />
-              <span>{t("history:clearAll")}</span>
+              <span className="font-medium">{t("history:clearAll")}</span>
             </button>
           )}
         </div>
@@ -118,8 +143,17 @@ export function HistoryScreen() {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder={t("history:searchPlaceholder")}
-              className="w-full rounded-xl border border-gray-200 bg-white/80 py-2 pr-4 pl-10 text-sm focus:border-indigo-300 focus:ring-2 focus:ring-indigo-100 focus:outline-none"
+              className="w-full rounded-xl border border-gray-200 bg-white/80 py-2 pr-10 pl-10 text-sm focus:border-indigo-300 focus:ring-2 focus:ring-indigo-100 focus:outline-none"
             />
+            {searchQuery && (
+              <button
+                onClick={() => setSearchQuery("")}
+                className="absolute top-1/2 right-3 -translate-y-1/2 cursor-pointer rounded-full p-1 transition-colors hover:bg-gray-100"
+                title="Clear search"
+              >
+                <X className="h-4 w-4 text-gray-400 hover:text-gray-600" />
+              </button>
+            )}
           </div>
         </div>
       </div>
@@ -147,15 +181,13 @@ export function HistoryScreen() {
         ) : (
           <div className="space-y-2">
             {entries.map((entry) => {
-              const displayInfo = HistoryService.getDisplayText(entry);
+              const displayInfo = getDisplayText(entry);
               // Get translated language names using i18n
-              const sourceLangName = t(
-                `languages:${entry.translation.source_language_code}`,
-              );
-              const targetLangName = t(
-                `languages:${entry.translation.translated_language_code}`,
-              );
-              const translatedLanguagePair = `${sourceLangName} → ${targetLangName}`;
+              const sourceLangCode = entry.translation.source_language_code;
+              const translatedLangCode =
+                entry.translation.translated_language_code;
+              const sourceLangName = t(`languages:${sourceLangCode}`);
+              const targetLangName = t(`languages:${translatedLangCode}`);
 
               return (
                 <div
@@ -163,41 +195,83 @@ export function HistoryScreen() {
                   onClick={() =>
                     navigate(`/history/${entry.id}`, { state: { entry } })
                   }
-                  className="group cursor-pointer rounded-xl border border-white/50 bg-white/60 p-4 transition-all duration-200 hover:border-indigo-200 hover:bg-white/80 hover:shadow-md"
+                  className="group cursor-pointer rounded-2xl border border-gray-200 bg-white/60 p-4 transition-all duration-300 hover:border-indigo-300 hover:bg-white/80 hover:shadow-xl hover:shadow-indigo-100/50 active:scale-95"
                 >
                   <div className="flex items-center justify-between">
                     <div className="min-w-0 flex-1">
                       {/* Primary text (word or truncated sentence) */}
-                      <div className="mb-1 flex-wrap items-end space-x-2">
-                        <h3 className="truncate text-base font-medium text-gray-800">
+                      <div className="mb-2">
+                        <h3 className="truncate text-base font-semibold text-gray-800 transition-colors group-hover:text-indigo-800">
                           {displayInfo.primaryText}
                         </h3>
                         {displayInfo.secondaryText && (
-                          <span className="font-mono text-xs text-gray-500">
+                          <p className="font-mono text-sm whitespace-pre-line text-gray-500">
                             {displayInfo.secondaryText}
-                          </span>
+                          </p>
                         )}
                       </div>
 
                       {/* Language pair and timestamp */}
-                      <div className="flex items-center space-x-3 text-xs text-gray-500">
-                        <div className="flex items-center space-x-1">
-                          <Globe className="h-3 w-3" />
-                          <span className="font-medium">
-                            {translatedLanguagePair}
+                      <div className="mt-3 flex flex-col items-start justify-between space-y-1 text-xs">
+                        <div className="flex items-center space-x-2">
+                          {/* Source Language Badge */}
+                          <div
+                            onClick={(e) =>
+                              handleLanguageBadgeClick(
+                                e,
+                                "source",
+                                sourceLangCode,
+                              )
+                            }
+                            className="flex cursor-pointer items-center space-x-1.5 rounded-full border border-blue-300 bg-blue-100 px-2 py-1 transition-all duration-200 hover:bg-blue-200 hover:shadow-sm"
+                            title={t("history:searchBySourceLanguage", {
+                              language: sourceLangName,
+                            })}
+                          >
+                            <Globe className="h-3.5 w-3.5 text-blue-600" />
+                            <span className="font-semibold text-blue-700">
+                              {sourceLangName}
+                            </span>
+                          </div>
+
+                          {/* Arrow */}
+                          <ArrowRight className="h-4 w-4 text-indigo-400" />
+
+                          {/* Target Language Badge */}
+                          <div
+                            onClick={(e) =>
+                              handleLanguageBadgeClick(
+                                e,
+                                "target",
+                                translatedLangCode,
+                              )
+                            }
+                            className="flex cursor-pointer items-center space-x-1.5 rounded-full border border-emerald-300 bg-emerald-100 px-2 py-1 transition-all duration-200 hover:bg-emerald-200 hover:shadow-sm"
+                            title={t("history:searchByTargetLanguage", {
+                              language: targetLangName,
+                            })}
+                          >
+                            <Globe className="h-3.5 w-3.5 text-emerald-600" />
+                            <span className="font-semibold text-emerald-700">
+                              {targetLangName}
+                            </span>
+                          </div>
+                        </div>
+
+                        {/* Timestamp Badge */}
+                        <div className="flex items-center space-x-1.5 rounded-full border border-gray-300 bg-gray-100 px-2 py-1">
+                          <Clock className="h-3.5 w-3.5 text-gray-500" />
+                          <span className="font-medium text-gray-600">
+                            {formatTimestamp(entry.timestamp, i18n.language)}
                           </span>
                         </div>
-                        <span>•</span>
-                        <span>
-                          {formatTimestamp(entry.timestamp, i18n.language)}
-                        </span>
                       </div>
                     </div>
 
                     {/* Delete button */}
                     <button
                       onClick={(e) => handleRemoveEntry(entry.id, e)}
-                      className="cursor-pointer rounded-lg bg-red-100 p-2 text-red-600 transition-colors hover:bg-red-200 hover:text-red-700"
+                      className="cursor-pointer rounded-lg border border-red-200 bg-red-50 p-3 text-red-500 transition-all duration-200 hover:bg-red-100 hover:shadow-sm"
                     >
                       <Trash2 className="h-4 w-4" />
                     </button>
