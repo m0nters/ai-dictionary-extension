@@ -5,7 +5,6 @@ import { useDebounce } from "@/hooks";
 import {
   clearHistory,
   getDisplayText,
-  getHistory,
   removeHistoryEntry,
   searchHistory,
   togglePinEntry,
@@ -28,21 +27,21 @@ export function HistoryScreen() {
 
   // Load and search history entries
   useEffect(() => {
-    const loadEntries = async () => {
-      setLoading(true);
-      try {
-        const historyEntries = await searchHistory(debouncedSearchQuery);
-        setEntries(historyEntries);
-      } catch (error) {
-        console.error("Failed to load history:", error);
-        setEntries([]);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    loadEntries();
+    displayResultedEntry();
   }, [debouncedSearchQuery]);
+
+  const displayResultedEntry = async () => {
+    setLoading(true);
+    try {
+      const historyEntries = await searchHistory(debouncedSearchQuery);
+      setEntries(historyEntries);
+    } catch (error) {
+      console.error("Failed to load history:", error);
+      setEntries([]);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleConfirmClearHistory = async () => {
     try {
@@ -60,8 +59,7 @@ export function HistoryScreen() {
     event.stopPropagation(); // Prevent triggering the entry selection
     try {
       await removeHistoryEntry(entryId);
-      const newHistory = await getHistory();
-      setEntries(newHistory);
+      await displayResultedEntry();
     } catch (error) {
       console.error("Failed to remove history entry:", error);
     }
@@ -71,8 +69,7 @@ export function HistoryScreen() {
     event.stopPropagation(); // Prevent triggering the entry selection
     try {
       await togglePinEntry(entryId);
-      const newEntries = await getHistory();
-      setEntries(newEntries);
+      await displayResultedEntry();
     } catch (error) {
       console.error("Failed to toggle pin status:", error);
     }

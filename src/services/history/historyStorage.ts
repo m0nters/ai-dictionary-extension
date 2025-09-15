@@ -4,7 +4,7 @@ export const HISTORY_STORAGE_KEY = "translationHistory";
 export const MAX_HISTORY_ENTRIES = 20;
 
 /**
- * IMPORTANT RULE: FOR ANY SAVING HISTORY OPERATION, GO THROUGH THIS SORT FIRST!
+ * IMPORTANT RULE: EVERY SAVING HISTORY OPERATION HAS TO GO THROUGH THIS SORT FIRST!
  * Meaning we have to ensure the storage always saves the sorted list
  */
 export const sortHistoryEntries = (entries: HistoryEntry[]) => {
@@ -37,7 +37,7 @@ export const saveHistoryToStorage = async (entries: HistoryEntry[]) => {
 };
 
 /**
- * Retrieve all history entries, sorted with pinned entries first
+ * Retrieve all history entries
  */
 export const getHistory = async (): Promise<HistoryEntry[]> => {
   try {
