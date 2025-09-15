@@ -338,8 +338,8 @@ export function HistoryScreen() {
         isOpen={showConfirmDialog}
         onClose={() => setShowConfirmDialog(false)}
         onConfirm={handleConfirmClearHistory}
-        title={t("history:confirmClearTitle")}
-        message={t("history:confirmClearAll")}
+        title={t("history:confirmClearAllTitle")}
+        message={t("history:confirmClearAllMessage")}
         confirmText={t("history:clearAll")}
         cancelText={t("common:cancel")}
         variant="danger"
