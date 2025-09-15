@@ -210,6 +210,7 @@ export function HistoryScreen() {
                   className="group cursor-pointer rounded-2xl border border-gray-200 bg-white/60 p-4 transition-all duration-300 hover:border-indigo-300 hover:bg-white/80 hover:shadow-xl hover:shadow-indigo-100/50 active:scale-95"
                 >
                   <div className="flex items-center justify-between">
+                    {/* Main info section */}
                     <div className="min-w-0 flex-1">
                       {/* Primary text (word or truncated sentence) */}
                       <div className="mb-2">
@@ -271,7 +272,21 @@ export function HistoryScreen() {
                         </div>
 
                         {/* Timestamp Badge */}
-                        <div className="flex items-center space-x-1.5 rounded-full border border-gray-300 bg-gray-100 px-2 py-1">
+                        <div
+                          className="flex cursor-help items-center space-x-1.5 rounded-full border border-gray-300 bg-gray-100 px-2 py-1"
+                          title={new Date(entry.timestamp).toLocaleString(
+                            i18n.language,
+                            {
+                              weekday: "long",
+                              year: "numeric",
+                              month: "long",
+                              day: "numeric",
+                              hour: "2-digit",
+                              minute: "2-digit",
+                              second: "2-digit",
+                            },
+                          )}
+                        >
                           <Clock className="h-3.5 w-3.5 text-gray-500" />
                           <span className="font-medium text-gray-600">
                             {formatTimestamp(entry.timestamp, i18n.language)}
@@ -281,7 +296,7 @@ export function HistoryScreen() {
                     </div>
 
                     {/* Action buttons */}
-                    <div className="flex flex-col justify-center space-y-2">
+                    <div className="flex flex-col space-y-4">
                       {/* Pin button */}
                       <button
                         onClick={(e) => handlePinEntry(entry.id, e)}
