@@ -8,5 +8,10 @@
   "selectTextToTranslate": "Chọn văn bản trên trang để dịch",
   "on": "BẬT",
   "off": "TẮT",
-  "cancel": "Hủy"
+  "cancel": "Hủy",
+  "dropdown": {
+    "search": "Tìm kiếm...",
+    "noOptionsFound": "Không tìm thấy tùy chọn nào",
+    "selectOption": "Chọn..."
+  }
 }

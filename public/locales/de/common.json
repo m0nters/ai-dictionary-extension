@@ -8,5 +8,10 @@
   "selectTextToTranslate": "Text auf der Seite auswählen, um zu übersetzen",
   "on": "AN",
   "off": "AUS",
-  "cancel": "Abbrechen"
+  "cancel": "Abbrechen",
+  "dropdown": {
+    "search": "Suchen...",
+    "noOptionsFound": "Keine Optionen gefunden",
+    "selectOption": "Auswählen..."
+  }
 }

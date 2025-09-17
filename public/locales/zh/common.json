@@ -8,5 +8,10 @@
   "selectTextToTranslate": "选择页面上的文本进行翻译",
   "on": "开启",
   "off": "关闭",
-  "cancel": "取消"
+  "cancel": "取消",
+  "dropdown": {
+    "search": "搜索...",
+    "noOptionsFound": "未找到选项",
+    "selectOption": "选择..."
+  }
 }

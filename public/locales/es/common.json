@@ -8,5 +8,10 @@
   "selectTextToTranslate": "Selecciona texto en la página para traducir",
   "on": "ON",
   "off": "OFF",
-  "cancel": "Cancelar"
+  "cancel": "Cancelar",
+  "dropdown": {
+    "search": "Buscar...",
+    "noOptionsFound": "No se encontraron opciones",
+    "selectOption": "Seleccionar..."
+  }
 }

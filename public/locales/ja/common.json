@@ -8,5 +8,10 @@
   "selectTextToTranslate": "ページ上のテキストを選択して翻訳",
   "on": "オン",
   "off": "オフ",
-  "cancel": "キャンセル"
+  "cancel": "キャンセル",
+  "dropdown": {
+    "search": "検索...",
+    "noOptionsFound": "オプションが見つかりません",
+    "selectOption": "選択..."
+  }
 }

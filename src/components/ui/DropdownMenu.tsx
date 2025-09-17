@@ -1,5 +1,6 @@
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, Search } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 interface DropdownOption {
   value: string;
@@ -13,21 +14,39 @@ interface DropdownMenuProps {
   placeholder?: string;
   className?: string;
   focusColor?: string;
+  canSearch?: boolean;
 }
 
 export function DropdownMenu({
   value,
   options,
   onChange,
-  placeholder = "Select...",
+  placeholder,
   className = "",
   focusColor = "indigo",
+  canSearch = false,
 }: DropdownMenuProps) {
+  const { t } = useTranslation("common");
   const [isOpen, setIsOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
   const dropdownRef = useRef<HTMLDivElement>(null);
   const optionsRef = useRef<HTMLDivElement>(null);
+  const searchInputRef = useRef<HTMLInputElement>(null);
 
-  const selectedOption = options.find((option) => option.value === value);
+  // Use i18n fallback if no placeholder provided
+  const displayPlaceholder = placeholder || t("dropdown.selectOption");
+
+  // Sort options by label
+  const sortedOptions = [...options].sort((a, b) =>
+    a.label.localeCompare(b.label),
+  );
+
+  // Filter options based on search term
+  const filteredOptions = sortedOptions.filter((option) =>
+    option.label.toLowerCase().includes(searchTerm.toLowerCase()),
+  );
+
+  const selectedOption = sortedOptions.find((option) => option.value === value);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -48,10 +67,24 @@ export function DropdownMenu({
   const handleOptionClick = (optionValue: string) => {
     onChange(optionValue);
     setIsOpen(false);
+    setSearchTerm(""); // Clear search when option is selected
   };
 
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
+    if (!isOpen && canSearch) {
+      // Focus search input when opening dropdown
+      setTimeout(() => {
+        searchInputRef.current?.focus();
+      }, 100);
+    } else {
+      // Clear search when closing dropdown
+      setSearchTerm("");
+    }
+  };
+
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(e.target.value);
   };
 
   const getFocusColorClasses = (color: string) => {
@@ -74,7 +107,7 @@ export function DropdownMenu({
       >
         <div className="flex items-center justify-between">
           <span className="text-gray-900">
-            {selectedOption ? selectedOption.label : placeholder}
+            {selectedOption ? selectedOption.label : displayPlaceholder}
           </span>
           <ChevronDown
             className={`h-5 w-5 text-gray-400 transition-transform duration-300 ease-out ${
@@ -95,31 +128,55 @@ export function DropdownMenu({
           transformOrigin: "top center",
         }}
       >
+        {/* Search Bar */}
+        {canSearch && (
+          <div className="border-b border-gray-100 p-2">
+            <div className="relative">
+              <Search className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-gray-400" />
+              <input
+                ref={searchInputRef}
+                type="text"
+                value={searchTerm}
+                onChange={handleSearchChange}
+                placeholder={t("dropdown.search")}
+                className="w-full rounded-lg border border-gray-200 py-2 pr-3 pl-9 text-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 focus:outline-none"
+                onClick={(e) => e.stopPropagation()}
+              />
+            </div>
+          </div>
+        )}
+
         <div
           ref={optionsRef}
           className={`max-h-60 overflow-y-auto transition-all duration-300 ease-out ${
             isOpen ? "animate-slideDown" : "animate-slideUp"
           }`}
         >
-          {options.map((option, index) => (
-            <button
-              key={option.value}
-              type="button"
-              onClick={() => handleOptionClick(option.value)}
-              className={`w-full px-3 py-2.5 text-left text-sm transition-all duration-150 hover:bg-gray-50 focus:bg-gray-50 focus:outline-none ${
-                option.value === value
-                  ? `bg-${focusColor}-50 text-${focusColor}-700 font-medium`
-                  : "text-gray-900"
-              } ${index === 0 ? "rounded-t-xl" : ""} ${
-                index === options.length - 1 ? "rounded-b-xl" : ""
-              }`}
-              style={{
-                animationDelay: isOpen ? `${index * 20}ms` : "0ms",
-              }}
-            >
-              {option.label}
-            </button>
-          ))}
+          {filteredOptions.length === 0 ? (
+            <div className="px-3 py-2.5 text-sm text-gray-500">
+              {t("dropdown.noOptionsFound")}
+            </div>
+          ) : (
+            filteredOptions.map((option, index) => (
+              <button
+                key={option.value}
+                type="button"
+                onClick={() => handleOptionClick(option.value)}
+                className={`w-full px-3 py-2.5 text-left text-sm transition-all duration-150 hover:bg-gray-50 focus:bg-gray-50 focus:outline-none ${
+                  option.value === value
+                    ? `bg-${focusColor}-50 text-${focusColor}-700 font-medium`
+                    : "text-gray-900"
+                } ${index === 0 && !canSearch ? "rounded-t-xl" : ""} ${
+                  index === filteredOptions.length - 1 ? "rounded-b-xl" : ""
+                }`}
+                style={{
+                  animationDelay: isOpen ? `${index * 20}ms` : "0ms",
+                }}
+              >
+                {option.label}
+              </button>
+            ))
+          )}
         </div>
       </div>
     </div>

@@ -8,5 +8,10 @@
   "selectTextToTranslate": "페이지에서 번역할 텍스트를 선택",
   "on": "켜기",
   "off": "끄기",
-  "cancel": "취소"
+  "cancel": "취소",
+  "dropdown": {
+    "search": "검색...",
+    "noOptionsFound": "옵션을 찾을 수 없습니다",
+    "selectOption": "선택..."
+  }
 }
