@@ -76,7 +76,12 @@ export const parseTranslationContent = (content: string): ParsedTranslation => {
   try {
     // Extract JSON from the response (in case it's wrapped in markdown)
     const jsonMatch = content.match(/```json\s*([\s\S]*?)\s*```/);
-    const jsonString = jsonMatch ? jsonMatch[1] : content;
+    let jsonString = jsonMatch ? jsonMatch[1] : content;
+
+    // Clean up trailing commas that make JSON invalid
+    jsonString = jsonString
+      .replace(/,(\s*[}\]])/g, "$1") // Remove comma before } or ]
+      .replace(/,(\s*\n\s*[}\]])/g, "$1"); // Handle multi-line cases
 
     const parsed = JSON.parse(jsonString);
 
