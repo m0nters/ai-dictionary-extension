@@ -79,16 +79,26 @@ export const parseTranslationContent = (content: string): ParsedTranslation => {
     let jsonString = jsonMatch ? jsonMatch[1] : content;
 
     // Clean up trailing commas that make JSON invalid
+    // Without this parsing code, sometimes AI generates shit like this and make
+    // the whole things fucked!
+    /* 
+        "meanings": [
+        {
+          ...
+          "synonyms": ["individual", "human being", "being", "soul", "man", "woman"],      <-- this comma here is diabolical, normal `JSON.parse()` **CAN'T** handle it!
+        },
+        {
+          ...
+          "synonyms": ["human", "mankind", "humanity", "homo sapiens"],     <-- similarly
+        },
+        ...
+      ]
+    */
     jsonString = jsonString
       .replace(/,(\s*[}\]])/g, "$1") // Remove comma before } or ]
       .replace(/,(\s*\n\s*[}\]])/g, "$1"); // Handle multi-line cases
 
     const parsed = JSON.parse(jsonString);
-
-    // Use the AI-provided source language directly, with fallback if missing
-    if (!parsed.source_language_code) {
-      parsed.source_language_code = "unknown";
-    }
 
     // Validate the structure
     if (parsed.word) {
@@ -96,7 +106,9 @@ export const parseTranslationContent = (content: string): ParsedTranslation => {
     } else if (parsed.text) {
       return parsed as PhraseTranslation;
     } else {
-      throw new Error("Invalid JSON structure - missing required fields");
+      throw new Error(
+        "Invalid JSON structure - can't parse this into either single word or phrase",
+      );
     }
   } catch (error) {
     console.error("Failed to parse JSON translation:", error);
@@ -104,8 +116,8 @@ export const parseTranslationContent = (content: string): ParsedTranslation => {
 
     // Fallback: create a simple phrase translation
     return {
-      text: content.substring(0, 100) + (content.length > 100 ? "..." : ""),
-      translation: content,
+      text: "Failed to parse translation",
+      translation: "Failed to parse translation",
       source_language_code: "unknown",
     } as PhraseTranslation;
   }

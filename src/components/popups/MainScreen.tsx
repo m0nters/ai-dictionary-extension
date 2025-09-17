@@ -1,12 +1,14 @@
 import { DropdownMenu, ToggleSwitch } from "@/components";
-import { AVAILABLE_LANGUAGES } from "@/constants/";
+import {
+  SUPPORTED_APP_LANGUAGE,
+  SUPPORTED_TRANSLATED_LANGUAGE,
+} from "@/constants/";
 import {
   Check,
   ChevronRight,
   Clock,
   Globe,
   Info,
-  Languages,
   MousePointer2,
   Settings,
 } from "lucide-react";
@@ -16,8 +18,8 @@ import { useNavigate } from "react-router-dom";
 interface MainScreenProps {
   appLangCode: string;
   translatedLangCode: string;
-  onChangeTranslatedLanguage: (value: string) => void;
   onChangeAppLanguage: (value: string) => void;
+  onChangeTranslatedLanguage: (value: string) => void;
   extensionEnabled: boolean;
   onExtensionToggle: (enabled: boolean) => void;
   saved: boolean;
@@ -26,8 +28,8 @@ interface MainScreenProps {
 export function MainScreen({
   appLangCode,
   translatedLangCode,
-  onChangeTranslatedLanguage,
   onChangeAppLanguage,
+  onChangeTranslatedLanguage,
   extensionEnabled,
   onExtensionToggle,
   saved,
@@ -47,9 +49,7 @@ export function MainScreen({
       <div className="relative z-10 p-6 pb-4">
         <div className="mb-6 flex items-center justify-between">
           <div className="flex items-center space-x-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 shadow-lg">
-              <Languages className="h-6 w-6 text-white" />
-            </div>
+            <img src="/logo/logo.png" alt="App Logo" className="h-16 w-16" />
             <div>
               <h1 className="bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-xl font-bold text-transparent">
                 {t("popup:appTitle")}
@@ -114,7 +114,7 @@ export function MainScreen({
 
             <DropdownMenu
               value={appLangCode}
-              options={AVAILABLE_LANGUAGES.map((lang) => ({
+              options={SUPPORTED_APP_LANGUAGE.map((lang) => ({
                 value: lang.code,
                 label: lang.nativeName,
               }))}
@@ -140,9 +140,9 @@ export function MainScreen({
 
             <DropdownMenu
               value={translatedLangCode}
-              options={AVAILABLE_LANGUAGES.map((lang) => ({
+              options={SUPPORTED_TRANSLATED_LANGUAGE.map((lang) => ({
                 value: lang.code,
-                label: t(`languages:${lang.code}`),
+                label: `${t(`languages:${lang.code}`)} (${lang.nativeName})`,
               }))}
               onChange={onChangeTranslatedLanguage}
               focusColor="indigo"

@@ -38,7 +38,16 @@ export const useTranslation = () => {
     });
 
     try {
-      const translation = await translateWithGemini(text, translatedLangCode);
+      // Get the most current language code from storage to avoid stale state issues
+      const { translatedLangCode: currentLangCode } =
+        await chrome.storage.sync.get(["translatedLangCode"]);
+      const currentTranslatedLangCode =
+        currentLangCode || DEFAULT_LANGUAGE_CODE;
+
+      const translation = await translateWithGemini(
+        text,
+        currentTranslatedLangCode,
+      );
 
       setResult((prev) => ({
         ...prev,

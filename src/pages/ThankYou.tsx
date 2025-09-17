@@ -1,8 +1,8 @@
 import { DropdownMenu } from "@/components/";
 import { changeLanguage } from "@/config/i18n";
-import { AVAILABLE_LANGUAGES } from "@/constants/";
+import { SUPPORTED_APP_LANGUAGE } from "@/constants";
 import { SiFacebook, SiGithub } from "@icons-pack/react-simple-icons";
-import { CheckCircle, Globe, Info, Languages, Shield, Zap } from "lucide-react";
+import { CheckCircle, Globe, Info, Shield, Zap } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
@@ -24,7 +24,7 @@ export function ThankYou() {
   };
 
   // Create language options for dropdown
-  const languageOptions = AVAILABLE_LANGUAGES.map((lang) => ({
+  const languageOptions = SUPPORTED_APP_LANGUAGE.map((lang) => ({
     value: lang.code,
     label: lang.nativeName,
   }));
@@ -96,10 +96,8 @@ export function ThankYou() {
         }`}
       >
         {/* Header */}
-        <div className="mb-8 text-center">
-          <div className="mb-6 inline-flex h-20 w-20 items-center justify-center rounded-full border-2 border-indigo-200 bg-white shadow-lg">
-            <Languages className="h-10 w-10 text-indigo-600" />
-          </div>
+        <div className="mb-8 flex flex-col items-center justify-center text-center">
+          <img src="/logo/logo.png" alt="App Logo" className="h-36 w-36" />
 
           <h1 className="mb-4 text-5xl font-bold text-gray-800 md:text-6xl">
             <span className="bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">

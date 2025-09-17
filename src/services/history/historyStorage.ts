@@ -1,7 +1,7 @@
 import { HistoryEntry } from "@/types";
 
 export const HISTORY_STORAGE_KEY = "translationHistory";
-export const MAX_HISTORY_ENTRIES = 50;
+export const MAX_HISTORY_ENTRIES = 5;
 
 /**
  * IMPORTANT RULE: EVERY SAVING HISTORY OPERATION HAS TO GO THROUGH THIS SORT FIRST!

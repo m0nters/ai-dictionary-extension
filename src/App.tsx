@@ -124,8 +124,8 @@ function App() {
               <MainScreen
                 appLangCode={appLangCode}
                 translatedLangCode={translatedLangCode}
-                onChangeTranslatedLanguage={handleChangeTranslatedLanguage}
                 onChangeAppLanguage={handleChangeAppLanguage}
+                onChangeTranslatedLanguage={handleChangeTranslatedLanguage}
                 extensionEnabled={extensionEnabled}
                 onExtensionToggle={handleExtensionToggle}
                 saved={saved}

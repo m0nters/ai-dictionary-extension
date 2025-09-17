@@ -1,2 +1,2 @@
-export * from "./availableLanguages";
+export * from "./languages";
 export * from "./searchOperators";

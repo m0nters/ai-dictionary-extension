@@ -98,7 +98,7 @@ npm run build
 
 ## Adding Language
 
-Adding a new language to the extension requires updating several areas. Here's a step-by-step guide:
+Adding a new (app) language to the extension requires updating several areas. Here's a step-by-step guide:
 
 ### 1. Create Language Locale Files For i18n
 
@@ -126,9 +126,9 @@ Note that the validation script will automatically detect your new language fold
 
 ### 2. Update Application Constants
 
-Add the new language to constant `AVAILABLE_LANGUAGES` in `src/constants/availableLanguages.ts`
+Add the new language to constant `SUPPORTED_APP_LANGUAGE` in `src/constants/languages.ts`
 
-### 3. Update Synonyms Support
+### 3. Update Synonyms Labels
 
 Add the new language and its translation to constant `SYNONYMS` in `src/components/DictionaryRenderer.tsx`
 

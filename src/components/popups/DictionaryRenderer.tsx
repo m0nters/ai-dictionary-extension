@@ -61,7 +61,7 @@ function SourceLanguageRenderer({
           {t("popup:detectedLanguage")}
         </div>
         <div className="text-sm font-medium text-blue-600">
-          {t(`languages:${sourceLangCode}`)}
+          {t(`languages:${sourceLangCode}`) || sourceLangCode}
         </div>
       </div>
     </div>
