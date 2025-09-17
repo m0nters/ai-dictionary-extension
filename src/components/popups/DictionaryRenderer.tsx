@@ -15,7 +15,7 @@ import { useTranslation } from "react-i18next";
 
 interface DictionaryRendererProps {
   translation: ParsedTranslation;
-  translatedLangCode?: string;
+  translatedLangCode?: string; // this is only for get synonyms label
   isHistoryDetailView?: boolean;
 }
 
@@ -123,7 +123,7 @@ function MeaningEntryRenderer({
 }: {
   entry: MeaningEntry;
   word: string;
-  translatedLangCode?: string;
+  translatedLangCode?: string; // this is only for get synonyms label
 }) {
   return (
     <div className="mb-4">

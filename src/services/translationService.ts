@@ -13,6 +13,7 @@ export const getLanguageEnglishName = (code: string): string => {
 
 /**
  * Generates the translation prompt for the Gemini API
+ * Note that the output will have to be parsed later since there's will text like ```json ... ``` in the response (raw text)
  */
 export const generateTranslationPrompt = (
   text: string,

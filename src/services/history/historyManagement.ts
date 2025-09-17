@@ -10,6 +10,10 @@ import {
 /**
  * Save a new translation to history
  * Maintains maximum of `MAX_HISTORY_ENTRIES` entries, removing oldest when necessary
+ *
+ * NOTE: actually because Chrome storage has a quota limit per item (approximately
+ * 8KB for chrome.storage.sync) so we won't get above 10 entries,
+ * this is just for a symbol.
  */
 export const saveTranslation = async (
   translation: ParsedTranslation,

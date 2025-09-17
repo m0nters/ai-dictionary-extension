@@ -26,57 +26,19 @@ export const useTranslation = () => {
     });
   }, []);
 
-  // Update popup height whenever result changes
-  useEffect(() => {
-    updatePopupHeight();
-  }, [result]);
-
-  // Additional height update after DOM changes are complete
-  useEffect(() => {
-    if (result.translation && !result.loading) {
-      // Wait a bit longer for all DOM updates to complete
-      const timer = setTimeout(() => {
-        updatePopupHeight();
-      }, 200);
-
-      return () => clearTimeout(timer);
-    }
-  }, [result.translation, result.loading]);
-
   /**
    * Translates text using the current translated language
    */
   const translateText = async (text: string) => {
-    // Get the latest translated language and app language from storage to avoid closure issues
-    const storageData = await new Promise<{
-      translatedLangCode?: string;
-    }>((resolve) => {
-      chrome.storage.sync.get(["translatedLangCode"], (data) => {
-        resolve(data);
-      });
-    });
-
-    const currentTranslatedLangCode =
-      storageData.translatedLangCode || DEFAULT_LANGUAGE_CODE;
-
-    // Update state if it's different
-    if (currentTranslatedLangCode !== translatedLangCode) {
-      setTranslatedLangCode(currentTranslatedLangCode);
-    }
-
-    setResult((prev) => ({
-      ...prev,
+    setResult({
       text,
       translation: "",
       loading: true,
       error: undefined,
-    }));
+    });
 
     try {
-      const translation = await translateWithGemini(
-        text,
-        currentTranslatedLangCode,
-      );
+      const translation = await translateWithGemini(text, translatedLangCode);
 
       setResult((prev) => ({
         ...prev,
@@ -113,6 +75,5 @@ export const useTranslation = () => {
     result,
     translatedLangCode,
     translateText,
-    setResult,
   };
 };

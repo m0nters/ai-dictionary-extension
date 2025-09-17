@@ -1,4 +1,4 @@
-import { changeLanguage } from "@/config/";
+import { changeLanguage } from "@/config";
 import { useTranslation } from "@/hooks/";
 import "@/index.css";
 import { parseTranslationContent } from "@/utils/";
@@ -9,38 +9,16 @@ import { useTranslation as useReactI18next } from "react-i18next";
 import { DictionaryRenderer } from "./DictionaryRenderer";
 
 export function DictionaryPopup() {
-  const { result, translateText, setResult, translatedLangCode } =
-    useTranslation();
+  const { result, translateText, translatedLangCode } = useTranslation();
   const { t } = useReactI18next();
 
   useEffect(() => {
     // Listen for messages from content script
     const handleMessage = (event: MessageEvent) => {
       if (event.data.type === "TRANSLATE_TEXT") {
-        // If app language is provided, change i18n language first
-        if (event.data.appLanguage) {
-          changeLanguage(event.data.appLanguage).then(() => {
-            // After language change, set the translation state
-            setResult((prev) => ({
-              ...prev,
-              text: event.data.text,
-              translation: "",
-              loading: true,
-              error: undefined,
-            }));
-            translateText(event.data.text);
-          });
-        } else {
-          // No app language provided, proceed normally
-          setResult((prev) => ({
-            ...prev,
-            text: event.data.text,
-            translation: "",
-            loading: true,
-            error: undefined,
-          }));
+        changeLanguage(event.data.appLanguage).then(() => {
           translateText(event.data.text);
-        }
+        });
       }
     };
 
@@ -52,7 +30,7 @@ export function DictionaryPopup() {
     return () => {
       window.removeEventListener("message", handleMessage);
     };
-  }, [translateText, setResult]);
+  }, [translateText]);
 
   const closePopup = () => {
     window.parent.postMessage({ type: "CLOSE_POPUP" }, "*");
