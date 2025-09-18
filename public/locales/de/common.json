@@ -9,6 +9,8 @@
   "on": "AN",
   "off": "AUS",
   "cancel": "Abbrechen",
+  "speak": "Sprechen",
+  "stop": "Stoppen",
   "dropdown": {
     "search": "Suchen...",
     "noOptionsFound": "Keine Optionen gefunden",

@@ -9,6 +9,8 @@
   "on": "ACTIVÉ",
   "off": "DÉSACTIVÉ",
   "cancel": "Annuler",
+  "speak": "Parler",
+  "stop": "Arrêter",
   "dropdown": {
     "search": "Rechercher...",
     "noOptionsFound": "Aucune option trouvée",

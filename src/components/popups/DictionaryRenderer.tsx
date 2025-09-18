@@ -100,7 +100,7 @@ function PronunciationRenderer({
           const ttsCode = variant.tts_code;
 
           return (
-            <span key={key} className="inline-flex items-center gap-1">
+            <span key={key} className="inline-flex items-end gap-1">
               <span
                 className={`rounded-full px-2 py-0.5 text-xs font-semibold ${
                   styleMap[key as keyof PronunciationVariants] ||
@@ -110,7 +110,11 @@ function PronunciationRenderer({
                 {key}
               </span>
               <span className="text-base text-gray-600">{ipaText}</span>
-              <SpeakerButton word={word} ttsCode={ttsCode} />
+              <SpeakerButton
+                word={word}
+                ttsCode={ttsCode}
+                className="translate-y-1"
+              />
             </span>
           );
         })}
@@ -119,9 +123,13 @@ function PronunciationRenderer({
   }
 
   return (
-    <span className="ml-2 inline-flex items-center gap-1">
+    <span className="ml-2 inline-flex items-end gap-1">
       <span className="text-base text-gray-600">{pronunciation as string}</span>
-      <SpeakerButton word={word} ttsCode={mainTtsCode} />
+      <SpeakerButton
+        word={word}
+        ttsCode={mainTtsCode}
+        className="translate-y-1"
+      />
     </span>
   );
 }
@@ -170,13 +178,14 @@ function MeaningEntryRenderer({
               key={exampleIndex}
               className="mb-3 ml-4 rounded-lg border-l-4 border-blue-200 bg-blue-50 p-3"
             >
-              <div className="mb-1 flex items-center gap-1">
+              <div className="mb-1 flex items-start gap-1">
                 <p className="text-sm font-medium text-gray-800">
                   {renderText(example.text)}
                 </p>
                 <SpeakerButton
                   word={example.text.replace(/\*\*/g, "")}
                   ttsCode={mainTtsCode}
+                  className="-translate-y-1"
                 />
               </div>
               {example.pronunciation && (

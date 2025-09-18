@@ -9,6 +9,8 @@
   "on": "开启",
   "off": "关闭",
   "cancel": "取消",
+  "speak": "说话",
+  "stop": "停止",
   "dropdown": {
     "search": "搜索...",
     "noOptionsFound": "未找到选项",

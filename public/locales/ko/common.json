@@ -9,6 +9,8 @@
   "on": "켜기",
   "off": "끄기",
   "cancel": "취소",
+  "speak": "말하기",
+  "stop": "멈춤",
   "dropdown": {
     "search": "검색...",
     "noOptionsFound": "옵션을 찾을 수 없습니다",

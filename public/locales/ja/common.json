@@ -9,6 +9,8 @@
   "on": "オン",
   "off": "オフ",
   "cancel": "キャンセル",
+  "speak": "話す",
+  "stop": "停止",
   "dropdown": {
     "search": "検索...",
     "noOptionsFound": "オプションが見つかりません",

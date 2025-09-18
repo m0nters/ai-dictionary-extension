@@ -9,6 +9,8 @@
   "on": "ON",
   "off": "OFF",
   "cancel": "Cancel",
+  "speak": "Speak",
+  "stop": "Stop",
   "dropdown": {
     "search": "Search...",
     "noOptionsFound": "No options found",
