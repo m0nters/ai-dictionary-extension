@@ -5,9 +5,14 @@ export interface TranslationResult {
   error?: string;
 }
 
+export interface PronunciationDetail {
+  ipa: string;
+  tts_code: string;
+}
+
 export interface PronunciationVariants {
-  UK?: string;
-  US?: string;
+  UK?: PronunciationDetail;
+  US?: PronunciationDetail;
 }
 
 export interface ExampleSentence {
@@ -27,6 +32,7 @@ export interface MeaningEntry {
 interface BaseTranslation {
   source_language_code: string;
   translated_language_code: string;
+  main_tts_language_code: string;
 }
 
 export interface SingleWordTranslation extends BaseTranslation {

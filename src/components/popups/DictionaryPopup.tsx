@@ -9,7 +9,7 @@ import { useTranslation as useReactI18next } from "react-i18next";
 import { DictionaryRenderer } from "./DictionaryRenderer";
 
 export function DictionaryPopup() {
-  const { result, translateText, translatedLangCode } = useTranslation();
+  const { result, translateText } = useTranslation();
   const { t } = useReactI18next();
 
   useEffect(() => {
@@ -73,10 +73,7 @@ export function DictionaryPopup() {
           )}
 
           {!result.loading && !result.error && parsedTranslation && (
-            <DictionaryRenderer
-              translation={parsedTranslation}
-              translatedLangCode={translatedLangCode}
-            />
+            <DictionaryRenderer translation={parsedTranslation} />
           )}
 
           {!result.loading &&

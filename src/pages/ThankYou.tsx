@@ -1,10 +1,10 @@
 import { DropdownMenu } from "@/components/";
 import { changeLanguage } from "@/config/i18n";
 import { SUPPORTED_APP_LANGUAGE } from "@/constants";
-import { SiFacebook, SiGithub } from "@icons-pack/react-simple-icons";
 import { CheckCircle, Globe, Info, Shield, Zap } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { SiFacebook, SiGithub } from "react-icons/si";
 
 export function ThankYou() {
   const [selectedLanguage, setSelectedLanguage] = useState<string>("en");

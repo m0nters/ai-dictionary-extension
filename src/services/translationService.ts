@@ -25,13 +25,15 @@ export const generateTranslationPrompt = (
 
 - **Source Language Detection:**
   - Always detect and specify the source language of the input text.
-  - Include the \`source_language_code\` field as a string which is that language code (e.g. English is "en", Chinese is "zh",...).
+  - Include the \`source_language_code\` field as a string which is that language code (e.g. English is "en", Chinese is "zh", etc.).
   - For ambiguous text (e.g., Chinese vs Japanese characters), make your best determination and specify it clearly.
 - **Translated Language**
   - Include the \`translated_language_code\` field as a string which is, in this context, "${translatedLangCode}".
+- **TTS Language Code**
+  - Always include a \`main_tts_language_code\` field containing the primary TTS language code for the source language (e.g., "en-US", "zh-CN", "ja-JP", etc.).
 - **Single word/Collocation/Idiom input:**
-  - For words that has more than 1 pronunciation variants in source language (e.g., "run" is an English word, has pronunciation variants of UK, US), provide IPA for both. For others that don't have pronunciation variants, just use that single one (e.g., Pinyin for Chinese).
-  - Translate the meaning into the translated language, specifying its part of speech (in the translated language too, e.g., "danh từ" for noun in Vietnamese, "名词" for noun in Chinese, "idiome" for idiom in French,...).
+  - For words that has more than 1 pronunciation variants in source language (e.g., "run" is an English word, has pronunciation variants of UK, US), provide both variants as objects with \`ipa\` and \`tts_code\` fields. For others that don't have pronunciation variants, just use that single one as a string (e.g., Pinyin for Chinese).
+  - Translate the meaning into the translated language, specifying its part of speech (in the translated language too, e.g., "danh từ" for noun in Vietnamese, "名词" for noun in Chinese, "idiome" for idiom in French, etc.).
   - For verbs in any conjugated form (e.g., "spelled" or "spelling" in English), translate the infinitive form (e.g., still translate the word "spell") and list key conjugations (e.g., infinitive, past tense, past participle for English; equivalent forms for other languages where applicable, like preterite and participle in Spanish).
   - If the word has multiple meanings or pronunciations, list each separately in the same entry format (meaning entry).
   - Include at least 2-3 example sentences as array of objects in field \`examples\`, with these fields in each object: 
@@ -53,6 +55,7 @@ export const generateTranslationPrompt = (
 - **Gibberish or non-language input:**
   - Return "No translation available." but in translated language. (e.g., "Không có bản dịch" in Vietnamese, "没有可用的翻译" in Chinese)
   - \`source_language_code\` field must be this exact string, "unknown"
+  - \`main_tts_language_code\` field can be omitted.
 - **Output Format:** Use JSON format with the structure following these examples below:
   - e.g.1., English "ran" to Vietnamese, this is an example of an output of a word that has many meanings:
 
@@ -61,12 +64,19 @@ export const generateTranslationPrompt = (
       \"source_language_code\": \"en\",
       \"translated_language_code\": \"vi\",
       \"word\": \"run\",
+      \"main_tts_language_code\": \"en-US\",
       \"verb_forms\": [\"run\", \"ran\", \"run\"],
       \"meanings\": [
         {
           \"pronunciation\": {
-            \"UK\": \"/rʌn/\",
-            \"US\": \"/rʌn/\"
+            \"UK\": {
+              \"ipa\": \"/rʌn/\",
+              \"tts_code\": \"en-GB\"
+            },
+            \"US\": {
+              \"ipa\": \"/rʌn/\",
+              \"tts_code\": \"en-US\"
+            }
           },
           \"part_of_speech\": \"động từ\",
           \"definition\": \"chạy\",
@@ -84,8 +94,14 @@ export const generateTranslationPrompt = (
         },
         {
           \"pronunciation\": {
-            \"UK\": \"/rʌn/\",
-            \"US\": \"/rʌn/\"
+            \"UK\": {
+              \"ipa\": \"/rʌn/\",
+              \"tts_code\": \"en-GB\"
+            },
+            \"US\": {
+              \"ipa\": \"/rʌn/\",
+              \"tts_code\": \"en-US\"
+            }
           },
           \"part_of_speech\": \"danh từ\",
           \"definition\": \"sự chạy, cuộc chạy\",
@@ -112,6 +128,7 @@ export const generateTranslationPrompt = (
       \"source_language_code\": \"zh\",
       \"translated_language_code\": \"vi\",
       \"word\": \"书\",
+      \"main_tts_language_code\": \"zh-CN\",
       \"meanings\": [
         {
           \"pronunciation\": \"shū\",
@@ -142,11 +159,18 @@ export const generateTranslationPrompt = (
       \"source_language_code\": \"en\",
       \"translated_language_code\": \"en\",
       \"word\": \"resource\",
+      \"main_tts_language_code\": \"en-US\",
       \"meanings\": [
         {
           \"pronunciation\": {
-            \"UK\": \"/rɪˈzɔːs/\",
-            \"US\": \"/ˈriːsɔːrs/\"
+            \"UK\": {
+              \"ipa\": \"/rɪˈzɔːs/\",
+              \"tts_code\": \"en-GB\"
+            },
+            \"US\": {
+              \"ipa\": \"/ˈriːsɔːrs/\",
+              \"tts_code\": \"en-US\"
+            }
           },
           \"part_of_speech\": \"noun\",
           \"definition\": \"A supply of money, materials, staff, or other assets; a source of help or information.\",
@@ -170,8 +194,9 @@ export const generateTranslationPrompt = (
     {
       \"source_language_code\": \"en\",
       \"translated_language_code\": \"vi\",
+      \"main_tts_language_code\": \"en-US\"
       \"text\": \"Good morning!\",
-      \"translation\": \"Chào buổi sáng!\"
+      \"translation\": \"Chào buổi sáng!\",
     }
     \`\`\`
 
@@ -201,7 +226,7 @@ export const translateWithGemini = async (
   const prompt = generateTranslationPrompt(text, translatedLangCode);
 
   const response = await fetch(
-    `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-pro:generateContent`,
+    `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent`,
     {
       method: "POST",
       headers: {

@@ -20,7 +20,8 @@ export const getDisplayText = (
       ipa = pronunciation;
     } else if (pronunciation) {
       // take one variant as an example for displaying only
-      ipa = Object.values(pronunciation).find((value) => value);
+      const firstVariant = Object.values(pronunciation).find((value) => value);
+      ipa = firstVariant?.ipa || "";
     }
 
     return {

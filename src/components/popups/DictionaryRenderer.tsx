@@ -12,10 +12,10 @@ import {
   renderText,
 } from "@/utils/";
 import { useTranslation } from "react-i18next";
+import { SpeakerButton } from "../ui";
 
 interface DictionaryRendererProps {
   translation: ParsedTranslation;
-  translatedLangCode?: string; // this is only for get synonyms label
   isHistoryDetailView?: boolean;
 }
 
@@ -41,6 +41,10 @@ const SYNONYMS: Record<string, string> = {
 function getSynonymsLabel(languageCode: string): string {
   return SYNONYMS[languageCode] || SYNONYMS.en;
 }
+
+/**
+ * Simple speaker button component for TTS
+ */
 
 /**
  * Renders the source language information
@@ -73,8 +77,12 @@ function SourceLanguageRenderer({
  */
 function PronunciationRenderer({
   pronunciation,
+  word,
+  mainTtsCode,
 }: {
   pronunciation: string | PronunciationVariants;
+  word: string;
+  mainTtsCode: string;
 }) {
   const styleMap = {
     UK: "bg-blue-100 text-blue-700",
@@ -84,31 +92,36 @@ function PronunciationRenderer({
   if (hasPronunciationVariants(pronunciation)) {
     return (
       <span className="ml-2 inline-flex flex-wrap items-center gap-2">
-        {Object.keys(pronunciation).map(
-          (key) =>
-            pronunciation[key as keyof PronunciationVariants] && (
-              <span key={key} className="inline-flex items-center gap-1">
-                <span
-                  className={`rounded-full px-2 py-0.5 text-xs font-semibold ${
-                    styleMap[key as keyof PronunciationVariants] ||
-                    "bg-gray-100 text-gray-700"
-                  }`}
-                >
-                  {key}
-                </span>
-                <span className="text-base text-gray-600">
-                  {pronunciation[key as keyof PronunciationVariants]}
-                </span>
+        {Object.keys(pronunciation).map((key) => {
+          const variant = pronunciation[key as keyof PronunciationVariants];
+          if (!variant) return null;
+
+          const ipaText = variant.ipa;
+          const ttsCode = variant.tts_code;
+
+          return (
+            <span key={key} className="inline-flex items-center gap-1">
+              <span
+                className={`rounded-full px-2 py-0.5 text-xs font-semibold ${
+                  styleMap[key as keyof PronunciationVariants] ||
+                  "bg-gray-100 text-gray-700"
+                }`}
+              >
+                {key}
               </span>
-            ),
-        )}
+              <span className="text-base text-gray-600">{ipaText}</span>
+              <SpeakerButton word={word} ttsCode={ttsCode} />
+            </span>
+          );
+        })}
       </span>
     );
   }
 
   return (
-    <span className="ml-2 text-base text-gray-600">
-      {pronunciation as string}
+    <span className="ml-2 inline-flex items-center gap-1">
+      <span className="text-base text-gray-600">{pronunciation as string}</span>
+      <SpeakerButton word={word} ttsCode={mainTtsCode} />
     </span>
   );
 }
@@ -120,17 +133,23 @@ function MeaningEntryRenderer({
   entry,
   word,
   translatedLangCode,
+  mainTtsCode,
 }: {
   entry: MeaningEntry;
   word: string;
-  translatedLangCode?: string; // this is only for get synonyms label
+  translatedLangCode: string; // this is only for get synonyms label
+  mainTtsCode: string;
 }) {
   return (
     <div className="mb-4">
       {/* Word and Pronunciation Header (original style) */}
       <div className="mb-2">
         <h1 className="inline text-xl font-semibold text-blue-600">{word}</h1>
-        <PronunciationRenderer pronunciation={entry.pronunciation} />
+        <PronunciationRenderer
+          pronunciation={entry.pronunciation}
+          word={word}
+          mainTtsCode={mainTtsCode}
+        />
       </div>
 
       {/* Part of Speech and Translation/Definition (original style) */}
@@ -151,9 +170,15 @@ function MeaningEntryRenderer({
               key={exampleIndex}
               className="mb-3 ml-4 rounded-lg border-l-4 border-blue-200 bg-blue-50 p-3"
             >
-              <p className="mb-1 text-sm font-medium text-gray-800">
-                {renderText(example.text)}
-              </p>
+              <div className="mb-1 flex items-center gap-1">
+                <p className="text-sm font-medium text-gray-800">
+                  {renderText(example.text)}
+                </p>
+                <SpeakerButton
+                  word={example.text.replace(/\*\*/g, "")}
+                  ttsCode={mainTtsCode}
+                />
+              </div>
               {example.pronunciation && (
                 <p className="mb-1 text-xs text-gray-600 italic">
                   {renderText(example.pronunciation)}
@@ -235,7 +260,6 @@ function VerbFormsRenderer({ verbForms }: { verbForms: string[] }) {
  */
 export function DictionaryRenderer({
   translation,
-  translatedLangCode,
   isHistoryDetailView = false,
 }: DictionaryRendererProps) {
   // Handle phrase translations (original style)
@@ -248,7 +272,12 @@ export function DictionaryRenderer({
             sourceLangCode={phraseTranslation.source_language_code}
           />
         )}
-
+        {phraseTranslation.main_tts_language_code && (
+          <SpeakerButton
+            word={phraseTranslation.text}
+            ttsCode={phraseTranslation.main_tts_language_code}
+          />
+        )}
         {isHistoryDetailView && (
           <div className="mt-2 flex items-start space-x-2">
             <div className="mt-1 h-6 w-1 flex-shrink-0 rounded-full bg-blue-400"></div>
@@ -257,7 +286,6 @@ export function DictionaryRenderer({
             </p>
           </div>
         )}
-
         <div className="mt-2 flex items-start space-x-2">
           <div className="mt-1 h-6 w-1 flex-shrink-0 rounded-full bg-blue-400"></div>
           <p className="text-base leading-relaxed font-medium text-gray-800">
@@ -291,7 +319,10 @@ export function DictionaryRenderer({
               key={index}
               entry={meaning}
               word={singleWordTranslation.word}
-              translatedLangCode={translatedLangCode}
+              translatedLangCode={
+                singleWordTranslation.translated_language_code
+              }
+              mainTtsCode={singleWordTranslation.main_tts_language_code}
             />
           ))}
         </div>

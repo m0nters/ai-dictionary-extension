@@ -12,7 +12,7 @@ interface ConfirmDialogProps {
   variant?: "danger" | "warning" | "info";
 }
 
-export const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
+export function ConfirmDialog({
   isOpen,
   onClose,
   onConfirm,
@@ -21,7 +21,7 @@ export const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
   confirmText = "Confirm",
   cancelText = "Cancel",
   variant = "danger",
-}) => {
+}: ConfirmDialogProps) {
   if (!isOpen) return null;
 
   const handleOverlayClick = (e: React.MouseEvent) => {
@@ -116,4 +116,4 @@ export const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
       </div>
     </div>
   );
-};
+}

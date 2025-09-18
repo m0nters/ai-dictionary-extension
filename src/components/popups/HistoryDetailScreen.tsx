@@ -1,11 +1,10 @@
 import { BackButton } from "@/components";
 import { HistoryEntry } from "@/types";
-import React from "react";
 import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate } from "react-router-dom";
 import { DictionaryRenderer } from "./DictionaryRenderer";
 
-export const HistoryDetailScreen: React.FC = () => {
+export function HistoryDetailScreen() {
   const location = useLocation();
   const navigate = useNavigate();
   const entry = location.state?.entry as HistoryEntry;
@@ -52,11 +51,10 @@ export const HistoryDetailScreen: React.FC = () => {
         <div className="rounded-2xl border border-white/20 bg-white/70 p-5 shadow-xl backdrop-blur-sm">
           <DictionaryRenderer
             translation={entry.translation}
-            translatedLangCode={entry.translation.translated_language_code}
             isHistoryDetailView={true}
           />
         </div>
       </div>
     </div>
   );
-};
+}

@@ -201,6 +201,9 @@ export function HistoryScreen() {
               const sourceLangName = t(`languages:${sourceLangCode}`);
               const targetLangName = t(`languages:${translatedLangCode}`);
 
+              const isSourceLanguageUnknown =
+                sourceLangName === t("languages:unknown");
+
               return (
                 <div
                   key={entry.id}
@@ -236,13 +239,17 @@ export function HistoryScreen() {
                                 sourceLangCode,
                               )
                             }
-                            className="flex cursor-pointer items-center space-x-1.5 rounded-full border border-blue-300 bg-blue-100 px-2 py-1 transition-all duration-200 hover:bg-blue-200 hover:shadow-sm"
+                            className={`flex cursor-pointer items-center space-x-1.5 rounded-full border px-2 py-1 transition-all duration-200 ${isSourceLanguageUnknown ? "border-gray-300 bg-gray-100 hover:bg-gray-200 hover:shadow-none" : "border-blue-300 bg-blue-100 hover:bg-blue-200 hover:shadow-sm"}`}
                             title={t("history:searchBySourceLanguage", {
                               language: sourceLangName,
                             })}
                           >
-                            <Globe className="h-3.5 w-3.5 text-blue-600" />
-                            <span className="font-semibold text-blue-700">
+                            <Globe
+                              className={`h-3.5 w-3.5 ${isSourceLanguageUnknown ? "text-gray-500" : "text-blue-600"}`}
+                            />
+                            <span
+                              className={`font-semibold ${isSourceLanguageUnknown ? "text-gray-500" : "text-blue-700"}`}
+                            >
                               {sourceLangName}
                             </span>
                           </div>
