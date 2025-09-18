@@ -6,5 +6,6 @@
   "detectedLanguage": "감지된 언어:",
   "saved": "저장됨!",
   "extensionDisabled": "확장 프로그램 비활성화",
-  "toggleToEnable": "위의 토글을 사용하여 활성화"
+  "toggleToEnable": "위의 토글을 사용하여 활성화",
+  "privilegePageDescription": "이 페이지를 번역할 권한이 없습니다 (가능한 이유: 새 탭 또는 브라우저 특권 페이지 등)"
 }

@@ -6,5 +6,6 @@
   "detectedLanguage": "Idioma detectado:",
   "saved": "¡Guardado!",
   "extensionDisabled": "Extensión desactivada",
-  "toggleToEnable": "Utilice el interruptor de arriba para activar"
+  "toggleToEnable": "Utilice el interruptor de arriba para activar",
+  "privilegePageDescription": "Sin permiso para traducir esta página (razones posibles: nueva pestaña o páginas privilegiadas del navegador, etc.)"
 }

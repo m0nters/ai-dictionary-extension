@@ -6,5 +6,6 @@
   "detectedLanguage": "Ngôn ngữ phát hiện:",
   "saved": "Đã lưu!",
   "extensionDisabled": "Tiện ích mở rộng bị vô hiệu hóa",
-  "toggleToEnable": "Sử dụng công tắc ở trên để kích hoạt"
+  "toggleToEnable": "Sử dụng công tắc ở trên để kích hoạt",
+  "privilegePageDescription": "Không có quyền dịch trang này (các lý do có thể: tab mới hoặc trang đặc quyền của trình duyệt, v.v.)"
 }

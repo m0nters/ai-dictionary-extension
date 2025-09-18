@@ -5,6 +5,19 @@ import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
 
+// Helper function to detect if a URL is a privilege/restricted page
+const checkPrivilegePage = async (tabId: number): Promise<boolean> => {
+  try {
+    await chrome.scripting.executeScript({
+      target: { tabId },
+      func: () => true, // Simple test function
+    });
+    return false; // Script executed successfully, not a privilege page
+  } catch (error) {
+    return true; // Privilege page or restricted
+  }
+};
+
 function App() {
   const { i18n } = useTranslation();
   const [appLangCode, setAppLangCode] = useState<string>(DEFAULT_LANGUAGE_CODE);
@@ -13,6 +26,7 @@ function App() {
   );
   const [extensionEnabled, setExtensionEnabled] = useState(true);
   const [saved, setSaved] = useState(false);
+  const [isPrivilegePage, setIsPrivilegePage] = useState(false);
 
   // Load saved settings once at mount
   useEffect(() => {
@@ -36,6 +50,17 @@ function App() {
         }
       },
     );
+  }, []);
+
+  // Check if current tab is a privilege page
+  useEffect(() => {
+    chrome.tabs.query({ active: true, currentWindow: true }, async (tabs) => {
+      const activeTab = tabs[0];
+      if (activeTab?.id) {
+        const isRestricted = await checkPrivilegePage(activeTab.id);
+        setIsPrivilegePage(isRestricted);
+      }
+    });
   }, []);
 
   const handleChangeAppLanguage = (value: string) => {
@@ -91,14 +116,7 @@ function App() {
         const activeTab = tabs[0];
         if (activeTab?.id && activeTab.url) {
           // Skip special Chrome pages where content scripts can't run
-          const isSpecialPage =
-            activeTab.url.startsWith("chrome://") ||
-            activeTab.url.startsWith("chrome-extension://") ||
-            activeTab.url.startsWith("moz-extension://") ||
-            activeTab.url.startsWith("about:") ||
-            activeTab.url.startsWith("file://");
-
-          if (!isSpecialPage) {
+          if (!isPrivilegePage) {
             chrome.tabs
               .sendMessage(activeTab.id, {
                 type: "EXTENSION_TOGGLE",
@@ -129,6 +147,7 @@ function App() {
                 extensionEnabled={extensionEnabled}
                 onExtensionToggle={handleExtensionToggle}
                 saved={saved}
+                isPrivilegePage={isPrivilegePage}
               />
             }
           />

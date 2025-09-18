@@ -6,5 +6,6 @@
   "detectedLanguage": "Detected Language:",
   "saved": "Saved!",
   "extensionDisabled": "Extension Disabled",
-  "toggleToEnable": "Use the toggle above to enable"
+  "toggleToEnable": "Use the toggle above to enable",
+  "privilegePageDescription": "No permission to translate this page (possible reasons: new tab or browser privilege pages, etc.)"
 }

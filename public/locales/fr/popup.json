@@ -6,5 +6,6 @@
   "detectedLanguage": "Langue détectée:",
   "saved": "Sauvegardé !",
   "extensionDisabled": "Extension Désactivée",
-  "toggleToEnable": "Utilisez le commutateur ci-dessus pour activer"
+  "toggleToEnable": "Utilisez le commutateur ci-dessus pour activer",
+  "privilegePageDescription": "Aucune autorisation pour traduire cette page (raisons possibles : nouvel onglet ou pages privilégiées du navigateur, etc.)"
 }

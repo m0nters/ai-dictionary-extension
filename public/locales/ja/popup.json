@@ -6,5 +6,6 @@
   "detectedLanguage": "検出された言語:",
   "saved": "保存しました！",
   "extensionDisabled": "拡張機能が無効になっています",
-  "toggleToEnable": "上のトグルを使用して有効にします"
+  "toggleToEnable": "上のトグルを使用して有効にします",
+  "privilegePageDescription": "このページを翻訳する権限がありません（理由の可能性：新しいタブやブラウザの特権ページなど）"
 }

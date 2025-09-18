@@ -15,6 +15,7 @@ interface DropdownMenuProps {
   className?: string;
   focusColor?: string;
   canSearch?: boolean;
+  sorted?: boolean;
 }
 
 export function DropdownMenu({
@@ -25,6 +26,7 @@ export function DropdownMenu({
   className = "",
   focusColor = "indigo",
   canSearch = false,
+  sorted = true,
 }: DropdownMenuProps) {
   const { t } = useTranslation("common");
   const [isOpen, setIsOpen] = useState(false);
@@ -37,9 +39,9 @@ export function DropdownMenu({
   const displayPlaceholder = placeholder || t("dropdown.selectOption");
 
   // Sort options by label
-  const sortedOptions = [...options].sort((a, b) =>
-    a.label.localeCompare(b.label),
-  );
+  const sortedOptions = sorted
+    ? [...options].sort((a, b) => a.label.localeCompare(b.label))
+    : options;
 
   // Filter options based on search term
   const filteredOptions = sortedOptions.filter((option) =>

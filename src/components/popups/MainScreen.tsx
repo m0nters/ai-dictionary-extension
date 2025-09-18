@@ -4,6 +4,7 @@ import {
   SUPPORTED_TRANSLATED_LANGUAGE,
 } from "@/constants/";
 import {
+  AlertTriangle,
   Check,
   ChevronRight,
   Clock,
@@ -23,6 +24,7 @@ interface MainScreenProps {
   extensionEnabled: boolean;
   onExtensionToggle: (enabled: boolean) => void;
   saved: boolean;
+  isPrivilegePage?: boolean;
 }
 
 export function MainScreen({
@@ -33,6 +35,7 @@ export function MainScreen({
   extensionEnabled,
   onExtensionToggle,
   saved,
+  isPrivilegePage = false,
 }: MainScreenProps) {
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -46,7 +49,7 @@ export function MainScreen({
       </div>
 
       {/* Header */}
-      <div className="relative z-10 p-6 pb-4">
+      <div className="relative z-10 p-6 pb-0">
         <div className="mb-6 flex items-center justify-between">
           <div className="flex items-center space-x-3">
             <img src="/logo/logo.png" alt="App Logo" className="h-16 w-16" />
@@ -89,6 +92,20 @@ export function MainScreen({
           </div>
         )}
 
+        {/* Privilege Page Warning */}
+        {isPrivilegePage && (
+          <div className="mb-4 rounded-2xl bg-transparent">
+            <div className="flex items-start space-x-2">
+              <div className="flex h-4 w-4 items-center justify-center">
+                <AlertTriangle className="h-4 w-4 translate-y-1 text-orange-600" />
+              </div>
+              <p className="mt-1 text-xs text-orange-700">
+                {t("popup:privilegePageDescription")}
+              </p>
+            </div>
+          </div>
+        )}
+
         {/* Languages Setting */}
         <div
           className={`rounded-2xl border-2 p-5 transition-all duration-300 ${
@@ -120,6 +137,7 @@ export function MainScreen({
               }))}
               onChange={onChangeAppLanguage}
               focusColor="purple"
+              sorted={false}
             />
           </div>
 

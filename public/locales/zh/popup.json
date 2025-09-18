@@ -6,5 +6,6 @@
   "detectedLanguage": "检测到的语言:",
   "saved": "已保存！",
   "extensionDisabled": "扩展已禁用",
-  "toggleToEnable": "使用上面的开关启用"
+  "toggleToEnable": "使用上面的开关启用",
+  "privilegePageDescription": "无权翻译此页面（可能原因：新标签页或浏览器特权页面等）"
 }

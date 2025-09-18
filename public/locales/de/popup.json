@@ -6,5 +6,6 @@
   "detectedLanguage": "Erkannte Sprache:",
   "saved": "Gespeichert!",
   "extensionDisabled": "Extension Deaktiviert",
-  "toggleToEnable": "Verwenden Sie den Schalter oben, um zu aktivieren"
+  "toggleToEnable": "Verwenden Sie den Schalter oben, um zu aktivieren",
+  "privilegePageDescription": "Keine Berechtigung zum Übersetzen dieser Seite (mögliche Gründe: neuer Tab oder privilegierte Browserseiten usw.)"
 }
