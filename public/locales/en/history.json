@@ -13,5 +13,7 @@
   "searchByTargetLanguage": "Search by target language: {{language}}",
   "pinEntry": "Pin entry",
   "unpinEntry": "Unpin entry",
-  "removeEntry": "Remove entry"
+  "removeEntry": "Remove entry",
+  "storageUsage": "Storage Usage",
+  "entriesCount": "{{count}} entries"
 }

@@ -13,5 +13,7 @@
   "searchByTargetLanguage": "按目标语言搜索：{{language}}",
   "pinEntry": "固定条目",
   "unpinEntry": "取消固定条目",
-  "removeEntry": "删除条目"
+  "removeEntry": "删除条目",
+  "storageUsage": "存储使用量",
+  "entriesCount": "{{count}}条记录"
 }

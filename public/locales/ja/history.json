@@ -13,5 +13,7 @@
   "searchByTargetLanguage": "対象の言語で検索：{{language}}",
   "pinEntry": "エントリをピン留め",
   "unpinEntry": "エントリのピン留めを解除",
-  "removeEntry": "エントリを削除"
+  "removeEntry": "エントリを削除",
+  "storageUsage": "ストレージ使用量",
+  "entriesCount": "{{count}}件のエントリ"
 }

@@ -13,5 +13,7 @@
   "searchByTargetLanguage": "Nach Zielsprache suchen: {{language}}",
   "pinEntry": "Eintrag anpinnen",
   "unpinEntry": "Eintrag loslösen",
-  "removeEntry": "Eintrag entfernen"
+  "removeEntry": "Eintrag entfernen",
+  "storageUsage": "Speicherverbrauch",
+  "entriesCount": "{{count}} Einträge"
 }

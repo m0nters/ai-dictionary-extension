@@ -13,5 +13,7 @@
   "searchByTargetLanguage": "Tìm kiếm theo ngôn ngữ đích: {{language}}",
   "pinEntry": "Ghim mục",
   "unpinEntry": "Bỏ ghim mục",
-  "removeEntry": "Xóa mục"
+  "removeEntry": "Xóa mục",
+  "storageUsage": "Dung lượng lưu trữ",
+  "entriesCount": "{{count}} mục"
 }

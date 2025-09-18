@@ -10,10 +10,6 @@ import {
 /**
  * Save a new translation to history
  * Maintains maximum of `MAX_HISTORY_ENTRIES` entries, removing oldest when necessary
- *
- * NOTE: actually because Chrome storage has a quota limit per item (approximately
- * 8KB for chrome.storage.sync) so we won't get above 10 entries,
- * this is just for a symbol.
  */
 export const saveTranslation = async (
   translation: ParsedTranslation,
@@ -35,7 +31,7 @@ export const saveTranslation = async (
     const trimmedEntries = updatedEntries.slice(0, MAX_HISTORY_ENTRIES);
 
     // Save to chrome storage
-    await saveHistoryToStorage(trimmedEntries);
+    await saveHistoryToStorage(trimmedEntries, true);
   } catch (error) {
     console.error("Failed to save translation to history:", error);
   }
@@ -46,7 +42,7 @@ export const saveTranslation = async (
  */
 export const clearHistory = async (): Promise<void> => {
   try {
-    await chrome.storage.sync.remove([HISTORY_STORAGE_KEY]);
+    await chrome.storage.local.remove([HISTORY_STORAGE_KEY]);
   } catch (error) {
     console.error("Failed to clear history:", error);
   }

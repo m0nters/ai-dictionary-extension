@@ -13,5 +13,7 @@
   "searchByTargetLanguage": "대상 언어로 검색: {{language}}",
   "pinEntry": "항목 고정",
   "unpinEntry": "항목 고정 해제",
-  "removeEntry": "항목 삭제"
+  "removeEntry": "항목 삭제",
+  "storageUsage": "저장소 사용량",
+  "entriesCount": "{{count}}개 항목"
 }

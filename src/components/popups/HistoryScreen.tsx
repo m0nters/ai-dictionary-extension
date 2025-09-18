@@ -5,12 +5,22 @@ import { useDebounce } from "@/hooks";
 import {
   clearHistory,
   getDisplayText,
+  getHistoryStorageUsage,
   removeHistoryEntry,
   searchHistory,
   togglePinEntry,
 } from "@/services";
 import { HistoryEntry } from "@/types";
-import { ArrowRight, Clock, Globe, Pin, Search, Trash2, X } from "lucide-react";
+import {
+  ArrowRight,
+  Clock,
+  Globe,
+  HardDrive,
+  Pin,
+  Search,
+  Trash2,
+  X,
+} from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
@@ -22,6 +32,12 @@ export function HistoryScreen() {
   const [entries, setEntries] = useState<HistoryEntry[]>([]);
   const [loading, setLoading] = useState(true);
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
+  const [storageUsage, setStorageUsage] = useState<{
+    historyEntryCount: number;
+    historySizeKB: string;
+    historyUsageKB: string;
+    historyUsageBytes: number;
+  } | null>(null);
 
   const debouncedSearchQuery = useDebounce(searchQuery, 300);
 
@@ -35,6 +51,10 @@ export function HistoryScreen() {
     try {
       const historyEntries = await searchHistory(debouncedSearchQuery);
       setEntries(historyEntries);
+
+      // Update storage usage
+      const usage = await getHistoryStorageUsage();
+      setStorageUsage(usage);
     } catch (error) {
       console.error("Failed to load history:", error);
       setEntries([]);
@@ -47,6 +67,7 @@ export function HistoryScreen() {
     try {
       await clearHistory();
       setEntries([]);
+      setStorageUsage(null);
     } catch (error) {
       console.error("Failed to clear history:", error);
     }
@@ -170,8 +191,32 @@ export function HistoryScreen() {
         </div>
       </div>
 
+      {/* Storage Usage Info */}
+      {storageUsage && (
+        <div className="sticky top-[118px] mx-4 mt-4 rounded-xl border border-gray-300 bg-white p-3">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-2">
+              <HardDrive className="h-4 w-4 text-gray-500" />
+              <span className="text-sm font-medium text-gray-700">
+                {t("history:storageUsage")}
+              </span>
+            </div>
+            <div className="flex items-center space-x-3 text-xs text-gray-600">
+              <span>
+                {t("history:entriesCount", {
+                  count: storageUsage.historyEntryCount,
+                })}
+              </span>
+              <span className="font-medium">
+                {storageUsage.historyUsageKB} KB
+              </span>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Content */}
-      <div className="flex-1 p-4">
+      <div className="m-4 flex-1">
         {loading ? (
           <div className="flex items-center justify-center py-12">
             <div className="text-center">

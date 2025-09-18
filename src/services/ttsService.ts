@@ -3,7 +3,6 @@
  */
 export class TTSService {
   private static instance: TTSService;
-  private isPlaying = false;
 
   static getInstance(): TTSService {
     if (!TTSService.instance) {
@@ -18,17 +17,15 @@ export class TTSService {
   async speak(
     text: string,
     ttsCode: string,
+    isSlow: boolean = false,
     onStart?: () => void,
     onEnd?: () => void,
     onError?: (error: SpeechSynthesisErrorEvent) => void,
   ): Promise<void> {
     try {
-      this.isPlaying = true;
-
       // Try Web Speech API
       if (!("speechSynthesis" in window)) {
         console.error("Speech synthesis not supported");
-        this.isPlaying = false;
         onError?.(new Error("Speech synthesis not supported") as any);
         return;
       }
@@ -40,8 +37,10 @@ export class TTSService {
 
       const utterance = new SpeechSynthesisUtterance(text);
 
-      // Find the best voice for the requested language
-      const availableVoice = this.findFirstMatchedVoice(voices, ttsCode);
+      // Find the first voice matched the requested language
+      const availableVoice = voices.find(
+        (voice) => voice.lang.toLowerCase() === ttsCode.toLowerCase(),
+      );
 
       if (availableVoice) {
         utterance.voice = availableVoice;
@@ -59,7 +58,7 @@ export class TTSService {
       }
 
       // Set speech parameters
-      utterance.rate = 0.8;
+      utterance.rate = isSlow ? 0.5 : 0.8;
       utterance.pitch = 1.0;
       utterance.volume = 1.0;
 
@@ -71,20 +70,17 @@ export class TTSService {
 
       utterance.onend = () => {
         console.log("TTS ended");
-        this.isPlaying = false;
         onEnd?.();
       };
 
       utterance.onerror = (e) => {
         console.error("TTS error:", e);
-        this.isPlaying = false;
         onError?.(e);
       };
 
       window.speechSynthesis.speak(utterance);
     } catch (error) {
       console.error("TTS failed:", error);
-      this.isPlaying = false;
       onError?.(error as SpeechSynthesisErrorEvent);
     }
   }
@@ -118,43 +114,12 @@ export class TTSService {
   }
 
   /**
-   * Find the best voice for the given language code
-   * First tries exact match, then falls back to base language
-   */
-  private findFirstMatchedVoice(
-    voices: SpeechSynthesisVoice[],
-    ttsCode: string,
-  ): SpeechSynthesisVoice | null {
-    let availableVoice = voices.find(
-      (voice) => voice.lang.toLowerCase() === ttsCode.toLowerCase(),
-    );
-
-    return availableVoice || null;
-  }
-
-  /**
    * Stop any current speech
    */
   stop(): void {
     if ("speechSynthesis" in window) {
       window.speechSynthesis.cancel();
     }
-    this.isPlaying = false;
-  }
-
-  /**
-   * Check if TTS is currently playing
-   */
-  getIsPlaying(): boolean {
-    return this.isPlaying;
-  }
-
-  /**
-   * Get available voices and languages
-   */
-  async getAvailableLanguages(): Promise<string[]> {
-    const voices = await this.getVoices();
-    return [...new Set(voices.map((v) => v.lang))];
   }
 }
 

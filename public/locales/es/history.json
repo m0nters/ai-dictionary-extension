@@ -13,5 +13,7 @@
   "searchByTargetLanguage": "Buscar por idioma de destino: {{language}}",
   "pinEntry": "Fijar entrada",
   "unpinEntry": "Desfijar entrada",
-  "removeEntry": "Eliminar entrada"
+  "removeEntry": "Eliminar entrada",
+  "storageUsage": "Uso de almacenamiento",
+  "entriesCount": "{{count}} entradas"
 }
