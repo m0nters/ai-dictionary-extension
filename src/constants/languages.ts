@@ -100,6 +100,8 @@ export const SUPPORTED_APP_LANGUAGE: Language[] = [
   { code: "de", englishName: "German", nativeName: "Deutsch" },
 ];
 
+export const SUPPORTED_SOURCE_LANGUAGE = AVAILABLE_LANGUAGES;
 export const SUPPORTED_TRANSLATED_LANGUAGE = AVAILABLE_LANGUAGES;
 
 export const DEFAULT_LANGUAGE_CODE = "en";
+export const DEFAULT_SOURCE_LANGUAGE_CODE = "auto";

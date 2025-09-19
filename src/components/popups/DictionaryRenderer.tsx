@@ -1,3 +1,4 @@
+import { DEFAULT_SOURCE_LANGUAGE_CODE } from "@/constants";
 import {
   MeaningEntry,
   ParsedTranslation,
@@ -11,6 +12,7 @@ import {
   isSingleWordTranslation,
   renderText,
 } from "@/utils/";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { SpeakerButton } from "../ui";
 
@@ -24,21 +26,23 @@ interface DictionaryRendererProps {
  */
 function SourceLanguageRenderer({
   sourceLangCode,
+  isAutoDetected,
 }: {
-  sourceLangCode?: string;
+  sourceLangCode: string;
+  isAutoDetected: boolean;
 }) {
   const { t } = useTranslation();
 
-  if (!sourceLangCode) return null;
-
   return (
     <div className="mb-4 flex items-center justify-center rounded-lg border border-gray-200 bg-gradient-to-r from-gray-50 to-blue-50 p-3 shadow-sm">
-      <div className="flex items-center justify-center space-x-2">
+      <div className="flex flex-wrap items-center justify-center space-x-2">
         <div className="text-sm font-semibold text-gray-700">
-          {t("popup:detectedLanguage")}
+          {`${t("popup:sourceLanguage")}:`}
         </div>
         <div className="text-sm font-medium text-blue-600">
-          {t(`languages:${sourceLangCode}`) || sourceLangCode}
+          {isAutoDetected
+            ? `${t(`languages:${sourceLangCode}`)} (${t("popup:autoDetect")})`
+            : t(`languages:${sourceLangCode}`)}
         </div>
       </div>
     </div>
@@ -176,8 +180,8 @@ function MeaningEntryRenderer({
 
       {/* Synonyms Section */}
       {entry.synonyms &&
-        entry.synonyms.words &&
-        entry.synonyms.words.length > 0 && (
+        entry.synonyms.items &&
+        entry.synonyms.items.length > 0 && (
           <div className="mb-3">
             <div className="mb-2 flex items-center space-x-2">
               <span className="rounded-full bg-purple-50 px-2 py-1 text-xs font-medium text-purple-600">
@@ -185,7 +189,7 @@ function MeaningEntryRenderer({
               </span>
             </div>
             <div className="ml-2 flex flex-wrap gap-1">
-              {entry.synonyms.words.map((synonym, index) => (
+              {entry.synonyms.items.map((synonym, index) => (
                 <span
                   key={index}
                   className="inline-block rounded-full bg-gray-100 px-2 py-1 text-xs text-gray-700 transition-colors duration-200 hover:bg-gray-200"
@@ -242,7 +246,19 @@ export function DictionaryRenderer({
   translation,
   isHistoryDetailView = false,
 }: DictionaryRendererProps) {
-  // Handle phrase translations (original style)
+  const [sourceLangCodeSetting, setSourceLangCodeSetting] = useState<string>(
+    DEFAULT_SOURCE_LANGUAGE_CODE,
+  );
+
+  // Load source language code from Chrome storage
+  useEffect(() => {
+    chrome.storage.sync.get("sourceLangCode", (data) => {
+      if (data.sourceLangCode) {
+        setSourceLangCodeSetting(data.sourceLangCode);
+      }
+    });
+  }, []);
+
   if (isPhraseTranslation(translation)) {
     const phraseTranslation = translation as PhraseTranslation;
     return (
@@ -250,6 +266,9 @@ export function DictionaryRenderer({
         {!isHistoryDetailView && (
           <SourceLanguageRenderer
             sourceLangCode={phraseTranslation.source_language_code}
+            isAutoDetected={
+              sourceLangCodeSetting === DEFAULT_SOURCE_LANGUAGE_CODE
+            }
           />
         )}
         {phraseTranslation.main_tts_language_code && (
@@ -276,7 +295,6 @@ export function DictionaryRenderer({
     );
   }
 
-  // Handle single word translations (original style)
   if (isSingleWordTranslation(translation)) {
     const singleWordTranslation = translation as SingleWordTranslation;
     return (
@@ -284,6 +302,9 @@ export function DictionaryRenderer({
         {!isHistoryDetailView && (
           <SourceLanguageRenderer
             sourceLangCode={singleWordTranslation.source_language_code}
+            isAutoDetected={
+              sourceLangCodeSetting === DEFAULT_SOURCE_LANGUAGE_CODE
+            }
           />
         )}
         <div className="mb-4">

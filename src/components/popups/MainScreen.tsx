@@ -1,25 +1,30 @@
 import { DropdownMenu, ToggleSwitch } from "@/components";
 import {
   SUPPORTED_APP_LANGUAGE,
+  SUPPORTED_SOURCE_LANGUAGE,
   SUPPORTED_TRANSLATED_LANGUAGE,
 } from "@/constants/";
 import {
   AlertTriangle,
+  ArrowRight,
   Check,
   ChevronRight,
   Clock,
-  Globe,
   Info,
+  Languages,
   MousePointer2,
   Settings,
 } from "lucide-react";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 
 interface MainScreenProps {
   appLangCode: string;
+  sourceLangCode: string;
   translatedLangCode: string;
   onChangeAppLanguage: (value: string) => void;
+  onChangeSourceLanguage: (value: string) => void;
   onChangeTranslatedLanguage: (value: string) => void;
   extensionEnabled: boolean;
   onExtensionToggle: (enabled: boolean) => void;
@@ -29,8 +34,10 @@ interface MainScreenProps {
 
 export function MainScreen({
   appLangCode,
+  sourceLangCode,
   translatedLangCode,
   onChangeAppLanguage,
+  onChangeSourceLanguage,
   onChangeTranslatedLanguage,
   extensionEnabled,
   onExtensionToggle,
@@ -39,6 +46,7 @@ export function MainScreen({
 }: MainScreenProps) {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const [sectionChanged, setSectionChanged] = useState<string | null>(null);
 
   return (
     <div className="animate-slide-in-right relative h-full w-100 overflow-x-hidden overflow-y-auto bg-gradient-to-br from-indigo-50 to-purple-50 select-none">
@@ -106,7 +114,7 @@ export function MainScreen({
           </div>
         )}
 
-        {/* Languages Setting */}
+        {/* Translation Languages Setting */}
         <div
           className={`rounded-2xl border-2 p-5 transition-all duration-300 ${
             !extensionEnabled
@@ -114,8 +122,98 @@ export function MainScreen({
               : "border-gray-200 bg-gray-50"
           }`}
         >
-          {/* App Language Selector */}
-          <div className="mb-4">
+          {/* Translation Direction Header */}
+          <label
+            className={`mb-3 flex items-center space-x-2 text-sm font-semibold transition-colors duration-300 ${
+              !extensionEnabled ? "text-gray-400" : "text-gray-700"
+            }`}
+          >
+            <Languages
+              className={`h-4 w-4 transition-colors duration-300 ${
+                !extensionEnabled ? "text-gray-400" : "text-indigo-500"
+              }`}
+            />
+            <span>{t("popup:translate")}</span>
+          </label>
+
+          {/* Source and Target Language Selection */}
+          <div className="flex items-center space-x-3">
+            {/* Source Language Dropdown */}
+            <div className="flex-1">
+              <div className="mb-2 translate-x-0.5 text-xs font-medium text-gray-600">
+                {t("popup:from")}
+              </div>
+              <DropdownMenu
+                value={sourceLangCode}
+                options={[
+                  { value: "auto", label: t("popup:autoDetect") },
+                  ...SUPPORTED_SOURCE_LANGUAGE.map((lang) => ({
+                    value: lang.code,
+                    label: `${t(`languages:${lang.code}`)} (${lang.nativeName})`,
+                  })),
+                ]}
+                pin={{ value: "auto", label: t("popup:autoDetect") }}
+                onChange={onChangeSourceLanguage}
+                callback={() => setSectionChanged("section1")}
+                focusColor="blue"
+                canSearch={true}
+                className="w-[125px]"
+              />
+            </div>
+
+            {/* Arrow Icon */}
+            <div className="flex h-full translate-y-4 items-end pb-2">
+              <ArrowRight
+                className={`h-5 w-5 transition-colors duration-300 ${
+                  !extensionEnabled ? "text-gray-400" : "text-gray-500"
+                }`}
+              />
+            </div>
+
+            {/* Target Language Dropdown */}
+            <div className="flex-1">
+              <div className="mb-2 translate-x-0.5 text-xs font-medium text-gray-600">
+                {t("popup:to")}
+              </div>
+              <DropdownMenu
+                value={translatedLangCode}
+                options={SUPPORTED_TRANSLATED_LANGUAGE.map((lang) => ({
+                  value: lang.code,
+                  label: `${t(`languages:${lang.code}`)} (${lang.nativeName})`,
+                }))}
+                onChange={onChangeTranslatedLanguage}
+                callback={() => setSectionChanged("section1")}
+                focusColor="indigo"
+                canSearch={true}
+                className="w-[125px]"
+              />
+            </div>
+          </div>
+
+          {/* Save indicator*/}
+          {sectionChanged === "section1" && (
+            <div
+              className={`overflow-hidden transition-all duration-300 ease-out ${
+                saved ? "mt-3 max-h-20" : "mt-0 max-h-0"
+              }`}
+            >
+              <div className="animate-fade-in flex items-center space-x-2 text-green-600">
+                <Check className="h-4 w-4" />
+                <span className="text-xs font-medium">{t("popup:saved")}</span>
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* App Language Setting */}
+        <div
+          className={`mt-4 rounded-2xl border-2 p-5 transition-all duration-300 ${
+            !extensionEnabled
+              ? "border-gray-300/30 bg-gray-100/70"
+              : "border-gray-200 bg-gray-50"
+          }`}
+        >
+          <div>
             <label
               className={`mb-3 flex items-center space-x-2 text-sm font-semibold transition-colors duration-300 ${
                 !extensionEnabled ? "text-gray-400" : "text-gray-700"
@@ -136,49 +234,25 @@ export function MainScreen({
                 label: lang.nativeName,
               }))}
               onChange={onChangeAppLanguage}
+              callback={() => setSectionChanged("section2")}
               focusColor="purple"
               sorted={false}
             />
           </div>
 
-          {/* Translation Language Selector */}
-          <div>
-            <label
-              className={`mb-3 flex items-center space-x-2 text-sm font-semibold transition-colors duration-300 ${
-                !extensionEnabled ? "text-gray-400" : "text-gray-700"
+          {/* Save indicator*/}
+          {sectionChanged === "section2" && (
+            <div
+              className={`overflow-hidden transition-all duration-300 ease-out ${
+                saved ? "mt-3 max-h-20" : "mt-0 max-h-0"
               }`}
             >
-              <Globe
-                className={`h-4 w-4 transition-colors duration-300 ${
-                  !extensionEnabled ? "text-gray-400" : "text-indigo-500"
-                }`}
-              />
-              <span>{t("popup:translateTo")}</span>
-            </label>
-
-            <DropdownMenu
-              value={translatedLangCode}
-              options={SUPPORTED_TRANSLATED_LANGUAGE.map((lang) => ({
-                value: lang.code,
-                label: `${t(`languages:${lang.code}`)} (${lang.nativeName})`,
-              }))}
-              onChange={onChangeTranslatedLanguage}
-              focusColor="indigo"
-              canSearch={true}
-            />
-          </div>
-
-          {/* Save indicator*/}
-          <div
-            className={`overflow-hidden transition-all duration-300 ease-out ${
-              saved ? "mt-3 max-h-20" : "mt-0 max-h-0"
-            }`}
-          >
-            <div className="animate-fade-in flex items-center space-x-2 text-green-600">
-              <Check className="h-4 w-4" />
-              <span className="text-xs font-medium">{t("popup:saved")}</span>
+              <div className="animate-fade-in flex items-center space-x-2 text-green-600">
+                <Check className="h-4 w-4" />
+                <span className="text-xs font-medium">{t("popup:saved")}</span>
+              </div>
             </div>
-          </div>
+          )}
         </div>
 
         {/* History Button */}

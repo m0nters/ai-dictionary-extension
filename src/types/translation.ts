@@ -23,7 +23,7 @@ export interface ExampleSentence {
 
 export interface SynonymGroup {
   label: string;
-  words: string[];
+  items: string[];
 }
 
 export interface MeaningEntry {

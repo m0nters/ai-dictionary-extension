@@ -10,7 +10,9 @@ interface DropdownOption {
 interface DropdownMenuProps {
   value: string;
   options: DropdownOption[];
+  pin?: DropdownOption; // Option to pin at the top
   onChange: (value: string) => void;
+  callback?: () => void;
   placeholder?: string;
   className?: string;
   focusColor?: string;
@@ -21,7 +23,9 @@ interface DropdownMenuProps {
 export function DropdownMenu({
   value,
   options,
+  pin,
   onChange,
+  callback,
   placeholder,
   className = "",
   focusColor = "indigo",
@@ -42,6 +46,18 @@ export function DropdownMenu({
   const sortedOptions = sorted
     ? [...options].sort((a, b) => a.label.localeCompare(b.label))
     : options;
+
+  // If pin option is provided, place it at the top
+  if (pin) {
+    // Remove pin from options if it exists to avoid duplication
+    const filteredOptions = sortedOptions.filter(
+      (option) => option.value !== pin.value,
+    );
+    // Place pin option at the top
+    sortedOptions.splice(0, 0, pin);
+    // Append the rest of the options
+    sortedOptions.splice(1, sortedOptions.length - 1, ...filteredOptions);
+  }
 
   // Filter options based on search term
   const filteredOptions = sortedOptions.filter((option) =>
@@ -68,6 +84,9 @@ export function DropdownMenu({
 
   const handleOptionClick = (optionValue: string) => {
     onChange(optionValue);
+    if (callback) {
+      callback();
+    }
     setIsOpen(false);
     setSearchTerm(""); // Clear search when option is selected
   };
@@ -108,7 +127,10 @@ export function DropdownMenu({
         className={`w-full cursor-pointer appearance-none rounded-xl border-2 border-gray-200 bg-white p-3 text-left shadow-sm transition-all duration-200 hover:border-gray-300 focus:ring-4 focus:outline-none ${getFocusColorClasses(focusColor)}`}
       >
         <div className="flex items-center justify-between">
-          <span className="text-gray-900">
+          <span
+            className="truncate text-gray-900"
+            title={selectedOption ? selectedOption.label : displayPlaceholder}
+          >
             {selectedOption ? selectedOption.label : displayPlaceholder}
           </span>
           <ChevronDown
@@ -164,7 +186,7 @@ export function DropdownMenu({
                 key={option.value}
                 type="button"
                 onClick={() => handleOptionClick(option.value)}
-                className={`w-full px-3 py-2.5 text-left text-sm transition-all duration-150 hover:bg-gray-50 focus:bg-gray-50 focus:outline-none ${
+                className={`w-full truncate px-3 py-2.5 text-left text-sm transition-all duration-150 hover:bg-gray-50 focus:bg-gray-50 focus:outline-none ${
                   option.value === value
                     ? `bg-${focusColor}-50 text-${focusColor}-700 font-medium`
                     : "text-gray-900"
@@ -174,6 +196,7 @@ export function DropdownMenu({
                 style={{
                   animationDelay: isOpen ? `${index * 20}ms` : "0ms",
                 }}
+                title={option.label}
               >
                 {option.label}
               </button>

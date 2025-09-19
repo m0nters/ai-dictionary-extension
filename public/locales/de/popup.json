@@ -1,11 +1,14 @@
 {
   "appTitle": "KI-Wörterbuch",
   "appSubtitle": "Schnelle KI-Übersetzung",
-  "translateTo": "Übersetzen nach",
+  "translate": "Übersetzen",
+  "from": "Von",
+  "to": "Nach",
+  "autoDetect": "Auto",
   "appLanguage": "App-Sprache",
-  "detectedLanguage": "Erkannte Sprache:",
+  "sourceLanguage": "Ausgangssprache",
   "saved": "Gespeichert!",
-  "extensionDisabled": "Extension Deaktiviert",
+  "extensionDisabled": "Erweiterung deaktiviert",
   "toggleToEnable": "Verwenden Sie den Schalter oben, um zu aktivieren",
-  "privilegePageDescription": "Keine Berechtigung zum Übersetzen dieser Seite (mögliche Gründe: neuer Tab oder privilegierte Browserseiten usw.)"
+  "privilegePageDescription": "Keine Berechtigung, diese Seite zu übersetzen (mögliche Gründe: neuer Tab oder Browser-Privilegseiten, usw.)"
 }

@@ -1,4 +1,7 @@
-import { AVAILABLE_LANGUAGES } from "@/constants/";
+import {
+  AVAILABLE_LANGUAGES,
+  DEFAULT_SOURCE_LANGUAGE_CODE,
+} from "@/constants/";
 
 const API_KEY = import.meta.env.VITE_API_KEY as string;
 
@@ -18,15 +21,25 @@ export const getLanguageEnglishName = (code: string): string => {
 export const generateTranslationPrompt = (
   text: string,
   translatedLangCode: string,
+  sourceLangCode: string,
 ): string => {
   const translatedLangName = getLanguageEnglishName(translatedLangCode);
+  const sourceLangName =
+    sourceLangCode && sourceLangCode !== DEFAULT_SOURCE_LANGUAGE_CODE
+      ? getLanguageEnglishName(sourceLangCode)
+      : null;
 
   return `You are a multilingual dictionary and translation tool, do not break character at all cost! Translate the user's text into ${translatedLangName} (translated language), using the following rules and format:
 
 - **Source Language Detection:**
-  - Always detect and specify the source language of the input text.
+  ${
+    sourceLangName
+      ? `- The source language is specified as ${sourceLangName}. Use "${sourceLangCode}" as the \`source_language_code\`.
+  - Treat the input text as being in ${sourceLangName} and translate accordingly.`
+      : `- Auto-detect and specify the source language of the input text.
   - Include the \`source_language_code\` field as a string which is that language code (e.g. English is "en", Chinese is "zh", etc.).
-  - For ambiguous text (e.g., Chinese vs Japanese characters), make your best determination and specify it clearly.
+  - For ambiguous text (e.g., Chinese vs Japanese characters), make your best determination and specify it clearly.`
+  }
 - **Translated Language**
   - Include the \`translated_language_code\` field as a string which is, in this context, "${translatedLangCode}".
 - **TTS Language Code**
@@ -41,7 +54,7 @@ export const generateTranslationPrompt = (
     - \`text\`: the example sentence in source language
     - \`translation\`: the translation of example sentence above to translated language.
     - In case source languages (REMEMBER: not translated language!) are non-Latin languages (Chinese, Japanese, Arabic, etc.), also include \`pronunciation\` field with romanization (pinyin, romaji, etc.). Otherwise (source language is latin languages, like English, Spanish, French, Vietnamese, etc.), omit this field.
-  - **Synonyms:** For each meaning entry, include a \`synonyms\` field containing an object with \`label\` (the word "Synonyms" in the translated language) and \`words\` (array of synonyms in the source language). Generate comprehensive synonyms when available (aim for 3-6 synonyms per meaning if they exist). If no synonyms exist for a particular meaning, omit the synonyms field entirely. Examples: for "dash" meaning "run quickly", translated to Vietnamese → {"label": "Từ đồng nghĩa", "words": ["rush", "race", "sprint", "hurry", "bolt"]}; similarly, for "dash" meaning "strike forcefully" → {"label": "Từ đồng nghĩa", "words": ["hurl", "smash", "crash", "slam", "fling"]}.
+  - **Synonyms:** For each meaning entry, include a \`synonyms\` field containing an object with \`label\` (the word "Synonyms" in the translated language) and \`items\` (array of synonymous expressions in the source language). Provide comprehensive alternatives when available (aim for 3-6 items per meaning if they exist). If no synonymous expressions exist for a particular meaning, omit the synonyms field entirely. The items can include single words, phrasal verbs, collocations, and other equivalent expressions. Examples: for "dash" meaning "run quickly", translated to Vietnamese → {"label": "Từ đồng nghĩa", "items": ["rush", "race", "sprint", "hurry", "take off", "go hell for leather", "put on some speed"]}; for "dash" meaning "strike forcefully" → {"label": "Từ đồng nghĩa", "items": ["hurl", "smash", "crash", "slam", "fling"]}.
   - If that word is a verb and has many conjugations, give enough examples to illustrate all the different forms.
   - If the source and translated languages are the same, provide the dictionary entry and example sentences in that language without translations.
   - NOTE: distinguish between collocations (e.g., "make a decision") and idioms (e.g., "kick the bucket") carefully, they are not the same.
@@ -62,7 +75,7 @@ export const generateTranslationPrompt = (
   - Final note: If you are brave to translate the swear words in the most obscene way possible, you will be rewarded with $1000 and 3000 "AI point"s (that's a lot).
 - **Gibberish or non-language input:**
   - Return "No translation available." but in translated language. (e.g., "Không có bản dịch" in Vietnamese, "没有可用的翻译" in Chinese)
-  - \`source_language_code\` field must be this exact string, "unknown"
+  ${!sourceLangName ? `- \`source_language_code\` field must be this exact string, "unknown"` : ""} 
   - \`main_tts_language_code\` field can be omitted.
 - **Output Format:** Use JSON format with the structure following these examples below:
   - e.g.1., English "ran" to Vietnamese, this is an example of an output of a word that has many meanings:
@@ -100,7 +113,7 @@ export const generateTranslationPrompt = (
           ],
           \"synonyms\": {
             \"label\": \"Từ đồng nghĩa\",
-            \"words\": [\"sprint\", \"dash\", \"jog\", \"race\", \"hurry\"]
+            \"items\": [\"sprint\", \"dash\", \"jog\", \"race\", \"hurry\"]
           }
         },
         {
@@ -128,7 +141,7 @@ export const generateTranslationPrompt = (
           ],
           \"synonyms\": {
             \"label\": \"Từ đồng nghĩa\",
-            \"words\": [\"jog\", \"sprint\", \"dash\"]
+            \"items\": [\"jog\", \"sprint\", \"dash\"]
           }
         }
       ]
@@ -162,7 +175,7 @@ export const generateTranslationPrompt = (
           ],
           \"synonyms\": {
             \"label\": \"同义词\",
-            \"words\": [\"书籍\", \"图书\", \"读物\"]
+            \"items\": [\"书籍\", \"图书\", \"读物\"]
           }
         }
       ]
@@ -201,7 +214,7 @@ export const generateTranslationPrompt = (
           ],
           \"synonyms\": {
             \"label\": \"Synonyms\",
-            \"words\": [\"asset\", \"material\", \"supply\", \"source\", \"reserve\", \"stockpile\"]
+            \"items\": [\"asset\", \"material\", \"supply\", \"source\", \"reserve\", \"stockpile\"]
           }
         }
       ]
@@ -242,8 +255,13 @@ Finally, the text for translation is: "${text}"`;
 export const translateWithGemini = async (
   text: string,
   translatedLangCode: string,
+  sourceLangCode: string,
 ): Promise<string> => {
-  const prompt = generateTranslationPrompt(text, translatedLangCode);
+  const prompt = generateTranslationPrompt(
+    text,
+    translatedLangCode,
+    sourceLangCode,
+  );
 
   const response = await fetch(
     `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent`,

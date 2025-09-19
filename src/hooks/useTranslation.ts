@@ -1,4 +1,7 @@
-import { DEFAULT_LANGUAGE_CODE } from "@/constants/";
+import {
+  DEFAULT_LANGUAGE_CODE,
+  DEFAULT_SOURCE_LANGUAGE_CODE,
+} from "@/constants/";
 import { saveTranslation, translateWithGemini } from "@/services/";
 import { TranslationResult } from "@/types/";
 import { parseTranslationContent, updatePopupHeight } from "@/utils/";
@@ -16,14 +19,23 @@ export const useTranslation = () => {
   const [translatedLangCode, setTranslatedLangCode] = useState(
     DEFAULT_LANGUAGE_CODE,
   );
+  const [sourceLangCode, setSourceLangCode] = useState(
+    DEFAULT_SOURCE_LANGUAGE_CODE,
+  );
 
-  // Load saved translated language from Chrome storage
+  // Load saved language settings from Chrome storage
   useEffect(() => {
-    chrome.storage.sync.get(["translatedLangCode"], (data) => {
-      if (data.translatedLangCode) {
-        setTranslatedLangCode(data.translatedLangCode);
-      }
-    });
+    chrome.storage.sync.get(
+      ["translatedLangCode", "sourceLangCode"],
+      (data) => {
+        if (data.translatedLangCode) {
+          setTranslatedLangCode(data.translatedLangCode);
+        }
+        if (data.sourceLangCode) {
+          setSourceLangCode(data.sourceLangCode);
+        }
+      },
+    );
   }, []);
 
   /**
@@ -38,15 +50,21 @@ export const useTranslation = () => {
     });
 
     try {
-      // Get the most current language code from storage to avoid stale state issues
-      const { translatedLangCode: currentLangCode } =
-        await chrome.storage.sync.get(["translatedLangCode"]);
-      const currentTranslatedLangCode =
-        currentLangCode || DEFAULT_LANGUAGE_CODE;
+      // Get the most current language codes from storage to avoid stale state issues
+      const {
+        translatedLangCode: currentTranslatedLangCode,
+        sourceLangCode: currentSourceLangCode,
+      } = await chrome.storage.sync.get([
+        "translatedLangCode",
+        "sourceLangCode",
+      ]);
+      const translatedLang = currentTranslatedLangCode || DEFAULT_LANGUAGE_CODE;
+      const sourceLang = currentSourceLangCode || DEFAULT_SOURCE_LANGUAGE_CODE;
 
       const translation = await translateWithGemini(
         text,
-        currentTranslatedLangCode,
+        translatedLang,
+        sourceLang,
       );
 
       setResult((prev) => ({
@@ -83,6 +101,7 @@ export const useTranslation = () => {
   return {
     result,
     translatedLangCode,
+    sourceLangCode,
     translateText,
   };
 };

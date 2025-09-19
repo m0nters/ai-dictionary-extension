@@ -1,26 +1,20 @@
 import { HistoryDetailScreen, HistoryScreen, MainScreen } from "@/components/";
 import { changeLanguage } from "@/config/";
-import { DEFAULT_LANGUAGE_CODE } from "@/constants/";
+import {
+  DEFAULT_LANGUAGE_CODE,
+  DEFAULT_SOURCE_LANGUAGE_CODE,
+} from "@/constants/";
+import { checkPrivilegePage } from "@/utils/";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
 
-// Helper function to detect if a URL is a privilege/restricted page
-const checkPrivilegePage = async (tabId: number): Promise<boolean> => {
-  try {
-    await chrome.scripting.executeScript({
-      target: { tabId },
-      func: () => true, // Simple test function
-    });
-    return false; // Script executed successfully, not a privilege page
-  } catch (error) {
-    return true; // Privilege page or restricted
-  }
-};
-
 function App() {
   const { i18n } = useTranslation();
   const [appLangCode, setAppLangCode] = useState<string>(DEFAULT_LANGUAGE_CODE);
+  const [sourceLangCode, setSourceLangCode] = useState<string>(
+    DEFAULT_SOURCE_LANGUAGE_CODE,
+  );
   const [translatedLangCode, setTranslatedLangCode] = useState<string>(
     DEFAULT_LANGUAGE_CODE,
   );
@@ -31,7 +25,12 @@ function App() {
   // Load saved settings once at mount
   useEffect(() => {
     chrome.storage.sync.get(
-      ["translatedLangCode", "appLangCode", "extensionEnabled"],
+      [
+        "translatedLangCode",
+        "appLangCode",
+        "sourceLangCode",
+        "extensionEnabled",
+      ],
       (data) => {
         if (
           data.translatedLangCode &&
@@ -43,6 +42,13 @@ function App() {
         if (data.appLangCode && data.appLangCode !== i18n.language) {
           setAppLangCode(data.appLangCode);
           changeLanguage(data.appLangCode);
+        }
+
+        if (
+          data.sourceLangCode &&
+          data.sourceLangCode !== DEFAULT_SOURCE_LANGUAGE_CODE
+        ) {
+          setSourceLangCode(data.sourceLangCode);
         }
 
         if (typeof data.extensionEnabled === "boolean") {
@@ -80,6 +86,23 @@ function App() {
         // Revert local state on error
         setAppLangCode(i18n.language);
       });
+  };
+
+  const handleChangeSourceLanguage = (value: string) => {
+    if (value === sourceLangCode) return;
+    setSourceLangCode(value);
+
+    chrome.storage.sync.set({ sourceLangCode: value }, () => {
+      if (chrome.runtime.lastError) {
+        console.error(
+          "Failed to save source language to storage:",
+          chrome.runtime.lastError,
+        );
+        return;
+      }
+      setSaved(true);
+      setTimeout(() => setSaved(false), 5000);
+    });
   };
 
   const handleChangeTranslatedLanguage = (value: string) => {
@@ -141,8 +164,10 @@ function App() {
             element={
               <MainScreen
                 appLangCode={appLangCode}
+                sourceLangCode={sourceLangCode}
                 translatedLangCode={translatedLangCode}
                 onChangeAppLanguage={handleChangeAppLanguage}
+                onChangeSourceLanguage={handleChangeSourceLanguage}
                 onChangeTranslatedLanguage={handleChangeTranslatedLanguage}
                 extensionEnabled={extensionEnabled}
                 onExtensionToggle={handleExtensionToggle}
