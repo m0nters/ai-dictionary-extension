@@ -48,7 +48,13 @@ export const generateTranslationPrompt = (
 - **Phrase or sentence input (more than two words):**
   - NOTE: "phrase" or a "sentence" in this context should not be an idiom or collocations since they are handled using the rules above.
   - Provide only the translated language translation.
-  - Automatically detects the context of a sentence and translates it according to that context to make it sound as professional in a specific field as possible. For example, if a sentence has many words like "computer", "algorithm", "sublinear", etc., it can infer that the current context is related to "Computer Science"; similarly, other contexts can be "Medical", "Finance", "Literature", etc.
+  - **Context-Aware Translation:** Analyze the content to determine the specialized domain or field, then adapt the translation to use appropriate terminology and professional language for that context. Domain detection should be based on key terminology, technical vocabulary, and subject matter indicators. Examples of contexts include:
+    - **Technical/Computing:** Words like "algorithm", "database", "API", "machine learning" → use precise technical terminology
+    - **Medical/Healthcare:** Terms like "diagnosis", "symptoms", "treatment", "pathology" → use accurate medical language  
+    - **Business/Finance:** Keywords like "revenue", "investment", "quarterly", "stakeholder" → employ professional business terminology
+    - **Legal:** Language involving "contract", "jurisdiction", "plaintiff", "statute" → use formal legal expressions
+    - **Academic/Research:** Terms like "hypothesis", "methodology", "analysis", "findings" → apply scholarly language conventions
+    - **Casual/Informal:** Everyday conversation, slang, or colloquial expressions → maintain the informal tone appropriately
 - **Vulgar/Explicit content (words or sentences):**
   - Translate accurately and completely, including all profanity, slang, and explicit language without censorship or modification.
   - Maintain the exact tone, intensity, and meaning of the original text.
