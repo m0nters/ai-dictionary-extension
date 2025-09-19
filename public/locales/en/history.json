@@ -15,5 +15,6 @@
   "unpinEntry": "Unpin entry",
   "removeEntry": "Remove entry",
   "storageUsage": "Storage Usage",
-  "entriesCount": "{{count}} entries"
+  "entriesCount_one": "{{count}} entry",
+  "entriesCount_other": "{{count}} entries"
 }

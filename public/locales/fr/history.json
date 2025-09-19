@@ -15,5 +15,6 @@
   "unpinEntry": "Désépingler l'entrée",
   "removeEntry": "Supprimer l'entrée",
   "storageUsage": "Utilisation du stockage",
-  "entriesCount": "{{count}} entrées"
+  "entriesCount_one": "{{count}} entrée",
+  "entriesCount_other": "{{count}} entrées"
 }

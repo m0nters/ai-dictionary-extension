@@ -30,13 +30,10 @@ export function HistoryScreen() {
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
   const [entries, setEntries] = useState<HistoryEntry[]>([]);
-  const [loading, setLoading] = useState(true);
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
   const [storageUsage, setStorageUsage] = useState<{
     historyEntryCount: number;
-    historySizeKB: string;
     historyUsageKB: string;
-    historyUsageBytes: number;
   } | null>(null);
 
   const debouncedSearchQuery = useDebounce(searchQuery, 300);
@@ -47,7 +44,6 @@ export function HistoryScreen() {
   }, [debouncedSearchQuery]);
 
   const displayResultedEntry = async () => {
-    setLoading(true);
     try {
       const historyEntries = await searchHistory(debouncedSearchQuery);
       setEntries(historyEntries);
@@ -58,8 +54,6 @@ export function HistoryScreen() {
     } catch (error) {
       console.error("Failed to load history:", error);
       setEntries([]);
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -217,14 +211,7 @@ export function HistoryScreen() {
 
       {/* Content */}
       <div className="m-4 flex-1">
-        {loading ? (
-          <div className="flex items-center justify-center py-12">
-            <div className="text-center">
-              <div className="mx-auto mb-2 h-6 w-6 animate-spin rounded-full border-2 border-indigo-200 border-t-indigo-600" />
-              <p className="text-sm text-gray-500">{t("history:loading")}</p>
-            </div>
-          </div>
-        ) : entries.length === 0 ? (
+        {entries.length === 0 ? (
           <div className="flex items-center justify-center py-12">
             <div className="text-center">
               <Clock className="mx-auto mb-3 h-12 w-12 text-gray-300" />

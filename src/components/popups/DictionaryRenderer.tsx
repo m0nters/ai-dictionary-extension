@@ -20,33 +20,6 @@ interface DictionaryRendererProps {
 }
 
 /**
- * Get synonyms label in the translated language
- */
-
-// in case for further questions: Why don't we put in .json files and use i18n?
-// ANSWER: this label needs to be matched with the TRANSLATED LANGUAGE, while
-// using i18n means it needs to be matched with the APP LANGUAGE
-
-const SYNONYMS: Record<string, string> = {
-  en: "Synonyms",
-  vi: "Từ đồng nghĩa",
-  zh: "同义词",
-  fr: "Synonymes",
-  es: "Sinónimos",
-  de: "Synonyme",
-  ja: "類義語",
-  ko: "동의어",
-};
-
-function getSynonymsLabel(languageCode: string): string {
-  return SYNONYMS[languageCode] || SYNONYMS.en;
-}
-
-/**
- * Simple speaker button component for TTS
- */
-
-/**
  * Renders the source language information
  */
 function SourceLanguageRenderer({
@@ -140,12 +113,10 @@ function PronunciationRenderer({
 function MeaningEntryRenderer({
   entry,
   word,
-  translatedLangCode,
   mainTtsCode,
 }: {
   entry: MeaningEntry;
   word: string;
-  translatedLangCode: string; // this is only for get synonyms label
   mainTtsCode: string;
 }) {
   return (
@@ -204,27 +175,27 @@ function MeaningEntryRenderer({
       )}
 
       {/* Synonyms Section */}
-      {entry.synonyms && entry.synonyms.length > 0 && (
-        <div className="mb-3">
-          <div className="mb-2 flex items-center space-x-2">
-            <span className="rounded-full bg-purple-50 px-2 py-1 text-xs font-medium text-purple-600">
-              {translatedLangCode
-                ? getSynonymsLabel(translatedLangCode)
-                : getSynonymsLabel("en")}
-            </span>
-          </div>
-          <div className="ml-2 flex flex-wrap gap-1">
-            {entry.synonyms.map((synonym, index) => (
-              <span
-                key={index}
-                className="inline-block rounded-full bg-gray-100 px-2 py-1 text-xs text-gray-700 transition-colors duration-200 hover:bg-gray-200"
-              >
-                {synonym}
+      {entry.synonyms &&
+        entry.synonyms.words &&
+        entry.synonyms.words.length > 0 && (
+          <div className="mb-3">
+            <div className="mb-2 flex items-center space-x-2">
+              <span className="rounded-full bg-purple-50 px-2 py-1 text-xs font-medium text-purple-600">
+                {entry.synonyms.label}
               </span>
-            ))}
+            </div>
+            <div className="ml-2 flex flex-wrap gap-1">
+              {entry.synonyms.words.map((synonym, index) => (
+                <span
+                  key={index}
+                  className="inline-block rounded-full bg-gray-100 px-2 py-1 text-xs text-gray-700 transition-colors duration-200 hover:bg-gray-200"
+                >
+                  {synonym}
+                </span>
+              ))}
+            </div>
           </div>
-        </div>
-      )}
+        )}
     </div>
   );
 }
@@ -328,10 +299,7 @@ export function DictionaryRenderer({
               key={index}
               entry={meaning}
               word={singleWordTranslation.word}
-              translatedLangCode={
-                singleWordTranslation.translated_language_code
-              }
-              mainTtsCode={singleWordTranslation.main_tts_language_code}
+              mainTtsCode={singleWordTranslation.main_tts_language_code!}
             />
           ))}
         </div>

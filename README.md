@@ -21,7 +21,7 @@ A Chrome extension that provides instant translation using Google's Gemini AI wh
 - 🎯 **Smart Detection**: Automatically detects any language
 - 📚 **Dictionary Mode**: For single words, shows pronunciation, meaning, and example sentences just like professional dictionary standards
 - 💬 **Sentence Translation**: For phrases and sentences, provides clean translations
-- 📖 **Translation History**: Automatically saves your last 20 translations with search functionality, you can delete or pin any of them as you wish
+- 📖 **Translation History**: Automatically saves translations with search functionality, you can delete or pin any of them as you wish
 - ⚡ **Fast & Lightweight**: Built with React and Vite
 
 ---
@@ -128,11 +128,7 @@ Note that the validation script will automatically detect your new language fold
 
 Add the new language to constant `SUPPORTED_APP_LANGUAGE` in `src/constants/languages.ts`
 
-### 3. Update Synonyms Labels
-
-Add the new language and its translation to constant `SYNONYMS` in `src/components/DictionaryRenderer.tsx`
-
-### 4. Update Content Script
+### 3. Update Content Script
 
 Add the new language and its translation to constant `DICTIONARY` in `src/content-script.ts`
 

@@ -21,18 +21,23 @@ export interface ExampleSentence {
   translation?: string; // Optional for same-language translations
 }
 
+export interface SynonymGroup {
+  label: string;
+  words: string[];
+}
+
 export interface MeaningEntry {
   pronunciation: string | PronunciationVariants;
   part_of_speech: string;
   definition: string;
-  synonyms?: string[]; // Array of synonyms in the source language
+  synonyms?: SynonymGroup;
   examples: ExampleSentence[];
 }
 
 interface BaseTranslation {
   source_language_code: string;
   translated_language_code: string;
-  main_tts_language_code: string;
+  main_tts_language_code?: string; // undefined in case of gibberish or non-existent language
 }
 
 export interface SingleWordTranslation extends BaseTranslation {

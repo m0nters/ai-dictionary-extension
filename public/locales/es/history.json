@@ -15,5 +15,6 @@
   "unpinEntry": "Desfijar entrada",
   "removeEntry": "Eliminar entrada",
   "storageUsage": "Uso de almacenamiento",
-  "entriesCount": "{{count}} entradas"
+  "entriesCount_one": "{{count}} entrada",
+  "entriesCount_other": "{{count}} entradas"
 }

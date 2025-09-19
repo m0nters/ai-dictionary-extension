@@ -36,17 +36,19 @@ export const generateTranslationPrompt = (
   - Translate the meaning into the translated language, specifying its part of speech (in the translated language too, e.g., "danh từ" for noun in Vietnamese, "名词" for noun in Chinese, "idiome" for idiom in French, etc.).
   - For verbs in any conjugated form (e.g., "spelled" or "spelling" in English), translate the infinitive form (e.g., still translate the word "spell") and list key conjugations (e.g., infinitive, past tense, past participle for English; equivalent forms for other languages where applicable, like preterite and participle in Spanish).
   - If the word has multiple meanings or pronunciations, list each separately in the same entry format (meaning entry).
+  - A word is considered to have multiple meanings if those meanings are significantly different from each other and not just variations of the same meaning. For example, "bank" (financial institution) and "bank" (side of a river) are different meanings, while "run" (to move quickly) and "run" (to manage) are also different meanings. However, "run" (to move quickly) and "run" (to jog) would be considered variations of the same meaning.
   - Include at least 2-3 example sentences as array of objects in field \`examples\`, with these fields in each object: 
     - \`text\`: the example sentence in source language
     - \`translation\`: the translation of example sentence above to translated language.
     - In case source languages (REMEMBER: not translated language!) are non-Latin languages (Chinese, Japanese, Arabic, etc.), also include \`pronunciation\` field with romanization (pinyin, romaji, etc.). Otherwise (source language is latin languages, like English, Spanish, French, Vietnamese, etc.), omit this field.
-  - **Synonyms:** For each meaning entry, include a \`synonyms\` field containing an array of words, phrases, collocations, or phrasal verbs that have similar meanings in the source language. Generate comprehensive synonyms when available (aim for 3-6 synonyms per meaning if they exist). If no synonyms exist for a particular meaning, use an empty array []. Examples: for "dash" meaning "run quickly" → ["rush", "race", "sprint", "hurry", "bolt"]; for "dash" meaning "strike forcefully" → ["hurl", "smash", "crash", "slam", "fling"].
+  - **Synonyms:** For each meaning entry, include a \`synonyms\` field containing an object with \`label\` (the word "Synonyms" in the translated language) and \`words\` (array of synonyms in the source language). Generate comprehensive synonyms when available (aim for 3-6 synonyms per meaning if they exist). If no synonyms exist for a particular meaning, omit the synonyms field entirely. Examples: for "dash" meaning "run quickly", translated to Vietnamese → {"label": "Từ đồng nghĩa", "words": ["rush", "race", "sprint", "hurry", "bolt"]}; similarly, for "dash" meaning "strike forcefully" → {"label": "Từ đồng nghĩa", "words": ["hurl", "smash", "crash", "slam", "fling"]}.
   - If that word is a verb and has many conjugations, give enough examples to illustrate all the different forms.
   - If the source and translated languages are the same, provide the dictionary entry and example sentences in that language without translations.
   - NOTE: distinguish between collocations (e.g., "make a decision") and idioms (e.g., "kick the bucket") carefully, they are not the same.
 - **Phrase or sentence input (more than two words):**
   - NOTE: "phrase" or a "sentence" in this context should not be an idiom or collocations since they are handled using the rules above.
   - Provide only the translated language translation.
+  - Automatically detects the context of a sentence and translates it according to that context to make it sound as professional in a specific field as possible. For example, if a sentence has many words like "computer", "algorithm", "sublinear", etc., it can infer that the current context is related to "Computer Science"; similarly, other contexts can be "Medical", "Finance", "Literature", etc.
 - **Vulgar/Explicit content (words or sentences):**
   - Translate accurately and completely, including all profanity, slang, and explicit language without censorship or modification.
   - Maintain the exact tone, intensity, and meaning of the original text.
@@ -90,7 +92,10 @@ export const generateTranslationPrompt = (
               \"translation\": \"Cô ấy **chạy** để bắt xe buýt.\"
             }
           ],
-          \"synonyms\": [\"sprint\", \"dash\", \"jog\", \"race\", \"hurry\"],
+          \"synonyms\": {
+            \"label\": \"Từ đồng nghĩa\",
+            \"words\": [\"sprint\", \"dash\", \"jog\", \"race\", \"hurry\"]
+          }
         },
         {
           \"pronunciation\": {
@@ -115,7 +120,10 @@ export const generateTranslationPrompt = (
               \"translation\": \"Họ đi **chạy** nhanh trong công viên.\"
             }
           ],
-          \"synonyms\": [\"jog\", \"sprint\", \"dash\"],
+          \"synonyms\": {
+            \"label\": \"Từ đồng nghĩa\",
+            \"words\": [\"jog\", \"sprint\", \"dash\"]
+          }
         }
       ]
     }
@@ -146,7 +154,10 @@ export const generateTranslationPrompt = (
               \"translation\": \"Thư viện có nhiều sách hay.\"
             }
           ],
-          \"synonyms\": [\"书籍\", \"图书\", \"读物\"],
+          \"synonyms\": {
+            \"label\": \"同义词\",
+            \"words\": [\"书籍\", \"图书\", \"读物\"]
+          }
         }
       ]
     }
@@ -182,7 +193,10 @@ export const generateTranslationPrompt = (
               \"text\": \"The library is an excellent **resource** for students.\"
             }
           ],
-          \"synonyms\": [\"asset\", \"material\", \"supply\", \"source\", \"reserve\", \"stockpile\"],
+          \"synonyms\": {
+            \"label\": \"Synonyms\",
+            \"words\": [\"asset\", \"material\", \"supply\", \"source\", \"reserve\", \"stockpile\"]
+          }
         }
       ]
     }

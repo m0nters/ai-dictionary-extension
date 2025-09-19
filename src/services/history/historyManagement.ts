@@ -2,7 +2,6 @@ import { HistoryEntry, ParsedTranslation } from "@/types";
 import {
   getHistory,
   HISTORY_STORAGE_KEY,
-  MAX_HISTORY_ENTRIES,
   saveHistoryToStorage,
   sortHistoryEntries,
 } from "./historyStorage";
@@ -27,11 +26,8 @@ export const saveTranslation = async (
     // Add new entry at the beginning (most recent first)
     const updatedEntries = sortHistoryEntries([newEntry, ...entries]);
 
-    // Keep only the most recent entries
-    const trimmedEntries = updatedEntries.slice(0, MAX_HISTORY_ENTRIES);
-
     // Save to chrome storage
-    await saveHistoryToStorage(trimmedEntries, true);
+    await saveHistoryToStorage(updatedEntries, true);
   } catch (error) {
     console.error("Failed to save translation to history:", error);
   }

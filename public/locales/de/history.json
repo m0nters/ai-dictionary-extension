@@ -15,5 +15,6 @@
   "unpinEntry": "Eintrag loslösen",
   "removeEntry": "Eintrag entfernen",
   "storageUsage": "Speicherverbrauch",
-  "entriesCount": "{{count}} Einträge"
+  "entriesCount_one": "{{count}} Eintrag",
+  "entriesCount_other": "{{count}} Einträge"
 }
