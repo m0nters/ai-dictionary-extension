@@ -143,7 +143,7 @@ export function DropdownMenu({
 
       {/* Dropdown Options */}
       <div
-        className={`absolute top-full right-0 left-0 z-50 mt-1 overflow-hidden rounded-xl border border-gray-200 bg-white shadow-xl transition-all duration-300 ease-out ${
+        className={`absolute top-full right-0 left-0 z-50 mt-1 min-w-[170px] overflow-hidden rounded-xl border border-gray-200 bg-white shadow-xl transition-all duration-300 ease-out ${
           isOpen
             ? "translate-y-0 scale-100 opacity-100"
             : "pointer-events-none -translate-y-2 scale-95 opacity-0"
@@ -173,7 +173,7 @@ export function DropdownMenu({
         <div
           ref={optionsRef}
           className={`max-h-60 overflow-y-auto transition-all duration-300 ease-out ${
-            isOpen ? "animate-slideDown" : "animate-slideUp"
+            isOpen ? "animate-slide-down" : "animate-slide-up"
           }`}
         >
           {filteredOptions.length === 0 ? (
@@ -193,9 +193,6 @@ export function DropdownMenu({
                 } ${index === 0 && !canSearch ? "rounded-t-xl" : ""} ${
                   index === filteredOptions.length - 1 ? "rounded-b-xl" : ""
                 }`}
-                style={{
-                  animationDelay: isOpen ? `${index * 20}ms` : "0ms",
-                }}
                 title={option.label}
               >
                 {option.label}
