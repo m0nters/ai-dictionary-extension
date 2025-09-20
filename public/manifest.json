@@ -21,7 +21,8 @@
     "scripting",
     "tabs",
     "management",
-    "unlimitedStorage"
+    "unlimitedStorage",
+    "clipboardWrite"
   ],
   "host_permissions": ["https://generativelanguage.googleapis.com/*"],
   "content_scripts": [

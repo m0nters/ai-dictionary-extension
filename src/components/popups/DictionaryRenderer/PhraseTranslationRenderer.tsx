@@ -1,0 +1,87 @@
+import { CopyButton, SpeakerButton } from "@/components/";
+import { DEFAULT_SOURCE_LANGUAGE_CODE } from "@/constants";
+import { PhraseTranslation } from "@/types";
+import { renderText } from "@/utils";
+import { useState } from "react";
+import { SourceLanguageRenderer } from "./SourceLanguageRenderer";
+
+/**
+ * Collapsible text section component
+ */
+function CollapsibleTextSection({
+  text,
+  copyText,
+  isInitiallyExpanded = true,
+}: {
+  text: string;
+  copyText: string;
+  isInitiallyExpanded?: boolean;
+}) {
+  const [isExpanded, setIsExpanded] = useState(isInitiallyExpanded);
+
+  return (
+    <div className="mt-2 flex items-start">
+      <button
+        onClick={() => setIsExpanded(!isExpanded)}
+        className={`cursor-pointer rounded-full bg-blue-400 transition-all duration-300 ease-in-out ${isExpanded ? "mt-1 mr-2 h-6 w-1" : "mt-2 mr-0 h-3 w-3 -translate-x-1"}`}
+      />
+      <div className="mr-2 flex-1">
+        <div
+          className={`transition-all duration-300 ease-in-out ${
+            !isExpanded ? "max-h-6" : ""
+          }`}
+        >
+          <p
+            className={`text-base leading-relaxed font-medium text-gray-800 ${
+              !isExpanded ? "line-clamp-1" : "line-clamp-none"
+            }`}
+          >
+            {renderText(text)}
+          </p>
+        </div>
+      </div>
+      <CopyButton text={copyText} />
+    </div>
+  );
+}
+
+interface PhraseTranslationRendererProps {
+  phraseTranslation: PhraseTranslation;
+  sourceLangCodeSetting: string;
+  isHistoryDetailView?: boolean;
+}
+
+export function PhraseTranslationRenderer({
+  phraseTranslation,
+  sourceLangCodeSetting,
+  isHistoryDetailView = false,
+}: PhraseTranslationRendererProps) {
+  return (
+    <div className="dictionary-content">
+      {!isHistoryDetailView && (
+        <SourceLanguageRenderer
+          sourceLangCode={phraseTranslation.source_language_code}
+          isAutoDetected={
+            sourceLangCodeSetting === DEFAULT_SOURCE_LANGUAGE_CODE
+          }
+        />
+      )}
+      {phraseTranslation.main_tts_language_code && (
+        <SpeakerButton
+          word={phraseTranslation.text}
+          ttsCode={phraseTranslation.main_tts_language_code}
+          className="-translate-x-3"
+        />
+      )}
+      <CollapsibleTextSection
+        text={phraseTranslation.text}
+        copyText={phraseTranslation.text}
+        isInitiallyExpanded={isHistoryDetailView}
+      />
+      <CollapsibleTextSection
+        text={phraseTranslation.translation}
+        copyText={phraseTranslation.translation}
+      />
+    </div>
+  );
+}
