@@ -4,42 +4,27 @@ import {
   PronunciationVariants,
   SingleWordTranslation,
 } from "@/types/";
+import Markdown from "markdown-to-jsx";
 import { createElement } from "react";
 
 /**
- * Renders text with **bold** markdown as JSX
- */
-const renderBoldText = (text: string) => {
-  const parts = text.split(/(\*\*.*?\*\*)/g);
-  return parts.map((part, index) => {
-    if (part.startsWith("**") && part.endsWith("**")) {
-      const boldText = part.slice(2, -2);
-      return createElement("strong", { key: index }, boldText);
-    }
-    return part;
-  });
-};
-
-/**
- * Renders text in total
+ * Renders text with support format using markdown-to-jsx
  */
 export const renderText = (text: string) => {
-  // First, split by newlines
-  const lines = text.split("\n");
-
-  return lines.reduce(
-    (acc, line, lineIndex) => {
-      const processedLine = renderBoldText(line);
-      acc.push(...processedLine);
-      // Add line break if not the last line
-      if (lineIndex < lines.length - 1) {
-        acc.push(createElement("br", { key: `br-${lineIndex}` }));
-      }
-
-      return acc;
+  return createElement(Markdown, {
+    options: {
+      overrides: {
+        code: {
+          component: "code",
+          props: {
+            className:
+              "bg-gray-100 text-gray-800 px-1 py-0.5 rounded text-sm font-mono",
+          },
+        },
+      },
     },
-    [] as (string | React.ReactElement)[],
-  );
+    children: text,
+  });
 };
 
 /**
@@ -85,7 +70,7 @@ export const parseTranslationContent = (content: string): ParsedTranslation => {
         "meanings": [
         {
           ...
-          "synonyms": ["individual", "human being", "being", "soul", "man", "woman"],      <-- this comma here is diabolical, normal `JSON.parse()` **CAN'T** handle it!
+          "synonyms": ["individual", "human being", "being", "soul", "man", "woman"],      <-- this comma here is diabolical, normal `JSON.parse()` CAN'T handle it!
         },
         {
           ...
