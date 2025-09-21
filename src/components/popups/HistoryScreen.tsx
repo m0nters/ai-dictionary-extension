@@ -21,13 +21,14 @@ import {
   Trash2,
   X,
 } from "lucide-react";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 
 export function HistoryScreen() {
   const { t, i18n } = useTranslation();
   const navigate = useNavigate();
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [entries, setEntries] = useState<HistoryEntry[]>([]);
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
@@ -42,6 +43,24 @@ export function HistoryScreen() {
   useEffect(() => {
     displayResultedEntry();
   }, [debouncedSearchQuery]);
+
+  // Restore scroll position when returning from detail screen
+  useEffect(() => {
+    const savedScrollPosition = sessionStorage.getItem(
+      "historyScreenScrollPosition",
+    );
+    if (savedScrollPosition && scrollContainerRef.current) {
+      const scrollTop = parseInt(savedScrollPosition, 10);
+      // Use setTimeout to ensure the DOM is fully rendered
+      setTimeout(() => {
+        if (scrollContainerRef.current) {
+          scrollContainerRef.current.scrollTop = scrollTop;
+        }
+      }, 100);
+      // Clear the saved position after restoring
+      sessionStorage.removeItem("historyScreenScrollPosition");
+    }
+  }, [entries]); // Run when entries are loaded
 
   const displayResultedEntry = async () => {
     try {
@@ -90,6 +109,17 @@ export function HistoryScreen() {
     }
   };
 
+  const handleEntryClick = (entry: HistoryEntry) => {
+    // Save current scroll position before navigating
+    if (scrollContainerRef.current) {
+      sessionStorage.setItem(
+        "historyScreenScrollPosition",
+        scrollContainerRef.current.scrollTop.toString(),
+      );
+    }
+    navigate(`/history/${entry.id}`, { state: { entry } });
+  };
+
   const formatTimestamp = (timestamp: number, locale: string) => {
     const date = new Date(timestamp);
     const now = new Date();
@@ -136,7 +166,10 @@ export function HistoryScreen() {
   };
 
   return (
-    <div className="animate-slide-in-right h-full w-full overflow-y-auto bg-gradient-to-br from-indigo-50 to-purple-50">
+    <div
+      ref={scrollContainerRef}
+      className="animate-slide-in-right h-full w-full overflow-y-auto bg-gradient-to-br from-indigo-50 to-purple-50"
+    >
       {/* Header */}
       <div className="sticky top-0 z-10 border-b border-indigo-100 bg-white/70 backdrop-blur-sm">
         <div className="flex items-center justify-between p-4">
@@ -239,9 +272,7 @@ export function HistoryScreen() {
               return (
                 <div
                   key={entry.id}
-                  onClick={() =>
-                    navigate(`/history/${entry.id}`, { state: { entry } })
-                  }
+                  onClick={() => handleEntryClick(entry)}
                   className="group cursor-pointer rounded-2xl border border-gray-200 bg-white/60 p-4 transition-all duration-300 hover:border-indigo-300 hover:bg-white/80 hover:shadow-xl hover:shadow-indigo-100/50 active:scale-95"
                 >
                   <div className="flex items-center justify-between">
