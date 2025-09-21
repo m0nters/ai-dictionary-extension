@@ -122,7 +122,7 @@ export function MainScreen({
               : "border-gray-200 bg-gray-50"
           }`}
         >
-          {/* Translation Direction Header */}
+          {/* Header */}
           <label
             className={`mb-3 flex items-center space-x-2 text-sm font-semibold transition-colors duration-300 ${
               !extensionEnabled ? "text-gray-400" : "text-gray-700"

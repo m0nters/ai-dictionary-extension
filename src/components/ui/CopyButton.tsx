@@ -37,7 +37,7 @@ export function CopyButton({ text }: { text: string }) {
   return (
     <button
       onClick={handleCopy}
-      className={`ml-2 rounded-md p-1.5 text-gray-600 transition-colors hover:text-gray-800 ${!isCopied ? "cursor-pointer hover:bg-gray-200" : "cursor-not-allowed"}`}
+      className={`rounded-md p-1.5 text-gray-600 transition-colors hover:text-gray-800 ${!isCopied ? "cursor-pointer hover:bg-gray-200" : "cursor-not-allowed"}`}
     >
       {isCopied ? (
         <Check className="h-4 w-4 text-green-600" />
