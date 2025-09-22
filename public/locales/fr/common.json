@@ -6,6 +6,7 @@
   "loading": "Chargement...",
   "noTranslationAvailable": "Aucune traduction disponible",
   "selectTextToTranslate": "Sélectionner du texte sur la page pour traduire",
+  "textTooLong": "Le texte est trop long pour être traduit. Maximum {{maxWords}} mots autorisés, mais {{currentWords}} mots ont été sélectionnés.",
   "on": "ACTIVÉ",
   "off": "DÉSACTIVÉ",
   "cancel": "Annuler",

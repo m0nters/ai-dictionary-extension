@@ -6,6 +6,7 @@
   "loading": "加载中...",
   "noTranslationAvailable": "无可用翻译",
   "selectTextToTranslate": "选择页面上的文本进行翻译",
+  "textTooLong": "文本太长无法翻译。最多允许{{maxWords}}个字，但选择了{{currentWords}}个字。",
   "on": "开启",
   "off": "关闭",
   "cancel": "取消",

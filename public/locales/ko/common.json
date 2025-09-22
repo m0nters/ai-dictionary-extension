@@ -6,6 +6,7 @@
   "loading": "로드 중...",
   "noTranslationAvailable": "번역이 없습니다",
   "selectTextToTranslate": "페이지에서 번역할 텍스트를 선택",
+  "textTooLong": "텍스트가 너무 길어 번역할 수 없습니다. 최대 {{maxWords}}단어까지 허용되지만, {{currentWords}}단어가 선택되었습니다.",
   "on": "켜기",
   "off": "끄기",
   "cancel": "취소",

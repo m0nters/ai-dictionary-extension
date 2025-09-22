@@ -6,6 +6,7 @@
   "loading": "Loading...",
   "noTranslationAvailable": "No translation available",
   "selectTextToTranslate": "Select text on the page to translate",
+  "textTooLong": "Text is too long for translation. Maximum {{maxWords}} words allowed, but {{currentWords}} words were selected.",
   "on": "ON",
   "off": "OFF",
   "cancel": "Cancel",

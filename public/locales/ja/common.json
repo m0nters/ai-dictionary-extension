@@ -6,6 +6,7 @@
   "loading": "読み込み中...",
   "noTranslationAvailable": "翻訳がありません",
   "selectTextToTranslate": "ページ上のテキストを選択して翻訳",
+  "textTooLong": "テキストが長すぎて翻訳できません。最大{{maxWords}}語まで許可されていますが、{{currentWords}}語が選択されました。",
   "on": "オン",
   "off": "オフ",
   "cancel": "キャンセル",

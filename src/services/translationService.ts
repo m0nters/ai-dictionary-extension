@@ -4,6 +4,30 @@ import {
 } from "@/constants/";
 
 const API_KEY = import.meta.env.VITE_API_KEY as string;
+export const MAX_WORDS_LIMIT = 200;
+
+/**
+ * Counts the number of words in a text
+ */
+const countWords = (text: string): number => {
+  return text
+    .trim()
+    .split(/\s+/)
+    .filter((word) => word.length > 0).length;
+};
+
+/**
+ * Validates if text exceeds the maximum word limit
+ */
+export const validateTextLength = (
+  text: string,
+): { isValid: boolean; wordCount: number } => {
+  const wordCount = countWords(text);
+  return {
+    isValid: wordCount <= MAX_WORDS_LIMIT,
+    wordCount,
+  };
+};
 
 /**
  * Gets the language name from language code
@@ -257,6 +281,12 @@ export const translateWithGemini = async (
   translatedLangCode: string,
   sourceLangCode: string,
 ): Promise<string> => {
+  // Validate text length before translation
+  const validation = validateTextLength(text);
+  if (!validation.isValid) {
+    throw new Error(`TEXT_TOO_LONG:${validation.wordCount}`);
+  }
+
   const prompt = generateTranslationPrompt(
     text,
     translatedLangCode,
