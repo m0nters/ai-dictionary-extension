@@ -2,7 +2,7 @@ import { changeLanguage } from "@/config";
 import { useTranslation } from "@/hooks/";
 import "@/index.css";
 import { parseTranslationContent } from "@/utils/";
-import { X } from "lucide-react";
+import { LoaderCircle, X } from "lucide-react";
 import { useEffect } from "react";
 import { createRoot } from "react-dom/client";
 import { useTranslation as useReactI18next } from "react-i18next";
@@ -59,7 +59,7 @@ export function DictionaryPopup() {
         <div className="w-full">
           {result.loading && (
             <div className="flex items-center justify-center py-12">
-              <div className="h-6 w-6 animate-spin rounded-full border-b-2 border-blue-500"></div>
+              <LoaderCircle className="h-6 w-6 animate-spin text-blue-600" />
               <span className="ml-2 text-sm text-gray-500">
                 {t("common:loading")}
               </span>

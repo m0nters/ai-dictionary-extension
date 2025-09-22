@@ -51,7 +51,7 @@ export function MeaningEntryRenderer({
                 <SpeakerButton
                   word={example.text.replace(/\*\*/g, "")}
                   ttsCode={mainTtsCode}
-                  className="-translate-y-1"
+                  className="-translate-y-0.5"
                 />
               </div>
               {example.pronunciation && (
@@ -90,6 +90,10 @@ export function MeaningEntryRenderer({
                   <SpeakerButton
                     word={idiom.idiom}
                     ttsCode={mainTtsCode}
+                    hoverBackgroundColor="hover:bg-teal-100"
+                    hoverTextColor="hover:text-teal-600"
+                    speakingBackgroundColor="bg-teal-200"
+                    speakingTextColor="text-teal-700"
                     className="-translate-y-0.5"
                   />
                 </div>
@@ -102,11 +106,15 @@ export function MeaningEntryRenderer({
                           <p className="border-l-4 border-teal-300 pl-3 text-xs font-medium text-gray-800">
                             {renderText(example.text)}
                           </p>
-                          <div className="relative h-5 w-5">
+                          <div className="flex h-5 w-5 items-center justify-center">
                             <SpeakerButton
                               word={example.text.replace(/\*\*/g, "")}
                               ttsCode={mainTtsCode}
-                              className="absolute -top-[5px] right-0 scale-75"
+                              hoverBackgroundColor="hover:bg-teal-100"
+                              hoverTextColor="hover:text-teal-600"
+                              speakingBackgroundColor="bg-teal-200"
+                              speakingTextColor="text-teal-700"
+                              className="scale-75"
                             />
                           </div>
                         </div>
@@ -153,6 +161,10 @@ export function MeaningEntryRenderer({
                     <SpeakerButton
                       word={phrasalVerb.phrasal_verb}
                       ttsCode={mainTtsCode}
+                      hoverBackgroundColor="hover:bg-amber-100"
+                      hoverTextColor="hover:text-amber-600"
+                      speakingBackgroundColor="bg-amber-200"
+                      speakingTextColor="text-amber-700"
                       className="-translate-y-0.5"
                     />
                   </div>
@@ -167,11 +179,15 @@ export function MeaningEntryRenderer({
                             <p className="border-l-4 border-amber-300 pl-3 text-xs font-medium text-gray-800">
                               {renderText(example.text)}
                             </p>
-                            <div className="relative h-5 w-5">
+                            <div className="flex h-5 w-5 items-center justify-center">
                               <SpeakerButton
                                 word={example.text.replace(/\*\*/g, "")}
                                 ttsCode={mainTtsCode}
-                                className="absolute -top-[5px] right-0 scale-75"
+                                hoverBackgroundColor="hover:bg-amber-100"
+                                hoverTextColor="hover:text-amber-600"
+                                speakingBackgroundColor="bg-amber-200"
+                                speakingTextColor="text-amber-700"
+                                className="scale-75"
                               />
                             </div>
                           </div>

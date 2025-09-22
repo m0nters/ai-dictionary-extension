@@ -70,10 +70,10 @@ export const generateTranslationPrompt = (
   - Always include a \`main_tts_language_code\` field containing the primary TTS language code for the source language (e.g., "en-US", "zh-CN", "ja-JP", etc.).
 - **Single word/Collocation/Idiom input:**
   - For words that has more than 1 pronunciation variants in source language (e.g., "run" is an English word, has pronunciation variants of UK, US), provide both variants as objects with \`ipa\` and \`tts_code\` fields. For others that don't have pronunciation variants, just use that single one as a string (e.g., Pinyin for Chinese).
-  - Translate the meaning into the translated language, specifying its part of speech (in the translated language too, e.g., "danh từ" for noun in Vietnamese, "名词" for noun in Chinese, "idiome" for idiom in French, etc.).
+  - Translate the meaning into the translated language, specifying its part of speech (in the translated language too, e.g., "Danh từ" for "Noun" in Vietnamese, "名词" for "Noun" in Chinese, "Idiome" for "Idiom" in French, etc.).
   - For verbs in any conjugated form (e.g., "spelled" or "spelling" in English), translate the infinitive form (e.g., still translate the word "spell") and list key conjugations (e.g., infinitive, past tense, past participle for English; equivalent forms for other languages where applicable, like preterite and participle in Spanish).
   - If the word has multiple meanings or pronunciations, list each separately in the same entry format (meaning entry). List all of them, DO NOT limit.
-  - A word is considered to have multiple meanings if those meanings are significantly different from each other and not just variations of the same meaning. For example, "bank" (financial institution) and "bank" (side of a river) are different meanings, while "run" (to move quickly) and "run" (to manage) are also different meanings. However, "run" (to move quickly) and "run" (to jog) would be considered variations of the same meaning.
+    A word is considered to have multiple meanings if those meanings are significantly different from each other and not just variations of the same meaning. For example, "bank" (financial institution) and "bank" (side of a river) are different meanings, while "run" (to move quickly) and "run" (to manage) are also different meanings. However, "run" (to move quickly) and "run" (to jog) would be considered variations of the same meaning.
   - Include at least 2-3 example sentences as array of objects in field \`examples\`, with these fields in each object: 
     - \`text\`: the example sentence in source language
     - \`translation\`: the translation of example sentence above to translated language.
@@ -86,12 +86,12 @@ export const generateTranslationPrompt = (
     - \`meaning\`: explanation of the idiom's meaning in the TRANSLATED LANGUAGE
     - \`examples\`: array of example sentences using the idiom, with same structure as regular examples (\`text\`, \`translation\`, and optional \`pronunciation\` for non-Latin source languages)
     Only include idioms that specifically use the word being defined and relate to that particular meaning. If no relevant idioms exist for a meaning, omit the idioms field entirely. Examples: for "run" meaning "move quickly" → {"label": "Thành ngữ", "items": [{"idiom": "run for your life", "meaning": "chạy thật nhanh để thoát khỏi nguy hiểm", "examples": [{"text": "When they saw the bear, everyone started to **run for their lives**.", "translation": "Khi thấy con gấu, mọi người bắt đầu **chạy thật nhanh để cứu mạng**."}]}]}; for "break" meaning "damage" → {"label": "Idiomes", "items": [{"idiom": "break the ice", "meaning": "briser la glace, commencer une conversation", "examples": [{"text": "He told a joke to **break the ice** at the meeting.", "translation": "Il a raconté une blague pour **briser la glace** lors de la réunion."}]}]}.
-    Include all idioms that fit the criteria, DO NOT limit yourself.
+    Include all idioms that fit the criteria, aim for at least 3-5 common ones if they exist.
   - **Phrasal Verbs (Optional):** For each meaning entry, include a \`phrasal_verbs\` field containing an object with \`label\` (the word "Phrasal Verbs" in the translated language, e.g., "Cụm động từ" in Vietnamese) and \`items\` (array of phrasal verb objects). Each phrasal verb object should have:
     - \`phrasal_verb\`: the phrasal verb expression in source language (verb + particle(s))
     - \`meaning\`: definition/translation of the phrasal verb in the translated language  
     - \`examples\`: array of example sentences using the phrasal verb, with same structure as regular examples (\`text\`, \`translation\`, and optional \`pronunciation\` for non-Latin source languages)
-    Include all phrasal verbs that fit the criteria, DO NOT limit yourself.
+    Include all phrasal verbs that fit the criteria, aim for at least 3-10 common ones if they exist.
     **IMPORTANT DISTINCTION:** Phrasal verbs are combinations of a verb + particle (preposition/adverb) that create a new meaning (e.g., "run out" = exhaust supply, "run into" = encounter). They are NOT idioms (which are non-literal expressions like "run for your life"). Only include phrasal verbs that use the word being defined as the main verb and relate to that specific meaning. If no relevant phrasal verbs exist for a meaning, omit the phrasal_verbs field entirely. Examples: for "run" meaning "move quickly" → {"label": "Động từ cụm", "items": [{"phrasal_verb": "run away", "meaning": "chạy trốn, bỏ chạy", "examples": [{"text": "The thief **ran away** when he saw the police.", "translation": "Tên trộm **bỏ chạy** khi thấy cảnh sát."}]}, {"phrasal_verb": "run after", "meaning": "chạy theo, đuổi theo", "examples": [{"text": "She **ran after** the bus but missed it.", "translation": "Cô ấy **chạy theo** xe buýt nhưng đã lỡ."}]}]}; for "break" meaning "damage" → {"label": "Verbes à particule", "items": [{"phrasal_verb": "break down", "meaning": "tomber en panne, se casser", "examples": [{"text": "My car **broke down** on the highway.", "translation": "Ma voiture **est tombée en panne** sur l'autoroute."}]}]}.
   - If that word is a verb and has many conjugations, give enough examples to illustrate all the different forms.
   - If the source and translated languages are the same, provide the dictionary entry and example sentences in that language without translations.
@@ -138,7 +138,7 @@ export const generateTranslationPrompt = (
               \"tts_code\": \"en-US\"
             }
           },
-          \"part_of_speech\": \"động từ\",
+          \"part_of_speech\": \"Động từ\",
           \"definition\": \"chạy\",
           \"examples\": [
             {
@@ -176,7 +176,7 @@ export const generateTranslationPrompt = (
             ]
           },
           \"phrasal_verbs\": {
-            \"label\": \"Động từ cụm\",
+            \"label\": \"Cụm động từ\",
             \"items\": [
               {
                 \"phrasal_verb\": \"run away\",
@@ -216,7 +216,7 @@ export const generateTranslationPrompt = (
               \"tts_code\": \"en-US\"
             }
           },
-          \"part_of_speech\": \"danh từ\",
+          \"part_of_speech\": \"Danh từ\",
           \"definition\": \"sự chạy, cuộc chạy\",
           \"examples\": [
             {
@@ -248,7 +248,7 @@ export const generateTranslationPrompt = (
       \"meanings\": [
         {
           \"pronunciation\": \"pǎo\",
-          \"part_of_speech\": \"động từ\",
+          \"part_of_speech\": \"Động từ\",
           \"definition\": \"chạy\",
           \"examples\": [
             {
@@ -334,7 +334,7 @@ export const generateTranslationPrompt = (
               \"tts_code\": \"en-US\"
             }
           },
-          \"part_of_speech\": \"noun\",
+          \"part_of_speech\": \"Noun\",
           \"definition\": \"A supply of money, materials, staff, or other assets; a source of help or information.\",
           \"examples\": [
             {

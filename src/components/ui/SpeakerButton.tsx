@@ -8,9 +8,17 @@ export function SpeakerButton({
   word,
   ttsCode,
   className = "",
+  hoverBackgroundColor = "hover:bg-gray-200",
+  hoverTextColor = "hover:text-gray-700",
+  speakingBackgroundColor = "bg-blue-100 ",
+  speakingTextColor = "text-blue-600",
 }: {
   word: string;
   ttsCode: string;
+  hoverBackgroundColor?: string;
+  hoverTextColor?: string;
+  speakingBackgroundColor?: string;
+  speakingTextColor?: string;
   className?: string;
 }) {
   const { t } = useTranslation();
@@ -60,8 +68,8 @@ export function SpeakerButton({
         isLoading
           ? "cursor-wait bg-gray-100 text-gray-400"
           : isPlaying
-            ? "cursor-pointer bg-blue-100 text-blue-600"
-            : "cursor-pointer text-gray-500 hover:bg-gray-200 hover:text-gray-700"
+            ? `cursor-pointer ${speakingBackgroundColor} ${speakingTextColor}`
+            : `cursor-pointer text-gray-500 ${hoverBackgroundColor} ${hoverTextColor}`
       } ${className}`}
       title={
         isLoading
