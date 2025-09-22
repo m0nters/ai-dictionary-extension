@@ -78,18 +78,20 @@ export const generateTranslationPrompt = (
     - \`text\`: the example sentence in source language
     - \`translation\`: the translation of example sentence above to translated language.
     - In case source languages (REMEMBER: not translated language!) are non-Latin languages (Chinese, Japanese, Arabic, etc.), also include \`pronunciation\` field with romanization (pinyin, romaji, etc.). Otherwise (source language is latin languages, like English, Spanish, French, Vietnamese, etc.), omit this field.
-  - **Synonyms:** For each meaning entry, include a \`synonyms\` field containing an object with \`label\` (the word "Synonyms" in the translated language) and \`items\` (array of synonymous expressions in the source language). Provide comprehensive alternatives when available (aim for 3-10 items per meaning if they exist). If no synonymous expressions exist for a particular meaning, omit the synonyms field entirely. The items can include single words, phrasal verbs, collocations, and other equivalent expressions. Examples: for "dash" meaning "run quickly", translated to Vietnamese → {"label": "Từ đồng nghĩa", "items": ["rush", "race", "sprint", "hurry", "take off", "go hell for leather", "put on some speed"]}; for "dash" meaning "strike forcefully" → {"label": "Từ đồng nghĩa", "items": ["hurl", "smash", "crash", "slam", "fling"]}.
+  - **Synonyms:** For each meaning entry, include a \`synonyms\` field containing an object with \`label\` (the word "Synonyms" in the translated language) and \`items\` (array of synonymous expressions in the SOURCE LANGUAGE). 
+    Provide comprehensive alternatives when available (aim for 3-10 items per meaning if they exist). If no synonymous expressions exist for a particular meaning, omit the synonyms field entirely. The items can include single words, phrasal verbs, collocations, and other equivalent expressions. Examples: for "dash" meaning "run quickly", translated to Vietnamese → {"label": "Từ đồng nghĩa", "items": ["rush", "race", "sprint", "hurry", "take off", "go hell for leather", "put on some speed"]}; for "dash" meaning "strike forcefully" → {"label": "Từ đồng nghĩa", "items": ["hurl", "smash", "crash", "slam", "fling"]}.
+    **🚨 CRITICAL: The synonyms must be in the SOURCE LANGUAGE, NOT the translated language! 🚨**
   - **Idioms (Optional):** For each meaning entry, include an \`idioms\` field containing an object with \`label\` (the word "Idioms" in the translated language, e.g., "成语" in Chinese) and \`items\` (array of idiom objects). Each idiom object should have:
-    - \`idiom\`: the idiom expression in source language
-    - \`meaning\`: explanation of the idiom's meaning in the translated language
+    - \`idiom\`: the idiom expression in SOURCE LANGUAGE (remember, NOT translated language)
+    - \`meaning\`: explanation of the idiom's meaning in the TRANSLATED LANGUAGE
     - \`examples\`: array of example sentences using the idiom, with same structure as regular examples (\`text\`, \`translation\`, and optional \`pronunciation\` for non-Latin source languages)
     Only include idioms that specifically use the word being defined and relate to that particular meaning. If no relevant idioms exist for a meaning, omit the idioms field entirely. Examples: for "run" meaning "move quickly" → {"label": "Thành ngữ", "items": [{"idiom": "run for your life", "meaning": "chạy thật nhanh để thoát khỏi nguy hiểm", "examples": [{"text": "When they saw the bear, everyone started to **run for their lives**.", "translation": "Khi thấy con gấu, mọi người bắt đầu **chạy thật nhanh để cứu mạng**."}]}]}; for "break" meaning "damage" → {"label": "Idiomes", "items": [{"idiom": "break the ice", "meaning": "briser la glace, commencer une conversation", "examples": [{"text": "He told a joke to **break the ice** at the meeting.", "translation": "Il a raconté une blague pour **briser la glace** lors de la réunion."}]}]}.
-    Include all idioms that fit the criteria, DO NOT limit.
+    Include all idioms that fit the criteria, DO NOT limit yourself.
   - **Phrasal Verbs (Optional):** For each meaning entry, include a \`phrasal_verbs\` field containing an object with \`label\` (the word "Phrasal Verbs" in the translated language, e.g., "Cụm động từ" in Vietnamese) and \`items\` (array of phrasal verb objects). Each phrasal verb object should have:
     - \`phrasal_verb\`: the phrasal verb expression in source language (verb + particle(s))
     - \`meaning\`: definition/translation of the phrasal verb in the translated language  
     - \`examples\`: array of example sentences using the phrasal verb, with same structure as regular examples (\`text\`, \`translation\`, and optional \`pronunciation\` for non-Latin source languages)
-    Include all phrasal verbs that fit the criteria, DO NOT limit.
+    Include all phrasal verbs that fit the criteria, DO NOT limit yourself.
     **IMPORTANT DISTINCTION:** Phrasal verbs are combinations of a verb + particle (preposition/adverb) that create a new meaning (e.g., "run out" = exhaust supply, "run into" = encounter). They are NOT idioms (which are non-literal expressions like "run for your life"). Only include phrasal verbs that use the word being defined as the main verb and relate to that specific meaning. If no relevant phrasal verbs exist for a meaning, omit the phrasal_verbs field entirely. Examples: for "run" meaning "move quickly" → {"label": "Động từ cụm", "items": [{"phrasal_verb": "run away", "meaning": "chạy trốn, bỏ chạy", "examples": [{"text": "The thief **ran away** when he saw the police.", "translation": "Tên trộm **bỏ chạy** khi thấy cảnh sát."}]}, {"phrasal_verb": "run after", "meaning": "chạy theo, đuổi theo", "examples": [{"text": "She **ran after** the bus but missed it.", "translation": "Cô ấy **chạy theo** xe buýt nhưng đã lỡ."}]}]}; for "break" meaning "damage" → {"label": "Verbes à particule", "items": [{"phrasal_verb": "break down", "meaning": "tomber en panne, se casser", "examples": [{"text": "My car **broke down** on the highway.", "translation": "Ma voiture **est tombée en panne** sur l'autoroute."}]}]}.
   - If that word is a verb and has many conjugations, give enough examples to illustrate all the different forms.
   - If the source and translated languages are the same, provide the dictionary entry and example sentences in that language without translations.
@@ -113,7 +115,8 @@ export const generateTranslationPrompt = (
   - Return "No translation available." but in translated language. (e.g., "Không có bản dịch" in Vietnamese, "没有可用的翻译" in Chinese)
   ${!sourceLangName ? `- \`source_language_code\` field must be this exact string, "unknown"` : ""} 
   - \`main_tts_language_code\` field can be omitted.
-- **Output Format:** Use JSON format with the structure following these examples below:
+
+- **Output Format:** Output JSON only! Use JSON format with the structure following these examples below:
   - e.g.1., English "ran" to Vietnamese, this is an example of an output of a word that has many meanings:
 
     \`\`\`json
@@ -259,10 +262,6 @@ export const generateTranslationPrompt = (
               \"translation\": \"Con chó nhỏ chạy rất nhanh.\"
             }
           ],
-          \"synonyms\": {
-            \"label\": \"同义词\",
-            \"items\": [\"奔跑\", \"疾跑\", \"狂奔\"]
-          },
           \"idioms\": {
             \"label\": \"成语\",
             \"items\": [
@@ -305,6 +304,10 @@ export const generateTranslationPrompt = (
                 ]
               }
             ]
+          },
+          \"synonyms\": {
+            \"label\": \"同义词\",
+            \"items\": [\"奔跑\", \"疾跑\", \"狂奔\"]
           }
         }
       ]
@@ -373,7 +376,7 @@ export const generateTranslationPrompt = (
     }
     \`\`\`
 
-- IMPORTANT NOTE: Do not add extra commentary or explanations, show JSON only!
+- **FINAL REMINDER:** Synonyms, idioms, and phrasal verbs must ALL be in the SOURCE LANGUAGE (same language as the input word)!
 
 Finally, the text for translation is: "${text}"`;
 };
@@ -428,8 +431,6 @@ export const translateWithGemini = async (
   const translation =
     data.candidates?.[0]?.content?.parts?.[0]?.text ||
     "No translation available";
-
-  console.log(translation);
 
   return translation;
 };
