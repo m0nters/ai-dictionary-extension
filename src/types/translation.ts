@@ -26,11 +26,35 @@ export interface SynonymGroup {
   items: string[];
 }
 
+export interface IdiomEntry {
+  idiom: string;
+  meaning: string;
+  examples: ExampleSentence[];
+}
+
+export interface IdiomGroup {
+  label: string;
+  items: IdiomEntry[];
+}
+
+export interface PhrasalVerbEntry {
+  phrasal_verb: string;
+  meaning: string;
+  examples: ExampleSentence[];
+}
+
+export interface PhrasalVerbGroup {
+  label: string;
+  items: PhrasalVerbEntry[];
+}
+
 export interface MeaningEntry {
   pronunciation: string | PronunciationVariants;
   part_of_speech: string;
   definition: string;
   synonyms?: SynonymGroup;
+  idioms?: IdiomGroup;
+  phrasal_verbs?: PhrasalVerbGroup;
   examples: ExampleSentence[];
 }
 

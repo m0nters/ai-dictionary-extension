@@ -48,7 +48,7 @@ export function HistoryDetailScreen() {
 
       {/* Content */}
       <div className="flex-1 p-4">
-        <div className="rounded-2xl border border-white/20 bg-white/70 p-5 shadow-xl backdrop-blur-sm">
+        <div className="rounded-2xl border border-gray-200 bg-gray-50 p-5 shadow-xl backdrop-blur-sm">
           <DictionaryRenderer
             translation={entry.translation}
             isHistoryDetailView={true}

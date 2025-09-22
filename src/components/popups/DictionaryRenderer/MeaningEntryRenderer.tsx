@@ -15,9 +15,9 @@ export function MeaningEntryRenderer({
   mainTtsCode,
 }: MeaningEntryRendererProps) {
   return (
-    <div className="mb-4">
+    <div>
       {/* Word and Pronunciation Header (original style) */}
-      <div className="mb-2">
+      <div className="mb-4">
         <h1 className="inline text-xl font-semibold text-blue-600">{word}</h1>
         <PronunciationRenderer
           pronunciation={entry.pronunciation}
@@ -27,11 +27,11 @@ export function MeaningEntryRenderer({
       </div>
 
       {/* Part of Speech and Translation/Definition (original style) */}
-      <div className="mb-2">
-        <span className="rounded-full bg-green-50 px-2 py-1 text-xs font-medium text-green-600">
+      <div className="mb-4">
+        <span className="rounded-full border border-green-200 bg-green-50 px-2 py-1 text-xs font-medium text-green-600">
           {entry.part_of_speech}
         </span>
-        <p className="mt-1 text-sm font-medium text-gray-800">
+        <p className="mt-2 text-sm font-medium text-gray-800">
           {entry.definition}
         </p>
       </div>
@@ -44,7 +44,7 @@ export function MeaningEntryRenderer({
               key={exampleIndex}
               className="mb-3 ml-4 rounded-lg border-l-4 border-blue-200 bg-blue-50 p-3"
             >
-              <div className="mb-1 flex items-start gap-1">
+              <div className="mb-1 flex items-start justify-between gap-1">
                 <p className="text-sm font-medium text-gray-800">
                   {renderText(example.text)}
                 </p>
@@ -69,13 +69,139 @@ export function MeaningEntryRenderer({
         </div>
       )}
 
+      {/* Idioms Section */}
+      {entry.idioms && entry.idioms.items && entry.idioms.items.length > 0 && (
+        <div className="mt-8 mb-4">
+          <div className="mb-2 flex items-center space-x-2">
+            <span className="rounded-full border border-teal-200 bg-teal-50 px-2 py-1 text-xs font-medium text-teal-600">
+              {entry.idioms.label}
+            </span>
+          </div>
+          <div className="ml-2 space-y-3">
+            {entry.idioms.items.map((idiom, index) => (
+              <div
+                key={index}
+                className="rounded-lg border border-teal-200 bg-teal-50 p-3"
+              >
+                <div className="mb-2 flex items-start gap-1">
+                  <h4 className="text-sm font-semibold text-gray-800">
+                    {idiom.idiom}
+                  </h4>
+                  <SpeakerButton
+                    word={idiom.idiom}
+                    ttsCode={mainTtsCode}
+                    className="-translate-y-0.5"
+                  />
+                </div>
+                <p className="mb-2 text-sm text-gray-700">{idiom.meaning}</p>
+                {idiom.examples && idiom.examples.length > 0 && (
+                  <div className="space-y-2">
+                    {idiom.examples.map((example, exampleIndex) => (
+                      <div key={exampleIndex}>
+                        <div className="mb-1 flex items-start justify-between gap-1">
+                          <p className="border-l-4 border-teal-300 pl-3 text-xs font-medium text-gray-800">
+                            {renderText(example.text)}
+                          </p>
+                          <div className="relative h-5 w-5">
+                            <SpeakerButton
+                              word={example.text.replace(/\*\*/g, "")}
+                              ttsCode={mainTtsCode}
+                              className="absolute -top-[5px] right-0 scale-75"
+                            />
+                          </div>
+                        </div>
+                        {example.pronunciation && (
+                          <p className="mb-1 pl-4 text-xs text-gray-500 italic">
+                            {renderText(example.pronunciation)}
+                          </p>
+                        )}
+                        {example.translation && (
+                          <p className="pl-4 text-xs text-teal-700">
+                            {renderText(example.translation)}
+                          </p>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Phrasal Verbs Section */}
+      {entry.phrasal_verbs &&
+        entry.phrasal_verbs.items &&
+        entry.phrasal_verbs.items.length > 0 && (
+          <div className="mt-8 mb-4">
+            <div className="mb-2 flex items-center space-x-2">
+              <span className="rounded-full border border-amber-200 bg-amber-50 px-2 py-1 text-xs font-medium text-amber-600">
+                {entry.phrasal_verbs.label}
+              </span>
+            </div>
+            <div className="ml-2 space-y-3">
+              {entry.phrasal_verbs.items.map((phrasalVerb, index) => (
+                <div
+                  key={index}
+                  className="rounded-lg border border-amber-200 bg-amber-50 p-3"
+                >
+                  <div className="mb-2 flex items-start gap-1">
+                    <h4 className="text-sm font-semibold text-gray-800">
+                      {phrasalVerb.phrasal_verb}
+                    </h4>
+                    <SpeakerButton
+                      word={phrasalVerb.phrasal_verb}
+                      ttsCode={mainTtsCode}
+                      className="-translate-y-0.5"
+                    />
+                  </div>
+                  <p className="mb-2 text-sm text-gray-700">
+                    {phrasalVerb.meaning}
+                  </p>
+                  {phrasalVerb.examples && phrasalVerb.examples.length > 0 && (
+                    <div className="space-y-2">
+                      {phrasalVerb.examples.map((example, exampleIndex) => (
+                        <div key={exampleIndex}>
+                          <div className="relative mb-1 flex items-start justify-between gap-1">
+                            <p className="border-l-4 border-amber-300 pl-3 text-xs font-medium text-gray-800">
+                              {renderText(example.text)}
+                            </p>
+                            <div className="relative h-5 w-5">
+                              <SpeakerButton
+                                word={example.text.replace(/\*\*/g, "")}
+                                ttsCode={mainTtsCode}
+                                className="absolute -top-[5px] right-0 scale-75"
+                              />
+                            </div>
+                          </div>
+                          {example.pronunciation && (
+                            <p className="mb-1 pl-4 text-xs text-gray-500 italic">
+                              {renderText(example.pronunciation)}
+                            </p>
+                          )}
+                          {example.translation && (
+                            <p className="pl-4 text-xs text-amber-700">
+                              {renderText(example.translation)}
+                            </p>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
       {/* Synonyms Section */}
       {entry.synonyms &&
         entry.synonyms.items &&
         entry.synonyms.items.length > 0 && (
-          <div className="mb-3">
+          <div className="mt-8 mb-4">
             <div className="mb-2 flex items-center space-x-2">
-              <span className="rounded-full bg-purple-50 px-2 py-1 text-xs font-medium text-purple-600">
+              <span className="rounded-full border border-purple-200 bg-purple-50 px-2 py-1 text-xs font-medium text-purple-600">
                 {entry.synonyms.label}
               </span>
             </div>
@@ -83,7 +209,7 @@ export function MeaningEntryRenderer({
               {entry.synonyms.items.map((synonym, index) => (
                 <span
                   key={index}
-                  className="inline-block rounded-full bg-gray-100 px-2 py-1 text-xs text-gray-700 transition-colors duration-200 hover:bg-gray-200"
+                  className="inline-block rounded-full border border-gray-300 bg-gray-100 px-2 py-1 text-xs text-gray-900 transition-colors duration-200 hover:bg-gray-200"
                 >
                   {synonym}
                 </span>

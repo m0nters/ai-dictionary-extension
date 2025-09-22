@@ -56,7 +56,7 @@ export function SpeakerButton({
     <button
       onClick={handleSpeak}
       disabled={isLoading}
-      className={`ml-1 rounded-full p-2 transition-colors ${
+      className={`rounded-full p-2 transition-colors ${
         isLoading
           ? "cursor-wait bg-gray-100 text-gray-400"
           : isPlaying
