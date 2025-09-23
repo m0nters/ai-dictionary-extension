@@ -65,11 +65,9 @@ export const togglePinEntry = async (id: string): Promise<void> => {
     const entries = await getHistory();
     const updatedEntries = entries.map((entry) => {
       if (entry.id === id) {
-        const newPinnedState = !entry.pinned;
         return {
           ...entry,
-          pinned: newPinnedState,
-          pinnedAt: newPinnedState ? Date.now() : undefined,
+          pinnedAt: !entry.pinnedAt ? Date.now() : undefined,
         };
       }
       return entry;

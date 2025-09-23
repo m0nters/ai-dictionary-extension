@@ -9,11 +9,11 @@ export const HISTORY_STORAGE_KEY = "translationHistory";
 export const sortHistoryEntries = (entries: HistoryEntry[]) => {
   return entries.sort((a, b) => {
     // If one is pinned and the other isn't, prioritize pinned
-    if (a.pinned && !b.pinned) return -1;
-    if (!a.pinned && b.pinned) return 1;
+    if (a.pinnedAt && !b.pinnedAt) return -1;
+    if (!a.pinnedAt && b.pinnedAt) return 1;
 
     // If both are pinned, sort by pin timestamp (most recently pinned go latest)
-    if (a.pinned && b.pinned) {
+    if (a.pinnedAt && b.pinnedAt) {
       return (a.pinnedAt || 0) - (b.pinnedAt || 0);
     }
 

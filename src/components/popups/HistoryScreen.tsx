@@ -371,18 +371,18 @@ export function HistoryScreen() {
                       <button
                         onClick={(e) => handlePinEntry(entry.id, e)}
                         className={`cursor-pointer rounded-lg border p-3 transition-all duration-200 hover:shadow-sm ${
-                          entry.pinned
+                          entry.pinnedAt
                             ? "border-amber-200 bg-amber-50 text-amber-600 hover:bg-amber-100"
                             : "border-gray-300 bg-gray-100 text-gray-500 hover:bg-gray-200"
                         }`}
                         title={
-                          entry.pinned
+                          entry.pinnedAt
                             ? t("history:unpinEntry")
                             : t("history:pinEntry")
                         }
                       >
                         <Pin
-                          className={`h-4 w-4 ${entry.pinned ? "fill-current" : ""}`}
+                          className={`h-4 w-4 ${entry.pinnedAt ? "fill-current" : ""}`}
                         />
                       </button>
 
