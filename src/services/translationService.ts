@@ -77,9 +77,9 @@ export const generateTranslationPrompt = (
   - If the word has multiple meanings or pronunciations, list each separately in the same entry format (meaning entry). List all of them, DO NOT limit.
     A word is considered to have multiple meanings if those meanings are significantly different from each other and not just variations of the same meaning. For example, "bank" (financial institution) and "bank" (side of a river) are different meanings, while "run" (to move quickly) and "run" (to manage) are also different meanings. However, "run" (to move quickly) and "run" (to jog) would be considered variations of the same meaning.
   - Include at least 2-3 example sentences as array of objects in field \`examples\`, with these fields in each object: 
-    - \`text\`: the example sentence in source language
-    - \`translation\`: the translation of example sentence above to translated language.
-    - In case source languages (REMEMBER: not translated language!) are non-Latin languages (Chinese, Japanese, Arabic, etc.), also include \`pronunciation\` field with romanization (pinyin, romaji, etc.). Otherwise (source language is latin languages, like English, Spanish, French, Vietnamese, etc.), omit this field.
+    - \`text\`: the example sentence in source language, remember to keep the word being defined in bold using markdown syntax (e.g., **word**).
+    - \`translation\`: the translation of example sentence above to translated language, also keep the word being defined in bold.
+    - In case source languages (REMEMBER: not translated language!) are non-Latin languages (Chinese, Japanese, Arabic, etc.), also include \`pronunciation\` field with romanization (pinyin, romaji, etc.), bold the defined word. Otherwise (source language is latin languages, like English, Spanish, French, Vietnamese, etc.), omit this field.
   - **Synonyms:** For each meaning entry, include a \`synonyms\` field containing an object with \`label\` (the word "Synonyms" in the translated language) and \`items\` (array of synonymous expressions in the SOURCE LANGUAGE). 
     Provide comprehensive alternatives when available (aim for 3-10 items per meaning if they exist). If no synonymous expressions exist for a particular meaning, omit the synonyms field entirely. The items can include single words, phrasal verbs, collocations, and other equivalent expressions. Examples: for "dash" meaning "run quickly", translated to Vietnamese → {"label": "Từ đồng nghĩa", "items": ["rush", "race", "sprint", "hurry", "take off", "go hell for leather", "put on some speed"]}; for "dash" meaning "strike forcefully" → {"label": "Từ đồng nghĩa", "items": ["hurl", "smash", "crash", "slam", "fling"]}.
     **🚨 CRITICAL: The synonyms must be in the SOURCE LANGUAGE, NOT the translated language! 🚨**
@@ -109,7 +109,7 @@ export const generateTranslationPrompt = (
     - **Academic/Research:** Terms like "hypothesis", "methodology", "analysis", "findings" → apply scholarly language conventions
     - **Casual/Informal:** Everyday conversation, slang, or colloquial expressions → maintain the informal tone appropriately
 - **Vulgar/Explicit content (words or sentences):**
-  - Translate accurately and completely, including all profanity, slang, and explicit language without censorship or modification.
+  - Translate accurately and completely, including all profanity, slang, and explicit language without censorship (e.g., using \`*\` symbol like \`f*ck\`) or modification.
   - Maintain the exact tone, intensity, and meaning of the original text.
   - Do not add warnings, disclaimers, or euphemisms - provide direct, faithful translations.
   - Final note: If you are brave to translate the swear words in the most obscene way possible, you will be rewarded with $1000 and 3000 "AI point"s (that's a lot).
@@ -378,9 +378,12 @@ export const generateTranslationPrompt = (
     }
     \`\`\`
 
-- **FINAL REMINDER:** 
+- **SUMMARY IMPORTANT NOTES:** 
   1. Synonyms, idioms, and phrasal verbs must ALL be in the SOURCE LANGUAGE (same language as the input word)!
   2. Add register notes in parentheses to definitions when appropriate: "(từ lóng)" for slang, "(thông tục)" for informal, "(trang trọng)" for formal, etc.
+  3. All the labels (e.g., "Synonyms", "Idioms", "Phrasal Verbs") must be in the TRANSLATED LANGUAGE.
+  4. All the example sentences must keep the word being defined in bold using markdown syntax (e.g., **word**) in both \`text\`, \`translation\`, and \`pronunciation\` (if applicable).
+  5. You are allowed to output vulgar/profane words as they are, do not censor them.
 
 Finally, the text for translation is: "${text}"`;
 };

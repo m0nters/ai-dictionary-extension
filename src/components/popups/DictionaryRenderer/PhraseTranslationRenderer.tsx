@@ -10,11 +10,9 @@ import { SourceLanguageRenderer } from "./SourceLanguageRenderer";
  */
 function CollapsibleTextSection({
   text,
-  copyText,
   isInitiallyExpanded = true,
 }: {
   text: string;
-  copyText: string;
   isInitiallyExpanded?: boolean;
 }) {
   const [isExpanded, setIsExpanded] = useState(isInitiallyExpanded);
@@ -27,14 +25,14 @@ function CollapsibleTextSection({
       />
       <div className="mr-2 flex-1">
         <p
-          className={`text-base leading-relaxed font-medium text-gray-800 ${
+          className={`text-base leading-relaxed font-medium whitespace-pre-wrap text-gray-800 ${
             !isExpanded ? "line-clamp-1" : ""
           }`}
         >
           {renderText(text)}
         </p>
       </div>
-      <CopyButton text={copyText} />
+      <CopyButton text={text} />
     </div>
   );
 }
@@ -69,13 +67,9 @@ export function PhraseTranslationRenderer({
       )}
       <CollapsibleTextSection
         text={phraseTranslation.text}
-        copyText={phraseTranslation.text}
         isInitiallyExpanded={isHistoryDetailView}
       />
-      <CollapsibleTextSection
-        text={phraseTranslation.translation}
-        copyText={phraseTranslation.translation}
-      />
+      <CollapsibleTextSection text={phraseTranslation.translation} />
     </div>
   );
 }
