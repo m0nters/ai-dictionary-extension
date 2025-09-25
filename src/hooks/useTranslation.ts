@@ -73,15 +73,18 @@ export const useTranslation = () => {
         sourceLang,
       );
 
+      // Parse the translation first - this will throw if parsing fails
+      const parsedTranslation = parseTranslationContent(translation);
+
+      // Only set successful result if parsing succeeds
       setResult((prev) => ({
         ...prev,
         translation,
         loading: false,
       }));
 
-      // Parse and save translation to history
+      // Save translation to history
       try {
-        const parsedTranslation = parseTranslationContent(translation);
         if (parsedTranslation) {
           await saveTranslation(parsedTranslation);
         }

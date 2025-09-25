@@ -97,13 +97,8 @@ export const parseTranslationContent = (content: string): ParsedTranslation => {
     }
   } catch (error) {
     console.error("Failed to parse JSON translation:", error);
-    console.log("Content that failed to parse:", content);
+    console.error("Content that failed to parse:", content);
 
-    // Fallback: create a simple phrase translation
-    return {
-      text: "Failed to parse translation",
-      translation: "Failed to parse translation",
-      source_language_code: "unknown",
-    } as PhraseTranslation;
+    throw new Error("Failed to parse JSON translation");
   }
 };
