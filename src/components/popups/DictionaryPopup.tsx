@@ -42,7 +42,7 @@ export function DictionaryPopup() {
     : null;
 
   return (
-    <div className="flex h-full w-full flex-col bg-white">
+    <div className="z-99999 flex h-full w-full flex-col bg-white">
       {/* Close button - properly aligned */}
       <div className="flex justify-end p-4 pb-0">
         <button

@@ -1,3 +1,9 @@
+/* This content script handles showing "dictionary button" and "dictionary popup"
+ * "dictionary button" is a small button that appears when selecting a text
+ * "dictionary popup" is a popup that appears after clicking the button, showing the translation
+ * Remember these 2 terms!
+ */
+
 // We have to define translations in here like this instead of in i18n `locales`
 // folder because content script has issues with ES module. There are some
 // workarounds with this but they are all unsafe.
@@ -56,11 +62,10 @@ async function getDictionaryButtonText(): Promise<string> {
 
 let dictionaryButton: HTMLElement | null = null;
 let dictionaryPopup: HTMLIFrameElement | null = null;
-let lastSelectedText: string = "";
-let selectionChangeTimeout: number | null = null;
-let buttonOriginalPosition: { x: number; y: number } | null = null;
 let popupOriginalPosition: { x: number; y: number } | null = null;
 let extensionEnabled: boolean = true; // Default to enabled
+let isButtonJustCreated: boolean = false;
+let lastSelectedText: string | null = null;
 
 // Check if extension is enabled
 async function isExtensionEnabled(): Promise<boolean> {
@@ -89,6 +94,11 @@ async function isExtensionEnabled(): Promise<boolean> {
   }
 }
 
+// Initialize extension state on load
+(async () => {
+  extensionEnabled = await isExtensionEnabled();
+})();
+
 // Listen for extension toggle messages (from App.tsx)
 chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
   if (message.type === "EXTENSION_TOGGLE") {
@@ -106,21 +116,14 @@ chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
 
 // Create and show the dictionary button
 async function showDictionaryButton(
+  selectedText: string,
   x: number,
   y: number,
-  selectedText: string,
 ) {
-  // Don't recreate if the same text is selected and button exists
-  if (dictionaryButton && lastSelectedText === selectedText) {
-    return;
-  }
-
-  lastSelectedText = selectedText;
-
-  // Remove existing button if any
-  removeDictionaryButton();
-
   try {
+    // remove any existing button, just in case there's bug
+    removeDictionaryButton();
+
     // Get translated button text
     const buttonText = await getDictionaryButtonText();
 
@@ -138,7 +141,7 @@ async function showDictionaryButton(
       font-size: 12px;
       font-family: Roboto, sans-serif;
       cursor: pointer;
-      z-index: 10000;
+      z-index: 99999;
       box-shadow: 0 2px 8px rgba(0,0,0,0.15);
       user-select: none;
       border: none;
@@ -152,44 +155,6 @@ async function showDictionaryButton(
       line-height: 1.2;
     `;
 
-    // Store original position for scroll tracking (document coordinates)
-    buttonOriginalPosition = { x: x, y: y };
-
-    // Add scroll listener for button
-    const handleButtonScroll = () => {
-      if (dictionaryButton && buttonOriginalPosition) {
-        // Button uses position: absolute, so it needs document coordinates
-        // The original position (x, y) was already in document coordinates
-        dictionaryButton.style.left = `${buttonOriginalPosition.x}px`;
-        dictionaryButton.style.top = `${buttonOriginalPosition.y}px`;
-      }
-    };
-
-    window.addEventListener("scroll", handleButtonScroll);
-    (dictionaryButton as any).scrollHandler = handleButtonScroll;
-
-    dictionaryButton.addEventListener("click", async (e) => {
-      // Prevent event bubbling
-      e.stopPropagation();
-      e.preventDefault();
-
-      // Get the current selection position to show popup nearby
-      const selection = window.getSelection();
-      let selectionX = x;
-      let selectionY = y;
-
-      if (selection && selection.rangeCount > 0) {
-        const rect = selection.getRangeAt(0).getBoundingClientRect();
-        selectionX = rect.right; // Position to the right of selection
-        selectionY = rect.top + window.scrollY; // Account for scroll
-      }
-
-      // Use the proper iframe translation popup
-      await showDictionaryPopup(selectedText, selectionX, selectionY);
-      // showDictionaryPopupDirect(selectedText); // test version removed
-      removeDictionaryButton();
-    });
-
     // Add hover effects to make it more obvious it's clickable
     dictionaryButton.addEventListener("mouseenter", () => {
       dictionaryButton!.style.background = "#4338ca";
@@ -201,22 +166,28 @@ async function showDictionaryButton(
       dictionaryButton!.style.transform = "scale(1)";
     });
 
+    // Prevent inspecting element
+    dictionaryButton.addEventListener("contextmenu", () => {
+      removeDictionaryButton();
+    });
+
     document.body.appendChild(dictionaryButton);
 
-    // Add a flag to prevent immediate removal by click-outside
-    (dictionaryButton as any).justCreated = true;
+    // Add a flag to prevent immediate removal by the click-outside detector
+    isButtonJustCreated = true;
+    // Clear the creation flag
     setTimeout(() => {
-      if (dictionaryButton) {
-        (dictionaryButton as any).justCreated = false;
-      }
+      isButtonJustCreated = false;
     }, 200);
 
-    // Auto-hide after 5 seconds (increased from 3)
-    setTimeout(() => {
+    // when click, replace dictionary button by dictionary popup
+    dictionaryButton.addEventListener("click", async (e) => {
+      // Prevent event bubbling
+      e.stopPropagation();
+      e.preventDefault();
       removeDictionaryButton();
-    }, 5000);
-
-    // Clear the creation flag
+      await showDictionaryPopup(selectedText, x, y);
+    });
   } catch (error) {
     console.error("Error creating dictionary button:", error);
   }
@@ -225,25 +196,13 @@ async function showDictionaryButton(
 // Remove the dictionary button
 function removeDictionaryButton() {
   if (dictionaryButton) {
-    // Clean up scroll event listener
-    const scrollHandler = (dictionaryButton as any).scrollHandler;
-    if (scrollHandler) {
-      window.removeEventListener("scroll", scrollHandler);
-    }
-
     dictionaryButton.remove();
     dictionaryButton = null;
-    buttonOriginalPosition = null;
-    lastSelectedText = "";
   }
 }
 
 // Show the dictionary popup (iframe version)
-async function showDictionaryPopup(
-  selectedText: string,
-  x?: number,
-  y?: number,
-) {
+async function showDictionaryPopup(selectedText: string, x: number, y: number) {
   // Remove existing popup if any
   removeDictionaryPopup();
 
@@ -259,17 +218,14 @@ async function showDictionaryPopup(
     dictionaryPopup.src = popupURL;
 
     // Calculate position near the selected text
-    let popupX = x || window.innerWidth / 2;
-    let popupY = y || window.innerHeight / 2;
+    let popupX = x;
+    let popupY = y;
 
     // Default popup dimensions (height will be updated dynamically)
     const popupWidth = 300;
-    let popupHeight = 200; // Initial height, will be updated by popup content
+    let popupHeight = 200; // Initial height, e.g., for the loading screen, will be updated later by popup content
 
     if (x !== undefined && y !== undefined) {
-      // Position popup to the right of selection, with some offset
-      popupX = x + 20;
-
       // Smart vertical positioning
       const spaceBelow = window.innerHeight - y;
       const spaceAbove = y;
@@ -585,13 +541,10 @@ function removeDictionaryPopup() {
   }
 }
 
-// Listen for text selection
-document.addEventListener("mouseup", async (e) => {
-  // Only proceed if it's a left mouse button release (button 0)
-  if (e.button !== 0) {
-    return;
-  }
-
+// Alternative listener for selection changes
+// the event is not "selectionchange" because for example, we are typing something
+// and select all using Ctrl+A
+document.addEventListener("mouseup", async () => {
   // Check if extension is enabled
   const enabled = await isExtensionEnabled();
   if (!enabled) {
@@ -601,61 +554,35 @@ document.addEventListener("mouseup", async (e) => {
   const selection = window.getSelection();
   const selectedText = selection?.toString().replace(/ +/g, " ").trim(); // Normalize spaces
 
-  if (selectedText && selectedText.length > 0) {
-    const rect = selection?.getRangeAt(0).getBoundingClientRect();
-    if (rect) {
-      await showDictionaryButton(
-        rect.left + rect.width / 2,
-        rect.top + window.scrollY - 35, // Position above the selection
-        selectedText,
-      );
+  if (
+    selection &&
+    selectedText &&
+    selectedText.length > 0 &&
+    selectedText !== lastSelectedText // prevent showing button after clicking it
+  ) {
+    lastSelectedText = selectedText;
+
+    const rects = selection.getRangeAt(0).getClientRects(); // Get all rectangles for multi-line selection
+    const lastRect = rects[rects.length - 1]; // Use the last line's rectangle
+    let xPos = lastRect.right - 20;
+    let yPos = lastRect.bottom + window.scrollY + 5; // Default position below
+
+    // Check if the button would go off-screen
+    const buttonHeight = 26;
+    if (yPos + buttonHeight > window.innerHeight + window.scrollY) {
+      yPos = lastRect.top + window.scrollY - buttonHeight - 5; // Position above
     }
-  } else if (!selectedText || selectedText.length === 0) {
+
+    await showDictionaryButton(selectedText, xPos, yPos);
+  }
+  // this case only happens when select no text, or in the middle between
+  // selecting 2 different texts
+  else if (!selectedText || selectedText.length === 0) {
+    // reset last selected text
+    lastSelectedText = null;
+    // Clear the button if no text is selected
     removeDictionaryButton();
   }
-});
-
-// Alternative listener for selection changes
-document.addEventListener("selectionchange", () => {
-  // Clear previous timeout
-  if (selectionChangeTimeout) {
-    clearTimeout(selectionChangeTimeout);
-  }
-
-  // Debounce the selection change event
-  selectionChangeTimeout = window.setTimeout(async () => {
-    // Check if extension is enabled
-    const enabled = await isExtensionEnabled();
-    if (!enabled) {
-      return;
-    }
-
-    const selection = window.getSelection();
-    const selectedText = selection?.toString().replace(/ +/g, " ").trim(); // Normalize spaces
-
-    // Only proceed if text is different from what we already have
-    if (
-      selectedText &&
-      selectedText.length > 0 &&
-      selectedText !== lastSelectedText
-    ) {
-      const rect = selection?.getRangeAt(0).getBoundingClientRect();
-      if (rect) {
-        await showDictionaryButton(
-          rect.left + rect.width / 2,
-          rect.top + window.scrollY - 35, // Position above the selection
-          selectedText,
-        );
-      }
-    } else if (!selectedText || selectedText.length === 0) {
-      // Clear the button if no text is selected
-      if (lastSelectedText) {
-        removeDictionaryButton();
-      }
-    }
-
-    selectionChangeTimeout = null;
-  }, 300); // 300ms debounce
 });
 
 // Listen for messages from popup
@@ -669,17 +596,19 @@ window.addEventListener("message", (event) => {
 document.addEventListener("click", (e) => {
   if (dictionaryButton) {
     const isClickOnButton = dictionaryButton.contains(e.target as Node);
-    const justCreated = (dictionaryButton as any).justCreated;
+    const justCreated = isButtonJustCreated;
 
-    if (isClickOnButton) {
-    } else if (justCreated) {
-    } else {
+    if (!isClickOnButton && !justCreated) {
       removeDictionaryButton();
     }
   }
 });
 
-// Initialize extension state on load
-(async () => {
-  extensionEnabled = await isExtensionEnabled();
-})();
+// Increasing UX, when select a different text, the old button should disappear
+// right away, not waiting for mouseup event for it to be removed by click event
+document.addEventListener("mousedown", (e) => {
+  if (dictionaryButton && !dictionaryButton.contains(e.target as Node)) {
+    removeDictionaryButton();
+    isButtonJustCreated = false; // Reset flag on outside click
+  }
+});
