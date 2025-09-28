@@ -2,7 +2,7 @@ import { changeLanguage } from "@/config";
 import { useTranslation } from "@/hooks/";
 import "@/index.css";
 import { parseTranslationJSON } from "@/utils/";
-import { LoaderCircle, X } from "lucide-react";
+import { LoaderCircle, RotateCcw, X } from "lucide-react";
 import { useEffect } from "react";
 import { createRoot } from "react-dom/client";
 import { useTranslation as useReactI18next } from "react-i18next";
@@ -73,8 +73,18 @@ export function DictionaryPopup() {
           )}
 
           {result.error && (
-            <div className="p-4 text-center text-sm text-red-500">
+            <div className="flex-col items-center justify-center text-center text-sm text-red-500">
               <p>{result.error}</p>
+              <button
+                onClick={() => {
+                  if (result.text) {
+                    translateText(result.text);
+                  }
+                }}
+                className="mt-3 cursor-pointer rounded-full p-2 text-gray-600 hover:bg-gray-100 hover:text-gray-800"
+              >
+                <RotateCcw className="h-4 w-4" />
+              </button>
             </div>
           )}
 
