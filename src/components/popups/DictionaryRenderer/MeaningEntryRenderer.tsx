@@ -48,11 +48,13 @@ export function MeaningEntryRenderer({
                 <p className="text-sm font-medium text-gray-800">
                   {renderText(example.text)}
                 </p>
-                <SpeakerButton
-                  word={example.text.replace(/\*\*/g, "")}
-                  ttsCode={mainTtsCode}
-                  className="-translate-y-0.5"
-                />
+                <div className="flex h-5 w-5 items-center justify-center">
+                  <SpeakerButton
+                    word={example.text.replace(/\*\*/g, "")}
+                    ttsCode={mainTtsCode}
+                    className="translate-y-0.5"
+                  />
+                </div>
               </div>
               {example.pronunciation && (
                 <p className="mb-1 text-xs text-gray-600 italic">

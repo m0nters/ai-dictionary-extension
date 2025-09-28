@@ -456,10 +456,10 @@ export const translateWithGemini = async (
   return translation;
 };
 
-// Debug code below, don't delete
-// When debugging, comment function above and uncomment function below,
-// this is for saving tokens, API calls are not free!
-
+/* Debug code below, don't delete
+ * When debugging, comment function above and uncomment function below,
+ * this is for saving tokens, API calls are not free!
+ */
 // export const translateWithGemini = async (
 //   // @ts-ignore
 //   text: String,
@@ -783,6 +783,6 @@ export const translateWithGemini = async (
 // }
 // \`\`\`
 //   `;
-//
+
 //   return translation;
 // };

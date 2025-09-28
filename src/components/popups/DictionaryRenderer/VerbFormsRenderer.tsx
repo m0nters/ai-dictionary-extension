@@ -20,7 +20,7 @@ export function VerbFormsRenderer({ verbForms }: VerbFormsRendererProps) {
             >
               <div className="text-sm font-medium">{form}</div>
               {verbForms.length === 3 && (
-                <div className="mt-1 text-xs text-violet-500 opacity-75">
+                <div className="mt-1 text-xs text-violet-500">
                   {formIndex === 0 && "Infinitive"}
                   {formIndex === 1 && "Past tense"}
                   {formIndex === 2 && "Past participle"}

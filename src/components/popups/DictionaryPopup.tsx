@@ -44,7 +44,10 @@ export function DictionaryPopup() {
   return (
     <div className="z-99999 flex h-full w-full flex-col bg-white">
       {/* Close button - properly aligned */}
-      <div className="flex justify-end px-4 py-2" id="close-button">
+      <div
+        className="sticky top-0 z-10 flex justify-end bg-white/70 px-4 py-2 backdrop-blur-sm"
+        id="close-button"
+      >
         <button
           onClick={closePopup}
           className="flex cursor-pointer rounded-full p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500"
