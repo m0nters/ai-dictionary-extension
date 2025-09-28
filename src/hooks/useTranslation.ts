@@ -8,7 +8,7 @@ import {
   translateWithGemini,
 } from "@/services/";
 import { TranslationResult } from "@/types/";
-import { parseTranslationContent, updatePopupHeight } from "@/utils/";
+import { parseTranslationJSON, updatePopupHeight } from "@/utils/";
 import { useEffect, useState } from "react";
 import { useTranslation as useReactI18next } from "react-i18next";
 
@@ -74,7 +74,7 @@ export const useTranslation = () => {
       );
 
       // Parse the translation first - this will throw if parsing fails
-      const parsedTranslation = parseTranslationContent(translation);
+      const parsedTranslation = parseTranslationJSON(translation);
 
       // Only set successful result if parsing succeeds
       setResult((prev) => ({

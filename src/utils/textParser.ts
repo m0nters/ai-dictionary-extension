@@ -57,7 +57,7 @@ export const hasPronunciationVariants = (
 /**
  * Parses the JSON translation content from the API
  */
-export const parseTranslationContent = (content: string): ParsedTranslation => {
+export const parseTranslationJSON = (content: string): ParsedTranslation => {
   try {
     // Extract JSON from the response (in case it's wrapped in markdown)
     const jsonMatch = content.match(/```json\s*([\s\S]*?)\s*```/);

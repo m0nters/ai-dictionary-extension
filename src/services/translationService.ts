@@ -455,3 +455,334 @@ export const translateWithGemini = async (
 
   return translation;
 };
+
+// Debug code below, don't delete
+// When debugging, comment function above and uncomment function below,
+// this is for saving tokens, API calls are not free!
+
+// export const translateWithGemini = async (
+//   // @ts-ignore
+//   text: String,
+//   // @ts-ignore
+//   translatedLangCode: String,
+//   // @ts-ignore
+//   sourceLangCode: String,
+// ): Promise<string> => {
+//   const translation = `
+//   \`\`\`json
+// {
+//   "source_language_code": "en",
+//   "translated_language_code": "en",
+//   "word": "fit",
+//   "main_tts_language_code": "en-US",
+//   "verb_forms": ["fit", "fit", "fit"],
+//   "meanings": [
+//     {
+//       "pronunciation": {
+//         "UK": {
+//           "ipa": "/fɪt/",
+//           "tts_code": "en-GB"
+//         },
+//         "US": {
+//           "ipa": "/fɪt/",
+//           "tts_code": "en-US"
+//         }
+//       },
+//       "part_of_speech": "Verb",
+//       "definition": "To be of the right size or shape for someone or something.",
+//       "examples": [
+//         {
+//           "text": "These shoes don't **fit** me anymore; they're too small."
+//         },
+//         {
+//           "text": "Does this dress still **fit** you after all these years?"
+//         },
+//         {
+//           "text": "The key won't **fit** in the lock."
+//         }
+//       ],
+//       "idioms": {
+//         "label": "Idioms",
+//         "items": [
+//           {
+//             "idiom": "fit like a glove",
+//             "meaning": "To fit perfectly, especially clothes.",
+//             "examples": [
+//               {
+//                 "text": "This jacket **fits like a glove**; it's exactly my size."
+//               }
+//             ]
+//           }
+//         ]
+//       },
+//       "synonyms": {
+//         "label": "Synonyms",
+//         "items": ["match", "suit", "correspond", "be the right size", "be tailor-made"]
+//       }
+//     },
+//     {
+//       "pronunciation": {
+//         "UK": {
+//           "ipa": "/fɪt/",
+//           "tts_code": "en-GB"
+//         },
+//         "US": {
+//           "ipa": "/fɪt/",
+//           "tts_code": "en-US"
+//         }
+//       },
+//       "part_of_speech": "Verb",
+//       "definition": "To be suitable or appropriate for a particular purpose or occasion.",
+//       "examples": [
+//         {
+//           "text": "His skills **fit** the job description perfectly."
+//         },
+//         {
+//           "text": "This music doesn't quite **fit** the mood of the party."
+//         }
+//       ],
+//       "idioms": {
+//         "label": "Idioms",
+//         "items": [
+//           {
+//             "idiom": "fit the bill",
+//             "meaning": "To be suitable for a particular purpose; to be exactly what is needed.",
+//             "examples": [
+//               {
+//                 "text": "We needed someone reliable, and she definitely **fits the bill**."
+//               }
+//             ]
+//           }
+//         ]
+//       },
+//       "phrasal_verbs": {
+//         "label": "Phrasal Verbs",
+//         "items": [
+//           {
+//             "phrasal_verb": "fit in",
+//             "meaning": "To be accepted by other people in a group; to find time to do something.",
+//             "examples": [
+//               {
+//                 "text": "It took him a while to **fit in** with his new classmates."
+//               },
+//               {
+//                 "text": "I'll try to **fit in** a quick workout later today."
+//               }
+//             ]
+//           }
+//         ]
+//       },
+//       "synonyms": {
+//         "label": "Synonyms",
+//         "items": ["suit", "be appropriate", "be right", "be proper", "conform", "belong"]
+//       }
+//     },
+//     {
+//       "pronunciation": {
+//         "UK": {
+//           "ipa": "/fɪt/",
+//           "tts_code": "en-GB"
+//         },
+//         "US": {
+//           "ipa": "/fɪt/",
+//           "tts_code": "en-US"
+//         }
+//       },
+//       "part_of_speech": "Verb",
+//       "definition": "To insert or adjust something into a space or position; to install something.",
+//       "examples": [
+//         {
+//           "text": "The carpenter will **fit** the new shelves this afternoon."
+//         },
+//         {
+//           "text": "Can you help me **fit** this picture frame on the wall?"
+//         }
+//       ],
+//       "phrasal_verbs": {
+//         "label": "Phrasal Verbs",
+//         "items": [
+//           {
+//             "phrasal_verb": "fit out",
+//             "meaning": "To provide someone or something with necessary equipment.",
+//             "examples": [
+//               {
+//                 "text": "They **fitted out** the new office with modern furniture."
+//               }
+//             ]
+//           },
+//           {
+//             "phrasal_verb": "fit up",
+//             "meaning": "(informal) To provide with equipment; (informal) to falsely make someone appear guilty of a crime.",
+//             "examples": [
+//               {
+//                 "text": "The workshop was **fitted up** with new tools."
+//               },
+//               {
+//                 "text": "He claimed the police had tried to **fit him up** for the robbery."
+//               }
+//             ]
+//           }
+//         ]
+//       },
+//       "synonyms": {
+//         "label": "Synonyms",
+//         "items": ["install", "attach", "fix", "place", "insert", "mount"]
+//       }
+//     },
+//     {
+//       "pronunciation": {
+//         "UK": {
+//           "ipa": "/fɪt/",
+//           "tts_code": "en-GB"
+//         },
+//         "US": {
+//           "ipa": "/fɪt/",
+//           "tts_code": "en-US"
+//         }
+//       },
+//       "part_of_speech": "Adjective",
+//       "definition": "In good physical condition; healthy.",
+//       "examples": [
+//         {
+//           "text": "She keeps herself very **fit** by running every day."
+//         },
+//         {
+//           "text": "You need to be reasonably **fit** to climb this mountain."
+//         }
+//       ],
+//       "synonyms": {
+//         "label": "Synonyms",
+//         "items": ["healthy", "in shape", "athletic", "well", "trim", "robust", "vigorous"]
+//       }
+//     },
+//     {
+//       "pronunciation": {
+//         "UK": {
+//           "ipa": "/fɪt/",
+//           "tts_code": "en-GB"
+//         },
+//         "US": {
+//           "ipa": "/fɪt/",
+//           "tts_code": "en-US"
+//         }
+//       },
+//       "part_of_speech": "Adjective",
+//       "definition": "Suitable or appropriate for a particular purpose or occasion.",
+//       "examples": [
+//         {
+//           "text": "Is this a **fit** time to discuss the sensitive topic?"
+//         },
+//         {
+//           "text": "The language used was not **fit** for children."
+//         }
+//       ],
+//       "idioms": {
+//         "label": "Idioms",
+//         "items": [
+//           {
+//             "idiom": "fit for a king",
+//             "meaning": "Extremely good or luxurious, especially food or accommodation.",
+//             "examples": [
+//               {
+//                 "text": "The meal was **fit for a king**."
+//               }
+//             ]
+//           },
+//           {
+//             "idiom": "fit to be tied",
+//             "meaning": "(informal) Extremely angry or upset.",
+//             "examples": [
+//               {
+//                 "text": "When she found out, she was **fit to be tied**."
+//               }
+//             ]
+//           }
+//         ]
+//       },
+//       "synonyms": {
+//         "label": "Synonyms",
+//         "items": ["suitable", "appropriate", "proper", "right", "apt", "qualified", "deserving"]
+//       }
+//     },
+//     {
+//       "pronunciation": {
+//         "UK": {
+//           "ipa": "/fɪt/",
+//           "tts_code": "en-GB"
+//         },
+//         "US": {
+//           "ipa": "/fɪt/",
+//           "tts_code": "en-US"
+//         }
+//       },
+//       "part_of_speech": "Noun",
+//       "definition": "A sudden, violent attack of an illness, typically involving convulsions or loss of consciousness.",
+//       "examples": [
+//         {
+//           "text": "The child had an epileptic **fit**."
+//         },
+//         {
+//           "text": "He fell to the ground in a **fit** of coughing."
+//         }
+//       ],
+//       "idioms": {
+//         "label": "Idioms",
+//         "items": [
+//           {
+//             "idiom": "throw a fit",
+//             "meaning": "(informal) To become very angry or upset, often in an uncontrolled way.",
+//             "examples": [
+//               {
+//                 "text": "My dad will **throw a fit** when he sees this mess."
+//               }
+//             ]
+//           },
+//           {
+//             "idiom": "by fits and starts",
+//             "meaning": "Irregularly; stopping and starting again.",
+//             "examples": [
+//               {
+//                 "text": "The project progressed **by fits and starts**."
+//               }
+//             ]
+//           }
+//         ]
+//       },
+//       "synonyms": {
+//         "label": "Synonyms",
+//         "items": ["seizure", "convulsion", "paroxysm", "attack", "spasm"]
+//       }
+//     },
+//     {
+//       "pronunciation": {
+//         "UK": {
+//           "ipa": "/fɪt/",
+//           "tts_code": "en-GB"
+//         },
+//         "US": {
+//           "ipa": "/fɪt/",
+//           "tts_code": "en-US"
+//         }
+//       },
+//       "part_of_speech": "Noun",
+//       "definition": "The way in which an item of clothing or equipment fits a person or thing.",
+//       "examples": [
+//         {
+//           "text": "The coat has a perfect **fit**."
+//         },
+//         {
+//           "text": "You can adjust the **fit** of the helmet with these straps."
+//         }
+//       ],
+//       "synonyms": {
+//         "label": "Synonyms",
+//         "items": ["sizing", "cut", "style", "tailoring", "measurement"]
+//       }
+//     }
+//   ]
+// }
+// \`\`\`
+//   `;
+//
+//   return translation;
+// };

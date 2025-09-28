@@ -5,9 +5,9 @@ export const updatePopupHeight = (): void => {
   setTimeout(() => {
     // Get the actual content height
     const contentWrapper = document.querySelector(
-      ".dictionary-content-wrapper",
+      "#dictionary-content-wrapper",
     );
-    const closeButton = document.querySelector(".flex.justify-end.p-4");
+    const closeButton = document.querySelector("#close-button");
 
     if (contentWrapper && closeButton) {
       const contentHeight = contentWrapper.scrollHeight;

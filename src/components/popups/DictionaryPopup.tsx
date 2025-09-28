@@ -1,7 +1,7 @@
 import { changeLanguage } from "@/config";
 import { useTranslation } from "@/hooks/";
 import "@/index.css";
-import { parseTranslationContent } from "@/utils/";
+import { parseTranslationJSON } from "@/utils/";
 import { LoaderCircle, X } from "lucide-react";
 import { useEffect } from "react";
 import { createRoot } from "react-dom/client";
@@ -30,7 +30,7 @@ export function DictionaryPopup() {
     return () => {
       window.removeEventListener("message", handleMessage);
     };
-  }, [translateText]);
+  }, []);
 
   const closePopup = () => {
     window.parent.postMessage({ type: "CLOSE_POPUP" }, "*");
@@ -38,13 +38,13 @@ export function DictionaryPopup() {
 
   // Parse the translation content for structured rendering
   const parsedTranslation = result.translation
-    ? parseTranslationContent(result.translation)
+    ? parseTranslationJSON(result.translation)
     : null;
 
   return (
     <div className="z-99999 flex h-full w-full flex-col bg-white">
       {/* Close button - properly aligned */}
-      <div className="flex justify-end p-4 pb-0">
+      <div className="flex justify-end px-4 py-2" id="close-button">
         <button
           onClick={closePopup}
           className="flex cursor-pointer rounded-full p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500"
@@ -54,7 +54,10 @@ export function DictionaryPopup() {
       </div>
 
       {/* Scrollable content area */}
-      <div className="dictionary-content-wrapper flex-1 overflow-y-auto px-4 pb-4">
+      <div
+        className="flex-1 overflow-y-auto px-4 pb-4"
+        id="dictionary-content-wrapper"
+      >
         {/* Translation Result - Dictionary Style */}
         <div className="w-full">
           {result.loading && (
