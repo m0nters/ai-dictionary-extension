@@ -133,8 +133,9 @@ async function showDictionaryButton(
       position: absolute;
       left: ${x}px;
       top: ${y}px;
-      background: #4f46e5;
-      color: white;
+      background: white;
+      color: #4f46e5;
+      border: 1px solid #4f46e5;
       padding: 6px 12px;
       border-radius: 6px;
       font-size: 12px;
@@ -143,12 +144,9 @@ async function showDictionaryButton(
       z-index: 99999;
       box-shadow: 0 2px 8px rgba(0,0,0,0.15);
       user-select: none;
-      border: none;
       pointer-events: auto;
       display: inline-block;
       width: auto;
-      min-width: 50px;
-      max-width: 80px;
       text-align: center;
       white-space: nowrap;
       line-height: 1.2;
@@ -156,13 +154,15 @@ async function showDictionaryButton(
 
     // Add hover effects to make it more obvious it's clickable
     dictionaryButton.addEventListener("mouseenter", () => {
-      dictionaryButton!.style.background = "#4338ca";
-      dictionaryButton!.style.transform = "scale(1.05)";
+      dictionaryButton!.style.background = "#4f46e5";
+      dictionaryButton!.style.color = "white";
+      dictionaryButton!.style.border = "1px solid white";
     });
 
     dictionaryButton.addEventListener("mouseleave", () => {
-      dictionaryButton!.style.background = "#4f46e5";
-      dictionaryButton!.style.transform = "scale(1)";
+      dictionaryButton!.style.background = "white";
+      dictionaryButton!.style.color = "#4f46e5";
+      dictionaryButton!.style.border = "1px solid #4f46e5";
     });
 
     // Prevent inspecting element
@@ -369,7 +369,6 @@ document.addEventListener("mouseup", async () => {
   const selectedText = selection?.toString().replace(/ +/g, " ").trim(); // Normalize spaces
 
   if (
-    selection &&
     selectedText &&
     selectedText.length > 0 &&
     selectedText !== lastSelectedText // prevent showing button after clicking it
