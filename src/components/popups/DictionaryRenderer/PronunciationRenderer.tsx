@@ -25,25 +25,29 @@ export function PronunciationRenderer({
           const variant = pronunciation[key as keyof PronunciationVariants];
           if (!variant) return null;
 
-          const ipaText = variant.ipa;
+          const ipaTexts = variant.ipa;
           const ttsCode = variant.tts_code;
 
           return (
-            <span key={key} className="inline-flex items-end gap-1">
-              <span
-                className={`rounded-full px-2 py-0.5 text-xs font-semibold ${
-                  styleMap[key as keyof PronunciationVariants] ||
-                  "bg-gray-100 text-gray-700"
-                }`}
-              >
-                {key}
-              </span>
-              <span className="text-base text-gray-600">{ipaText}</span>
-              <SpeakerButton
-                word={word}
-                ttsCode={ttsCode}
-                className="translate-y-1"
-              />
+            <span key={key} className="flex items-start gap-1">
+              <div className="flex items-center gap-1">
+                <span
+                  className={`rounded-full px-2 py-0.5 text-xs font-semibold ${
+                    styleMap[key as keyof PronunciationVariants] ||
+                    "bg-gray-100 text-gray-700"
+                  }`}
+                >
+                  {key}
+                </span>
+                <SpeakerButton word={word} ttsCode={ttsCode} />
+              </div>
+              <div className="flex flex-wrap gap-2">
+                {ipaTexts.map((ipa, index) => (
+                  <span key={index} className="text-base text-gray-600">
+                    {ipa}
+                  </span>
+                ))}
+              </div>
             </span>
           );
         })}

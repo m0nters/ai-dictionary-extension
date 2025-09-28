@@ -21,7 +21,8 @@ export const getDisplayText = (
     } else if (pronunciation) {
       // take one variant as an example for displaying only
       const firstVariant = Object.values(pronunciation).find((value) => value);
-      ipa = firstVariant?.ipa || "";
+      // take the first IPA if multiple
+      ipa = firstVariant?.ipa[0] || "";
     }
 
     return {

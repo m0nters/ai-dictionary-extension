@@ -87,7 +87,7 @@ export function MeaningEntryRenderer({
               >
                 <div className="mb-2 flex items-start gap-1">
                   <h4 className="text-sm font-semibold text-gray-800">
-                    {idiom.idiom}
+                    {renderText(idiom.idiom)}
                   </h4>
                   <SpeakerButton
                     word={idiom.idiom}
@@ -158,7 +158,7 @@ export function MeaningEntryRenderer({
                 >
                   <div className="mb-2 flex items-start gap-1">
                     <h4 className="text-sm font-semibold text-gray-800">
-                      {phrasalVerb.phrasal_verb}
+                      {renderText(phrasalVerb.phrasal_verb)}
                     </h4>
                     <SpeakerButton
                       word={phrasalVerb.phrasal_verb}

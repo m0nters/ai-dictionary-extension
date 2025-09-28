@@ -6,7 +6,7 @@ export interface TranslationResult {
 }
 
 export interface PronunciationDetail {
-  ipa: string;
+  ipa: string[];
   tts_code: string;
 }
 

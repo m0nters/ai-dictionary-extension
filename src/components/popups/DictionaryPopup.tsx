@@ -64,7 +64,10 @@ export function DictionaryPopup() {
         {/* Translation Result - Dictionary Style */}
         <div className="w-full">
           {result.loading && (
-            <div className="flex items-center justify-center py-12">
+            <div
+              className="flex items-center justify-center py-12"
+              key="loading"
+            >
               <LoaderCircle className="h-6 w-6 animate-spin text-blue-600" />
               <span className="ml-2 text-sm text-gray-500">
                 {t("common:loading")}
@@ -73,7 +76,10 @@ export function DictionaryPopup() {
           )}
 
           {result.error && (
-            <div className="flex-col items-center justify-center text-center text-sm text-red-500">
+            <div
+              className="flex flex-col items-center justify-center text-center text-sm text-red-500"
+              key="error"
+            >
               <p>{result.error}</p>
               <button
                 onClick={() => {

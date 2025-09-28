@@ -82,7 +82,8 @@ export const generateTranslationPrompt = (
 - **TTS Language Code**
   - Always include a \`main_tts_language_code\` field containing the primary TTS language code for the source language (e.g., "en-US", "zh-CN", "ja-JP", etc.).
 - **Single word/Collocation/Idiom input:**
-  - For words that has more than 1 pronunciation variants in source language (e.g., "run" is an English word, has pronunciation variants of UK, US), provide both variants as objects with \`ipa\` and \`tts_code\` fields. For others that don't have pronunciation variants, just use that single one as a string (e.g., Pinyin for Chinese).
+  - For words that has more than 1 pronunciation variants in source language (e.g., "run" is an English word, has pronunciation variants of UK, US), provide both variants as objects with \`ipa\` and \`tts_code\` fields. The \`ipa\` field should be an array of strings to accommodate multiple pronunciations within the same variant (e.g., "usurpation" has US: ["/ˌjuː.zɜːˈpeɪ.ʃən/", "/ˌjuː.sɜːˈpeɪ.ʃən/"], UK: ["/ˌjuː.sɜːˈpeɪ.ʃən/", "/ˌjuː.zɜːˈpeɪ.ʃən/"]). For others that don't have pronunciation variants, just use that single one as a string (e.g., Pinyin for Chinese).
+  - When multiple IPA pronunciations exist for the same variant, include all common pronunciations in the array, prioritizing the most standard or widely accepted pronunciation first.
   - Translate the meaning into the translated language, specifying its part of speech (in the translated language too, e.g., "Danh từ" for "Noun" in Vietnamese, "名词" for "Noun" in Chinese, "Idiome" for "Idiom" in French, etc.).
   - In the \`definition\` field, add appropriate register/style notes in parentheses when needed BEFORE the definition, using the translated language. Examples: if the translated language is Vietnamese then use "(từ lóng)" for slang, "(thông tục)" for informal in Vietnamese, "(trang trọng)" for formal, "(kỹ thuật)" for technical, etc. Example: \`"ass": (thông tục) mông, đít\`.
   - For verbs in any conjugated form (e.g., "spelled" or "spelling" in English), translate the infinitive form (e.g., still translate the word "spell") and list key conjugations (e.g., infinitive, past tense, past participle for English; equivalent forms for other languages where applicable, like preterite and participle in Spanish).
@@ -97,13 +98,13 @@ export const generateTranslationPrompt = (
     Provide comprehensive alternatives when available (aim for 3-10 items per meaning if they exist). If no synonymous expressions exist for a particular meaning, omit the synonyms field entirely. The items can include single words, phrasal verbs, collocations, and other equivalent expressions. Examples: for "dash" meaning "run quickly", translated to Vietnamese → {"label": "Từ đồng nghĩa", "items": ["rush", "race", "sprint", "hurry", "take off", "go hell for leather", "put on some speed"]}; for "dash" meaning "strike forcefully" → {"label": "Từ đồng nghĩa", "items": ["hurl", "smash", "crash", "slam", "fling"]}.
     **🚨 CRITICAL: The synonyms must be in the SOURCE LANGUAGE, NOT the translated language! 🚨**
   - **Idioms (Optional):** For each meaning entry, include an \`idioms\` field containing an object with \`label\` (the word "Idioms" in the translated language, e.g., "成语" in Chinese) and \`items\` (array of idiom objects). Each idiom object should have:
-    - \`idiom\`: the idiom expression in SOURCE LANGUAGE (remember, NOT translated language)
+    - \`idiom\`: the idiom expression in SOURCE LANGUAGE (remember, NOT translated language), DO NOT bold the idiom here
     - \`meaning\`: explanation of the idiom's meaning in the TRANSLATED LANGUAGE, add appropriate register/style notes in parentheses just like in the definition field when needed
     - \`examples\`: array of example sentences using the idiom, with same structure as regular examples (\`text\`, \`translation\`, and optional \`pronunciation\` for non-Latin source languages)
     Only include idioms that specifically use the word being defined and relate to that particular meaning. If no relevant idioms exist for a meaning, omit the idioms field entirely. Examples: for "run" meaning "move quickly" → {"label": "Thành ngữ", "items": [{"idiom": "run for your life", "meaning": "chạy thật nhanh để thoát khỏi nguy hiểm", "examples": [{"text": "When they saw the bear, everyone started to **run for their lives**.", "translation": "Khi thấy con gấu, mọi người bắt đầu **chạy thật nhanh để cứu mạng**."}]}]}; for "break" meaning "damage" → {"label": "Idiomes", "items": [{"idiom": "break the ice", "meaning": "briser la glace, commencer une conversation", "examples": [{"text": "He told a joke to **break the ice** at the meeting.", "translation": "Il a raconté une blague pour **briser la glace** lors de la réunion."}]}]}.
     Include all idioms that fit the criteria, aim for at least 3-5 common ones if they exist.
   - **Phrasal Verbs (Optional):** For each meaning entry, include a \`phrasal_verbs\` field containing an object with \`label\` (the word "Phrasal Verbs" in the translated language, e.g., "Cụm động từ" in Vietnamese) and \`items\` (array of phrasal verb objects). Each phrasal verb object should have:
-    - \`phrasal_verb\`: the phrasal verb expression in source language (verb + particle(s))
+    - \`phrasal_verb\`: the phrasal verb expression in source language (verb + particle(s)), DO NOT bold the phrasal verb here
     - \`meaning\`: definition/translation of the phrasal verb in the translated language, add appropriate register/style notes in parentheses just like in the definition field when needed
     - \`examples\`: array of example sentences using the phrasal verb, with same structure as regular examples (\`text\`, \`translation\`, and optional \`pronunciation\` for non-Latin source languages)
     Include all phrasal verbs that fit the criteria, aim for at least 3-10 common ones if they exist.
@@ -145,11 +146,11 @@ export const generateTranslationPrompt = (
         {
           \"pronunciation\": {
             \"UK\": {
-              \"ipa\": \"/rʌn/\",
+              \"ipa\": [\"/rʌn/\"],
               \"tts_code\": \"en-GB\"
             },
             \"US\": {
-              \"ipa\": \"/rʌn/\",
+              \"ipa\": [\"/rʌn/\"],
               \"tts_code\": \"en-US\"
             }
           },
@@ -223,11 +224,11 @@ export const generateTranslationPrompt = (
         {
           \"pronunciation\": {
             \"UK\": {
-              \"ipa\": \"/rʌn/\",
+              \"ipa\": [\"/rʌn/\"],
               \"tts_code\": \"en-GB\"
             },
             \"US\": {
-              \"ipa\": \"/rʌn/\",
+              \"ipa\": [\"/rʌn/\"],
               \"tts_code\": \"en-US\"
             }
           },
@@ -341,11 +342,11 @@ export const generateTranslationPrompt = (
         {
           \"pronunciation\": {
             \"UK\": {
-              \"ipa\": \"/rɪˈzɔːs/\",
+              \"ipa\": [\"/rɪˈzɔːs/\"],
               \"tts_code\": \"en-GB\"
             },
             \"US\": {
-              \"ipa\": \"/ˈriːsɔːrs/\",
+              \"ipa\": [\"/ˈriːsɔːrs/\"],
               \"tts_code\": \"en-US\"
             }
           },
@@ -480,11 +481,11 @@ export const translateWithGemini = async (
 //     {
 //       "pronunciation": {
 //         "UK": {
-//           "ipa": "/fɪt/",
+//           "ipa": ["/fɪt/"],
 //           "tts_code": "en-GB"
 //         },
 //         "US": {
-//           "ipa": "/fɪt/",
+//           "ipa": ["/fɪt/"],
 //           "tts_code": "en-US"
 //         }
 //       },
@@ -523,11 +524,11 @@ export const translateWithGemini = async (
 //     {
 //       "pronunciation": {
 //         "UK": {
-//           "ipa": "/fɪt/",
+//           "ipa": ["/fɪt/"],
 //           "tts_code": "en-GB"
 //         },
 //         "US": {
-//           "ipa": "/fɪt/",
+//           "ipa": ["/fɪt/"],
 //           "tts_code": "en-US"
 //         }
 //       },
@@ -580,11 +581,11 @@ export const translateWithGemini = async (
 //     {
 //       "pronunciation": {
 //         "UK": {
-//           "ipa": "/fɪt/",
+//           "ipa": ["/fɪt/"],
 //           "tts_code": "en-GB"
 //         },
 //         "US": {
-//           "ipa": "/fɪt/",
+//           "ipa": ["/fɪt/"],
 //           "tts_code": "en-US"
 //         }
 //       },
@@ -632,11 +633,11 @@ export const translateWithGemini = async (
 //     {
 //       "pronunciation": {
 //         "UK": {
-//           "ipa": "/fɪt/",
+//           "ipa": ["/fɪt/"],
 //           "tts_code": "en-GB"
 //         },
 //         "US": {
-//           "ipa": "/fɪt/",
+//           "ipa": ["/fɪt/"],
 //           "tts_code": "en-US"
 //         }
 //       },
@@ -658,11 +659,11 @@ export const translateWithGemini = async (
 //     {
 //       "pronunciation": {
 //         "UK": {
-//           "ipa": "/fɪt/",
+//           "ipa": ["/fɪt/"],
 //           "tts_code": "en-GB"
 //         },
 //         "US": {
-//           "ipa": "/fɪt/",
+//           "ipa": ["/fɪt/"],
 //           "tts_code": "en-US"
 //         }
 //       },
@@ -707,11 +708,11 @@ export const translateWithGemini = async (
 //     {
 //       "pronunciation": {
 //         "UK": {
-//           "ipa": "/fɪt/",
+//           "ipa": ["/fɪt/"],
 //           "tts_code": "en-GB"
 //         },
 //         "US": {
-//           "ipa": "/fɪt/",
+//           "ipa": ["/fɪt/"],
 //           "tts_code": "en-US"
 //         }
 //       },
@@ -756,11 +757,11 @@ export const translateWithGemini = async (
 //     {
 //       "pronunciation": {
 //         "UK": {
-//           "ipa": "/fɪt/",
+//           "ipa": ["/fɪt/"],
 //           "tts_code": "en-GB"
 //         },
 //         "US": {
-//           "ipa": "/fɪt/",
+//           "ipa": ["/fɪt/"],
 //           "tts_code": "en-US"
 //         }
 //       },
