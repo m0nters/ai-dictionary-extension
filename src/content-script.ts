@@ -113,6 +113,28 @@ chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
   }
 });
 
+function getButtonPosition() {
+  const rects = window.getSelection()!.getRangeAt(0).getClientRects();
+  const lastRect = rects[rects.length - 1];
+
+  let xPos = lastRect.right - 20;
+  let yPos = lastRect.bottom + window.scrollY + 5; // Default position below
+
+  // Ensure button doesn't go off-screen vertically
+  const buttonHeight = 26;
+  const buttonWidth = 80;
+  if (yPos + buttonHeight > window.innerHeight + window.scrollY) {
+    yPos = lastRect.top + window.scrollY - buttonHeight - 5; // Position above
+  }
+
+  // Ensure button doesn't go off-screen horizontally
+  if (xPos + buttonWidth > window.innerWidth) {
+    xPos = window.innerWidth - buttonWidth - 20; // Shift left to fit
+  }
+
+  return { xPos, yPos };
+}
+
 // Create and show the dictionary button
 async function showDictionaryButton(
   selectedText: string,
@@ -184,6 +206,40 @@ async function showDictionaryButton(
     console.error("Error creating dictionary button:", error);
   }
 }
+
+// the event is not "selectionchange" because for example, we are typing something
+// and select all using Ctrl+A
+document.addEventListener("mouseup", async () => {
+  // Check if extension is enabled
+  const enabled = await isExtensionEnabled();
+  if (!enabled) {
+    return;
+  }
+
+  const selection = window.getSelection();
+  const selectedText = selection?.toString().replace(/ +/g, " ").trim(); // Normalize spaces
+
+  if (
+    selectedText &&
+    selectedText.length > 0 &&
+    selectedText !== lastSelectedText // prevent showing button after clicking it
+  ) {
+    lastSelectedText = selectedText;
+    const { xPos, yPos } = getButtonPosition();
+
+    // show dictionary button and popup at the bottom right of the selection
+    // by default
+    await showDictionaryButton(selectedText, xPos, yPos);
+  }
+  // this case only happens when select no text, or in the middle between
+  // selecting 2 different texts
+  else if (!selectedText || selectedText.length === 0) {
+    // reset last selected text
+    lastSelectedText = null;
+    // Clear the button if no text is selected
+    removeDictionaryButton();
+  }
+});
 
 // Remove the dictionary button
 function removeDictionaryButton() {
@@ -331,62 +387,6 @@ function removeDictionaryPopup() {
 window.addEventListener("message", (event) => {
   if (event.data.type === "CLOSE_POPUP") {
     removeDictionaryPopup();
-  }
-});
-
-function getButtonPosition() {
-  const rects = window.getSelection()!.getRangeAt(0).getClientRects();
-  const lastRect = rects[rects.length - 1];
-
-  let xPos = lastRect.right - 20;
-  let yPos = lastRect.bottom + window.scrollY + 5; // Default position below
-
-  // Ensure button doesn't go off-screen vertically
-  const buttonHeight = 26;
-  const buttonWidth = 80;
-  if (yPos + buttonHeight > window.innerHeight + window.scrollY) {
-    yPos = lastRect.top + window.scrollY - buttonHeight - 5; // Position above
-  }
-
-  // Ensure button doesn't go off-screen horizontally
-  if (xPos + buttonWidth > window.innerWidth) {
-    xPos = window.innerWidth - buttonWidth - 20; // Shift left to fit
-  }
-
-  return { xPos, yPos };
-}
-
-// the event is not "selectionchange" because for example, we are typing something
-// and select all using Ctrl+A
-document.addEventListener("mouseup", async () => {
-  // Check if extension is enabled
-  const enabled = await isExtensionEnabled();
-  if (!enabled) {
-    return;
-  }
-
-  const selection = window.getSelection();
-  const selectedText = selection?.toString().replace(/ +/g, " ").trim(); // Normalize spaces
-
-  if (
-    selectedText &&
-    selectedText.length > 0 &&
-    selectedText !== lastSelectedText // prevent showing button after clicking it
-  ) {
-    lastSelectedText = selectedText;
-    const { xPos, yPos } = getButtonPosition();
-
-    // show dictionary button and popup at the bottom right of the selection
-    // by default
-    await showDictionaryButton(selectedText, xPos, yPos);
-  }
-  // this case only happens when select no text, or in the middle between
-  // selecting 2 different texts
-  else if (!selectedText || selectedText.length === 0) {
-    // reset last selected text
-    lastSelectedText = null;
-    // Clear the button if no text is selected
-    removeDictionaryButton();
   }
 });
 

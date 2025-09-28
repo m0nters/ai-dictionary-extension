@@ -18,7 +18,7 @@ export function MeaningEntryRenderer({
     <div>
       {/* Word and Pronunciation Header (original style) */}
       <div className="mb-4">
-        <h1 className="inline text-xl font-semibold text-blue-600">{word}</h1>
+        <h1 className="mb-1 text-xl font-semibold text-blue-600">{word}</h1>
         <PronunciationRenderer
           pronunciation={entry.pronunciation}
           word={word}
@@ -31,7 +31,7 @@ export function MeaningEntryRenderer({
         <span className="rounded-full border border-green-200 bg-green-50 px-2 py-1 text-xs font-medium text-green-600">
           {entry.part_of_speech}
         </span>
-        <p className="mt-2 text-sm font-medium text-gray-800">
+        <p className="mt-2 ml-1 text-sm font-medium text-gray-800">
           {entry.definition}
         </p>
       </div>

@@ -20,7 +20,7 @@ export function PronunciationRenderer({
 
   if (hasPronunciationVariants(pronunciation)) {
     return (
-      <span className="ml-2 inline-flex flex-wrap items-center gap-2">
+      <span className="inline-flex flex-wrap items-center gap-x-4 gap-y-0.5">
         {Object.keys(pronunciation).map((key) => {
           const variant = pronunciation[key as keyof PronunciationVariants];
           if (!variant) return null;
@@ -29,8 +29,8 @@ export function PronunciationRenderer({
           const ttsCode = variant.tts_code;
 
           return (
-            <span key={key} className="flex items-start gap-1">
-              <div className="flex items-center gap-1">
+            <span key={key} className="flex items-start gap-0.5">
+              <div className="flex items-center gap-0.5">
                 <span
                   className={`rounded-full px-2 py-0.5 text-xs font-semibold ${
                     styleMap[key as keyof PronunciationVariants] ||
