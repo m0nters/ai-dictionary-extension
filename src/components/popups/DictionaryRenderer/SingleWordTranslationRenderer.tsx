@@ -23,6 +23,7 @@ export function SingleWordTranslationRenderer({
           isAutoDetected={
             sourceLangCodeSetting === DEFAULT_SOURCE_LANGUAGE_CODE
           }
+          mainCountryCode={singleWordTranslation.main_country_code}
         />
       )}
       <div className="mb-4">

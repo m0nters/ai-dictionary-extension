@@ -1,5 +1,5 @@
 export interface Language {
-  code: string; // ISO 639-1 (or ISO 639-2 if no ISO 639-1 code exists)
+  code: string; // ISO 639-1
   englishName: string; // Language name in English
   nativeName: string; // Language name in its native script
 }

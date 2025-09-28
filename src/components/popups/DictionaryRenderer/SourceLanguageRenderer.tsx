@@ -1,12 +1,15 @@
 import { useTranslation } from "react-i18next";
+import "/node_modules/flag-icons/css/flag-icons.min.css";
 
 interface SourceLanguageRendererProps {
   sourceLangCode: string;
+  mainCountryCode?: string;
   isAutoDetected: boolean;
 }
 
 export function SourceLanguageRenderer({
   sourceLangCode,
+  mainCountryCode,
   isAutoDetected,
 }: SourceLanguageRendererProps) {
   const { t } = useTranslation();
@@ -17,10 +20,15 @@ export function SourceLanguageRenderer({
         <div className="text-sm font-semibold text-gray-700">
           {`${t("popup:sourceLanguage")}:`}
         </div>
-        <div className="text-sm font-medium text-blue-600">
-          {isAutoDetected
-            ? `${t(`languages:${sourceLangCode}`)} (${t("popup:autoDetect")})`
-            : t(`languages:${sourceLangCode}`)}
+        <div className="flex items-center space-x-2">
+          {mainCountryCode && (
+            <span className={`fi fi-${mainCountryCode} scale-120`}></span>
+          )}
+          <div className="text-sm font-medium text-blue-600">
+            {isAutoDetected
+              ? `${t(`languages:${sourceLangCode}`)} (${t("popup:autoDetect")})`
+              : t(`languages:${sourceLangCode}`)}
+          </div>
         </div>
       </div>
     </div>

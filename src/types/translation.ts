@@ -59,9 +59,10 @@ export interface MeaningEntry {
 }
 
 interface BaseTranslation {
-  source_language_code: string;
-  translated_language_code: string;
-  main_tts_language_code?: string; // undefined in case of gibberish or non-existent language
+  source_language_code: string; // ISO 639-1
+  translated_language_code: string; // ISO 639-1
+  main_country_code?: string; // ISO 3166-1 alpha-2
+  main_tts_language_code?: string; // IETF BCP 47
 }
 
 export interface SingleWordTranslation extends BaseTranslation {

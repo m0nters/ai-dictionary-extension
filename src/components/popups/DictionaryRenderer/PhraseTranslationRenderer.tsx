@@ -56,6 +56,7 @@ export function PhraseTranslationRenderer({
           isAutoDetected={
             sourceLangCodeSetting === DEFAULT_SOURCE_LANGUAGE_CODE
           }
+          mainCountryCode={phraseTranslation.main_country_code}
         />
       )}
       {phraseTranslation.main_tts_language_code && (

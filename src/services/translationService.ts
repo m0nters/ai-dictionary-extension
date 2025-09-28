@@ -74,13 +74,15 @@ export const generateTranslationPrompt = (
       ? `- The source language is specified as ${sourceLangName}. Use "${sourceLangCode}" as the \`source_language_code\`.
   - Treat the input text as being in ${sourceLangName} and translate accordingly.`
       : `- Auto-detect and specify the source language of the input text.
-  - Include the \`source_language_code\` field as a string which is that language code (e.g. English is "en", Chinese is "zh", etc.).
+  - Include the \`source_language_code\` field as a string representing the ISO 639-1 language code of that source language (e.g. English is "en", Chinese is "zh", etc.).
   - For ambiguous text (e.g., Chinese vs Japanese characters), make your best determination and specify it clearly.`
   }
 - **Translated Language**
   - Include the \`translated_language_code\` field as a string which is, in this context, "${translatedLangCode}".
+- **Main Country Code**
+  - Always include a \`main_country_code\` field containing the main country code (ISO 3166-1 alpha-2) for the source language in lowercase (e.g., "us" for English, "cn" for Chinese, "jp" for Japanese, etc.).
 - **TTS Language Code**
-  - Always include a \`main_tts_language_code\` field containing the primary TTS language code for the source language (e.g., "en-US", "zh-CN", "ja-JP", etc.).
+  - Always include a \`main_tts_language_code\` field containing the primary TTS language code (IETF BCP 47) for the source language (e.g., "en-US", "zh-CN", "ja-JP", etc.).
 - **Single word/Collocation/Idiom input:**
   - For words that has more than 1 pronunciation variants in source language (e.g., "run" is an English word, has pronunciation variants of UK, US), provide both variants as objects with \`ipa\` and \`tts_code\` fields. The \`ipa\` field should be an array of strings to accommodate multiple pronunciations within the same variant (e.g., "usurpation" has US: ["/ˌjuː.zɜːˈpeɪ.ʃən/", "/ˌjuː.sɜːˈpeɪ.ʃən/"], UK: ["/ˌjuː.sɜːˈpeɪ.ʃən/", "/ˌjuː.zɜːˈpeɪ.ʃən/"]). For others that don't have pronunciation variants, just use that single one as a string (e.g., Pinyin for Chinese).
   - When multiple IPA pronunciations exist for the same variant, include all common pronunciations in the array, prioritizing the most standard or widely accepted pronunciation first.
@@ -130,6 +132,7 @@ export const generateTranslationPrompt = (
 - **Gibberish or non-language input:**
   - Return "No translation available." but in translated language. (e.g., "Không có bản dịch" in Vietnamese, "没有可用的翻译" in Chinese)
   ${!sourceLangName ? `- \`source_language_code\` field must be this exact string, "unknown"` : ""} 
+  - \`main_country_code\` field can be omitted.
   - \`main_tts_language_code\` field can be omitted.
 
 - **Output Format:** Output JSON only! Use JSON format with the structure following these examples below:
@@ -139,8 +142,9 @@ export const generateTranslationPrompt = (
     {
       \"source_language_code\": \"en\",
       \"translated_language_code\": \"vi\",
-      \"word\": \"run\",
+      \"main_country_code\": \"us\",
       \"main_tts_language_code\": \"en-US\",
+      \"word\": \"run\",
       \"verb_forms\": [\"run\", \"ran\", \"run\"],
       \"meanings\": [
         {
@@ -259,8 +263,9 @@ export const generateTranslationPrompt = (
     {
       \"source_language_code\": \"zh\",
       \"translated_language_code\": \"vi\",
-      \"word\": \"跑\",
+      \"main_country_code\": \"cn\",
       \"main_tts_language_code\": \"zh-CN\",
+      \"word\": \"跑\",
       \"meanings\": [
         {
           \"pronunciation\": \"pǎo\",
@@ -336,8 +341,9 @@ export const generateTranslationPrompt = (
     {
       \"source_language_code\": \"en\",
       \"translated_language_code\": \"en\",
-      \"word\": \"resource\",
+      \"main_country_code\": \"us\",
       \"main_tts_language_code\": \"en-US\",
+      \"word\": \"resource\",
       \"meanings\": [
         {
           \"pronunciation\": {
@@ -375,6 +381,7 @@ export const generateTranslationPrompt = (
     {
       \"source_language_code\": \"en\",
       \"translated_language_code\": \"vi\",
+      \"main_country_code\": \"us\",
       \"main_tts_language_code\": \"en-US\",
       \"text\": \"Good morning!\",
       \"translation\": \"Chào buổi sáng!\"
