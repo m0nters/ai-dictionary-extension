@@ -12,6 +12,7 @@ export default defineConfig({
     },
   },
   build: {
+    sourcemap: true, // Enable source maps for better debugging
     rollupOptions: {
       input: {
         popup: "./index.html",
@@ -19,6 +20,22 @@ export default defineConfig({
         "thank-you": "./public/thank-you.html",
         "content-script": "./src/content-script.ts",
         background: "./src/background.ts",
+      },
+      output: {
+        manualChunks: (id) => {
+          // Only manually chunk the most problematic/important pieces
+          if (id.includes("src/components/ui/")) {
+            return "ui-components";
+          }
+          if (id.includes("src/services/")) {
+            return "services";
+          }
+          if (id.includes("node_modules/react")) {
+            return "react-vendor";
+          }
+          // Let Vite handle the rest automatically
+          return undefined;
+        },
       },
     },
   },
