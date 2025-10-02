@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "AI Dictionary",
-  "description": "Look up words quickly with AI. Better than traditional dictionaries or Google Translate when it can translate words, phrases or whole sentences with accurate semantic predictions. The dictionary is professionally presented according to standards with transcriptions, definitions, conjugations and illustrative examples.",
+  "description": "Look up words, translate sentences quickly with AI with accurate semantic predictions.",
   "version": "1.0.0",
   "icons": {
     "16": "icons/icon16.png",

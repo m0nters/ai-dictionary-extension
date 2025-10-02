@@ -1,4 +1,4 @@
-import { CopyButton, SpeakerButton } from "@/components/";
+import { CopyButton, SpeakerButton } from "@/components";
 import { DEFAULT_SOURCE_LANGUAGE_CODE } from "@/constants";
 import { PhraseTranslation } from "@/types";
 import { renderText } from "@/utils";

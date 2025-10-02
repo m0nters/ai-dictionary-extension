@@ -15,5 +15,15 @@
   "removeEntry": "Eintrag entfernen",
   "storageUsage": "Speicherverbrauch",
   "entriesCount_one": "{{count}} Eintrag",
-  "entriesCount_other": "{{count}} Einträge"
+  "entriesCount_other": "{{count}} Einträge",
+  "selectEntry": "Eintrag auswählen",
+  "deselectEntry": "Auswahl aufheben",
+  "selectedCount_one": "{{count}} ausgewählt",
+  "selectedCount_other": "{{count}} ausgewählt",
+  "selectAll": "Alle auswählen",
+  "deselectAll": "Alle abwählen",
+  "deleteSelected": "Ausgewählte löschen",
+  "confirmBulkDeleteTitle": "Ausgewählte Einträge löschen",
+  "confirmBulkDeleteMessage_one": "Sind Sie sicher, dass Sie {{count}} ausgewählten Eintrag löschen möchten? Diese Aktion kann nicht rückgängig gemacht werden.",
+  "confirmBulkDeleteMessage_other": "Sind Sie sicher, dass Sie {{count}} ausgewählte Einträge löschen möchten? Diese Aktion kann nicht rückgängig gemacht werden."
 }

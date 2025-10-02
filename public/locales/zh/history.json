@@ -14,5 +14,13 @@
   "unpinEntry": "取消固定条目",
   "removeEntry": "删除条目",
   "storageUsage": "存储使用量",
-  "entriesCount": "{{count}}条记录"
+  "entriesCount": "{{count}}条记录",
+  "selectEntry": "选择条目",
+  "deselectEntry": "取消选择",
+  "selectedCount": "已选择{{count}}项",
+  "selectAll": "全选",
+  "deselectAll": "取消全选",
+  "deleteSelected": "删除所选",
+  "confirmBulkDeleteTitle": "删除所选条目",
+  "confirmBulkDeleteMessage": "您确定要删除所选的{{count}}个条目吗？此操作无法撤销。"
 }

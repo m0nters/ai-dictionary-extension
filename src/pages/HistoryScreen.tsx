@@ -1,37 +1,30 @@
-import { BackButton } from "@/components";
-import { ConfirmDialog } from "@/components/ui";
+import { BackButton, ConfirmDialog, HistoryEntryCard } from "@/components";
 import { SearchOperatorType } from "@/constants";
 import { useDebounce } from "@/hooks";
 import {
   clearHistory,
-  getDisplayText,
   getHistoryStorageUsage,
   removeHistoryEntry,
   searchHistory,
   togglePinEntry,
 } from "@/services";
 import { HistoryEntry } from "@/types";
-import {
-  ArrowRight,
-  Clock,
-  Globe,
-  HardDrive,
-  Pin,
-  Search,
-  Trash2,
-  X,
-} from "lucide-react";
+import { Clock, HardDrive, Search, Trash2, X } from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 
 export function HistoryScreen() {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [entries, setEntries] = useState<HistoryEntry[]>([]);
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
+  const [selectedEntries, setSelectedEntries] = useState<Set<string>>(
+    new Set(),
+  );
+  const [showBulkDeleteConfirm, setShowBulkDeleteConfirm] = useState(false);
   const [storageUsage, setStorageUsage] = useState<{
     historyEntryCount: number;
     historyUsageKB: string;
@@ -110,6 +103,12 @@ export function HistoryScreen() {
   };
 
   const handleEntryClick = (entry: HistoryEntry) => {
+    // If in selection mode, toggle selection instead of navigating
+    if (selectedEntries.size > 0) {
+      handleToggleSelection(entry.id);
+      return;
+    }
+
     // Save current scroll position before navigating
     if (scrollContainerRef.current) {
       sessionStorage.setItem(
@@ -118,6 +117,40 @@ export function HistoryScreen() {
       );
     }
     navigate(`/history/${entry.id}`, { state: { entry } });
+  };
+
+  const handleToggleSelection = (entryId: string) => {
+    setSelectedEntries((prev) => {
+      const newSet = new Set(prev);
+      if (newSet.has(entryId)) {
+        newSet.delete(entryId);
+      } else {
+        newSet.add(entryId);
+      }
+      return newSet;
+    });
+  };
+
+  const handleSelectAll = () => {
+    if (selectedEntries.size === entries.length) {
+      setSelectedEntries(new Set());
+    } else {
+      setSelectedEntries(new Set(entries.map((e) => e.id)));
+    }
+  };
+
+  const handleBulkDelete = async () => {
+    try {
+      // Delete all selected entries
+      await Promise.all(
+        Array.from(selectedEntries).map((id) => removeHistoryEntry(id)),
+      );
+      setSelectedEntries(new Set());
+      setShowBulkDeleteConfirm(false);
+      await displayResultedEntry();
+    } catch (error) {
+      console.error("Failed to delete selected entries:", error);
+    }
   };
 
   const formatTimestamp = (timestamp: number, locale: string) => {
@@ -220,7 +253,7 @@ export function HistoryScreen() {
 
       {/* Storage Usage Info */}
       {storageUsage && (
-        <div className="sticky top-[118px] mx-4 mt-4 rounded-xl border border-gray-300 bg-white p-3">
+        <div className="sticky top-[118px] z-10 mx-4 mt-4 rounded-xl border border-gray-300 bg-white p-3 shadow-sm">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-2">
               <HardDrive className="h-4 w-4 text-gray-500" />
@@ -242,6 +275,34 @@ export function HistoryScreen() {
         </div>
       )}
 
+      {/* Bulk Actions Bar */}
+      {selectedEntries.size > 0 && (
+        <div className="sticky top-[164px] z-10 mx-4 mt-2 rounded-xl border border-indigo-300 bg-indigo-50 p-3 shadow-sm">
+          <div className="flex flex-col items-start gap-2">
+            <div className="flex w-full gap-2">
+              <span className="text-sm font-medium text-indigo-900">
+                {t("history:selectedCount", { count: selectedEntries.size })}
+              </span>
+              <button
+                onClick={handleSelectAll}
+                className="cursor-pointer text-xs text-indigo-600 hover:text-indigo-800 hover:underline"
+              >
+                {selectedEntries.size === entries.length
+                  ? t("history:deselectAll")
+                  : t("history:selectAll")}
+              </button>
+            </div>
+            <button
+              onClick={() => setShowBulkDeleteConfirm(true)}
+              className="flex cursor-pointer items-center space-x-1.5 rounded-lg border border-red-300 bg-red-100 px-3 py-1.5 text-xs text-red-600 transition-all duration-200 hover:bg-red-200 hover:shadow-sm"
+            >
+              <Trash2 className="h-4 w-4" />
+              <span className="font-medium">{t("history:deleteSelected")}</span>
+            </button>
+          </div>
+        </div>
+      )}
+
       {/* Content */}
       <div className="m-4 flex-1">
         {entries.length === 0 ? (
@@ -257,153 +318,24 @@ export function HistoryScreen() {
           </div>
         ) : (
           <div className="space-y-2">
-            {entries.map((entry) => {
-              const displayInfo = getDisplayText(entry);
-              // Get translated language names using i18n
-              const sourceLangCode = entry.translation.source_language_code;
-              const translatedLangCode =
-                entry.translation.translated_language_code;
-              const sourceLangName = t(`languages:${sourceLangCode}`);
-              const targetLangName = t(`languages:${translatedLangCode}`);
-
-              const isSourceLanguageUnknown =
-                sourceLangName === t("languages:unknown");
-
-              return (
-                <div
-                  key={entry.id}
-                  onClick={() => handleEntryClick(entry)}
-                  className="group cursor-pointer rounded-2xl border border-gray-200 bg-white/60 p-4 transition-all duration-300 hover:border-indigo-300 hover:bg-white/80 hover:shadow-xl hover:shadow-indigo-100/50 active:scale-95"
-                >
-                  <div className="flex items-center justify-between">
-                    {/* Main info section */}
-                    <div className="min-w-0 flex-1">
-                      {/* Primary text (word or truncated sentence) */}
-                      <div className="mb-2">
-                        <h3 className="truncate text-base font-semibold text-gray-800 transition-colors group-hover:text-indigo-800">
-                          {displayInfo.primaryText}
-                        </h3>
-                        {displayInfo.secondaryText && (
-                          <p className="font-mono text-sm whitespace-pre-line text-gray-500">
-                            {displayInfo.secondaryText}
-                          </p>
-                        )}
-                      </div>
-
-                      {/* Language pair and timestamp */}
-                      <div className="mt-3 flex flex-col items-start justify-between space-y-1 text-xs">
-                        <div className="flex items-center space-x-2">
-                          {/* Source Language Badge */}
-                          <div
-                            onClick={(e) =>
-                              handleLanguageBadgeClick(
-                                e,
-                                "source",
-                                sourceLangCode,
-                              )
-                            }
-                            className={`flex cursor-pointer items-center space-x-1.5 rounded-full border px-2 py-1 transition-all duration-200 ${isSourceLanguageUnknown ? "border-gray-300 bg-gray-100 hover:bg-gray-200 hover:shadow-none" : "border-blue-300 bg-blue-100 hover:bg-blue-200 hover:shadow-sm"}`}
-                            title={t("history:searchBySourceLanguage", {
-                              language: sourceLangName,
-                            })}
-                          >
-                            <Globe
-                              className={`h-3.5 w-3.5 ${isSourceLanguageUnknown ? "text-gray-500" : "text-blue-600"}`}
-                            />
-                            <span
-                              className={`font-semibold ${isSourceLanguageUnknown ? "text-gray-500" : "text-blue-700"}`}
-                            >
-                              {sourceLangName}
-                            </span>
-                          </div>
-
-                          {/* Arrow */}
-                          <ArrowRight className="h-4 w-4 text-indigo-400" />
-
-                          {/* Target Language Badge */}
-                          <div
-                            onClick={(e) =>
-                              handleLanguageBadgeClick(
-                                e,
-                                "target",
-                                translatedLangCode,
-                              )
-                            }
-                            className="flex cursor-pointer items-center space-x-1.5 rounded-full border border-emerald-300 bg-emerald-100 px-2 py-1 transition-all duration-200 hover:bg-emerald-200 hover:shadow-sm"
-                            title={t("history:searchByTargetLanguage", {
-                              language: targetLangName,
-                            })}
-                          >
-                            <Globe className="h-3.5 w-3.5 text-emerald-600" />
-                            <span className="font-semibold text-emerald-700">
-                              {targetLangName}
-                            </span>
-                          </div>
-                        </div>
-
-                        {/* Timestamp Badge */}
-                        <div
-                          className="flex cursor-help items-center space-x-1.5 rounded-full border border-gray-300 bg-gray-100 px-2 py-1"
-                          title={new Date(entry.timestamp).toLocaleString(
-                            i18n.language,
-                            {
-                              weekday: "long",
-                              year: "numeric",
-                              month: "long",
-                              day: "numeric",
-                              hour: "2-digit",
-                              minute: "2-digit",
-                              second: "2-digit",
-                            },
-                          )}
-                        >
-                          <Clock className="h-3.5 w-3.5 text-gray-500" />
-                          <span className="font-medium text-gray-600">
-                            {formatTimestamp(entry.timestamp, i18n.language)}
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Action buttons */}
-                    <div className="flex flex-col space-y-4">
-                      {/* Pin button */}
-                      <button
-                        onClick={(e) => handlePinEntry(entry.id, e)}
-                        className={`cursor-pointer rounded-lg border p-3 transition-all duration-200 hover:shadow-sm ${
-                          entry.pinnedAt
-                            ? "border-amber-200 bg-amber-50 text-amber-600 hover:bg-amber-100"
-                            : "border-gray-300 bg-gray-100 text-gray-500 hover:bg-gray-200"
-                        }`}
-                        title={
-                          entry.pinnedAt
-                            ? t("history:unpinEntry")
-                            : t("history:pinEntry")
-                        }
-                      >
-                        <Pin
-                          className={`h-4 w-4 ${entry.pinnedAt ? "fill-current" : ""}`}
-                        />
-                      </button>
-
-                      {/* Delete button */}
-                      <button
-                        onClick={(e) => handleRemoveEntry(entry.id, e)}
-                        className="cursor-pointer rounded-lg border border-red-200 bg-red-50 p-3 text-red-500 transition-all duration-200 hover:bg-red-100 hover:shadow-sm"
-                        title={t("history:removeEntry")}
-                      >
-                        <Trash2 className="h-4 w-4" />
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
+            {entries.map((entry) => (
+              <HistoryEntryCard
+                key={entry.id}
+                entry={entry}
+                isSelected={selectedEntries.has(entry.id)}
+                onEntryClick={handleEntryClick}
+                onToggleSelection={handleToggleSelection}
+                onPinEntry={handlePinEntry}
+                onRemoveEntry={handleRemoveEntry}
+                onLanguageBadgeClick={handleLanguageBadgeClick}
+                formatTimestamp={formatTimestamp}
+              />
+            ))}
           </div>
         )}
       </div>
 
-      {/* Confirm Dialog */}
+      {/* Confirm Dialog for Clear All */}
       <ConfirmDialog
         isOpen={showConfirmDialog}
         onClose={() => setShowConfirmDialog(false)}
@@ -411,6 +343,32 @@ export function HistoryScreen() {
         title={t("history:confirmClearAllTitle")}
         message={t("history:confirmClearAllMessage")}
         confirmText={t("history:clearAll")}
+        cancelText={t("common:cancel")}
+        variant="danger"
+      />
+
+      {/* Confirm Dialog for Bulk Delete */}
+      <ConfirmDialog
+        isOpen={showBulkDeleteConfirm}
+        onClose={() => setShowBulkDeleteConfirm(false)}
+        onConfirm={handleBulkDelete}
+        title={
+          selectedEntries.size === entries.length
+            ? t("history:confirmClearAllTitle")
+            : t("history:confirmBulkDeleteTitle")
+        }
+        message={
+          selectedEntries.size === entries.length
+            ? t("history:confirmClearAllMessage")
+            : t("history:confirmBulkDeleteMessage", {
+                count: selectedEntries.size,
+              })
+        }
+        confirmText={
+          selectedEntries.size === entries.length
+            ? t("history:clearAll")
+            : t("history:deleteSelected")
+        }
         cancelText={t("common:cancel")}
         variant="danger"
       />

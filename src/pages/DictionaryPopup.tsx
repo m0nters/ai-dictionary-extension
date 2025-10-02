@@ -1,7 +1,7 @@
 import { changeLanguage } from "@/config";
-import { useTranslation } from "@/hooks/";
+import { useTranslation } from "@/hooks";
 import "@/index.css";
-import { parseTranslationJSON } from "@/utils/";
+import { parseTranslationJSON } from "@/utils";
 import { LoaderCircle, RotateCcw, X } from "lucide-react";
 import { useEffect } from "react";
 import { createRoot } from "react-dom/client";

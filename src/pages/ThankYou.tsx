@@ -1,4 +1,4 @@
-import { DropdownMenu } from "@/components/";
+import { DropdownMenu } from "@/components";
 import { changeLanguage } from "@/config/i18n";
 import { SUPPORTED_APP_LANGUAGE } from "@/constants";
 import { CheckCircle, Globe, Info, Shield, Zap } from "lucide-react";

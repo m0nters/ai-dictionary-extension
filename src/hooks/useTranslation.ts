@@ -1,14 +1,14 @@
 import {
   DEFAULT_LANGUAGE_CODE,
   DEFAULT_SOURCE_LANGUAGE_CODE,
-} from "@/constants/";
+} from "@/constants";
 import {
   MAX_WORDS_LIMIT,
   saveTranslation,
   translateWithGemini,
-} from "@/services/";
-import { TranslationResult } from "@/types/";
-import { parseTranslationJSON, updatePopupHeight } from "@/utils/";
+} from "@/services";
+import { TranslationResult } from "@/types";
+import { parseTranslationJSON, updatePopupHeight } from "@/utils";
 import { useEffect, useState } from "react";
 import { useTranslation as useReactI18next } from "react-i18next";
 

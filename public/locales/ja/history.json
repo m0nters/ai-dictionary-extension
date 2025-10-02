@@ -14,5 +14,13 @@
   "unpinEntry": "エントリのピン留めを解除",
   "removeEntry": "エントリを削除",
   "storageUsage": "ストレージ使用量",
-  "entriesCount": "{{count}}件のエントリ"
+  "entriesCount": "{{count}}件のエントリ",
+  "selectEntry": "エントリを選択",
+  "deselectEntry": "選択を解除",
+  "selectedCount": "{{count}}件選択中",
+  "selectAll": "すべて選択",
+  "deselectAll": "すべて解除",
+  "deleteSelected": "選択した項目を削除",
+  "confirmBulkDeleteTitle": "選択したエントリを削除",
+  "confirmBulkDeleteMessage": "選択した{{count}}件のエントリを削除しますか？この操作は元に戻せません。"
 }

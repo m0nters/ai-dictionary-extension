@@ -15,5 +15,15 @@
   "removeEntry": "Supprimer l'entrée",
   "storageUsage": "Utilisation du stockage",
   "entriesCount_one": "{{count}} entrée",
-  "entriesCount_other": "{{count}} entrées"
+  "entriesCount_other": "{{count}} entrées",
+  "selectEntry": "Sélectionner l'entrée",
+  "deselectEntry": "Désélectionner l'entrée",
+  "selectedCount_one": "{{count}} sélectionnée",
+  "selectedCount_other": "{{count}} sélectionnées",
+  "selectAll": "Tout sélectionner",
+  "deselectAll": "Tout désélectionner",
+  "deleteSelected": "Supprimer la sélection",
+  "confirmBulkDeleteTitle": "Supprimer les entrées sélectionnées",
+  "confirmBulkDeleteMessage_one": "Êtes-vous sûr de vouloir supprimer {{count}} entrée sélectionnée ? Cette action est irréversible.",
+  "confirmBulkDeleteMessage_other": "Êtes-vous sûr de vouloir supprimer {{count}} entrées sélectionnées ? Cette action est irréversible."
 }

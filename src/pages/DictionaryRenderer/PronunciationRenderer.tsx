@@ -1,6 +1,6 @@
-import { SpeakerButton } from "@/components/";
+import { SpeakerButton } from "@/components";
 import { PronunciationVariants } from "@/types";
-import { hasPronunciationVariants } from "@/utils/textParser";
+import { hasPronunciationVariants } from "@/utils";
 
 interface PronunciationRendererProps {
   pronunciation: string | PronunciationVariants;

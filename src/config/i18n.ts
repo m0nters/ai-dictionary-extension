@@ -1,4 +1,4 @@
-import { AVAILABLE_LANGUAGES, DEFAULT_LANGUAGE_CODE } from "@/constants/";
+import { AVAILABLE_LANGUAGES, DEFAULT_LANGUAGE_CODE } from "@/constants";
 import i18n from "i18next";
 import Backend from "i18next-http-backend";
 import { initReactI18next } from "react-i18next";

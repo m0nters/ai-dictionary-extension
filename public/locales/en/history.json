@@ -15,5 +15,15 @@
   "removeEntry": "Remove entry",
   "storageUsage": "Storage Usage",
   "entriesCount_one": "{{count}} entry",
-  "entriesCount_other": "{{count}} entries"
+  "entriesCount_other": "{{count}} entries",
+  "selectEntry": "Select entry",
+  "deselectEntry": "Deselect entry",
+  "selectedCount_one": "{{count}} selected",
+  "selectedCount_other": "{{count}} selected",
+  "selectAll": "Select all",
+  "deselectAll": "Deselect all",
+  "deleteSelected": "Delete selected",
+  "confirmBulkDeleteTitle": "Delete Selected Entries",
+  "confirmBulkDeleteMessage_one": "Are you sure you want to delete {{count}} selected entry? This action cannot be undone.",
+  "confirmBulkDeleteMessage_other": "Are you sure you want to delete {{count}} selected entries? This action cannot be undone."
 }

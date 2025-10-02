@@ -1,10 +1,10 @@
-import { HistoryDetailScreen, HistoryScreen, MainScreen } from "@/components/";
-import { changeLanguage } from "@/config/";
+import { changeLanguage } from "@/config";
 import {
   DEFAULT_LANGUAGE_CODE,
   DEFAULT_SOURCE_LANGUAGE_CODE,
-} from "@/constants/";
-import { checkPrivilegePage } from "@/utils/";
+} from "@/constants";
+import { HistoryDetailScreen, HistoryScreen, MainScreen } from "@/pages";
+import { checkPrivilegePage } from "@/utils";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { MemoryRouter, Route, Routes } from "react-router-dom";

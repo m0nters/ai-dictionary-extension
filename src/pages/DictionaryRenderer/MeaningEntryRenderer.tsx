@@ -1,4 +1,4 @@
-import { SpeakerButton } from "@/components/";
+import { SpeakerButton } from "@/components";
 import { MeaningEntry } from "@/types";
 import { renderText } from "@/utils";
 import { PronunciationRenderer } from "./PronunciationRenderer";

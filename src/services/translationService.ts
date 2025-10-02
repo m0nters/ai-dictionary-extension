@@ -1,7 +1,4 @@
-import {
-  AVAILABLE_LANGUAGES,
-  DEFAULT_SOURCE_LANGUAGE_CODE,
-} from "@/constants/";
+import { AVAILABLE_LANGUAGES, DEFAULT_SOURCE_LANGUAGE_CODE } from "@/constants";
 
 const API_KEY = import.meta.env.VITE_API_KEY as string;
 export const MAX_WORDS_LIMIT = 250;

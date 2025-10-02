@@ -3,7 +3,7 @@ import {
   SUPPORTED_APP_LANGUAGE,
   SUPPORTED_SOURCE_LANGUAGE,
   SUPPORTED_TRANSLATED_LANGUAGE,
-} from "@/constants/";
+} from "@/constants";
 import {
   AlertTriangle,
   ArrowRight,

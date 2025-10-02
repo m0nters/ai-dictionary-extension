@@ -3,7 +3,7 @@ import {
   PhraseTranslation,
   PronunciationVariants,
   SingleWordTranslation,
-} from "@/types/";
+} from "@/types";
 import Markdown from "markdown-to-jsx";
 import { createElement } from "react";
 

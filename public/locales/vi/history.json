@@ -14,5 +14,13 @@
   "unpinEntry": "Bỏ ghim mục",
   "removeEntry": "Xóa mục",
   "storageUsage": "Dung lượng lưu trữ",
-  "entriesCount": "{{count}} mục"
+  "entriesCount": "{{count}} mục",
+  "selectEntry": "Chọn mục",
+  "deselectEntry": "Bỏ chọn mục",
+  "selectedCount": "Đã chọn {{count}}",
+  "selectAll": "Chọn tất cả",
+  "deselectAll": "Bỏ chọn tất cả",
+  "deleteSelected": "Xóa mục đã chọn",
+  "confirmBulkDeleteTitle": "Xóa các mục đã chọn",
+  "confirmBulkDeleteMessage": "Bạn có chắc chắn muốn xóa {{count}} mục đã chọn không? Hành động này không thể hoàn tác."
 }

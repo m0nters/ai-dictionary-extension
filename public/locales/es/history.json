@@ -15,5 +15,15 @@
   "removeEntry": "Eliminar entrada",
   "storageUsage": "Uso de almacenamiento",
   "entriesCount_one": "{{count}} entrada",
-  "entriesCount_other": "{{count}} entradas"
+  "entriesCount_other": "{{count}} entradas",
+  "selectEntry": "Seleccionar entrada",
+  "deselectEntry": "Deseleccionar entrada",
+  "selectedCount_one": "{{count}} seleccionada",
+  "selectedCount_other": "{{count}} seleccionadas",
+  "selectAll": "Seleccionar todo",
+  "deselectAll": "Deseleccionar todo",
+  "deleteSelected": "Eliminar seleccionadas",
+  "confirmBulkDeleteTitle": "Eliminar entradas seleccionadas",
+  "confirmBulkDeleteMessage_one": "¿Estás seguro de que quieres eliminar {{count}} entrada seleccionada? Esta acción no se puede deshacer.",
+  "confirmBulkDeleteMessage_other": "¿Estás seguro de que quieres eliminar {{count}} entradas seleccionadas? Esta acción no se puede deshacer."
 }
