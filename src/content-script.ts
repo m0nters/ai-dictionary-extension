@@ -372,14 +372,22 @@ async function showDictionaryPopup(selectedText: string, x: number, y: number) {
 // Remove the dictionary popup
 function removeDictionaryPopup() {
   if (dictionaryPopup) {
-    // Clean up message event listener
-    const messageHandler = (dictionaryPopup as any).messageHandler;
-    if (messageHandler) {
-      window.removeEventListener("message", messageHandler);
-    }
+    // Notify the popup to stop any TTS before removing
+    dictionaryPopup.contentWindow?.postMessage({ type: "POPUP_CLOSING" }, "*");
 
-    dictionaryPopup.remove();
-    dictionaryPopup = null;
+    // Give it a moment to process the message before removing
+    setTimeout(() => {
+      if (dictionaryPopup) {
+        // Clean up message event listener
+        const messageHandler = (dictionaryPopup as any).messageHandler;
+        if (messageHandler) {
+          window.removeEventListener("message", messageHandler);
+        }
+
+        dictionaryPopup.remove();
+        dictionaryPopup = null;
+      }
+    }, 50);
   }
 }
 

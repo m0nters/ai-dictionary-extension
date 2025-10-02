@@ -4,6 +4,7 @@
   "step2": "Cliquer sur le bouton « dictionnaire » qui apparaît",
   "step3": "Voir la traduction détaillée avec la prononciation",
   "loading": "Chargement...",
+  "loadingTip": "Le mot a plusieurs significations ou il y a une grande quantité de contenu, donc l'IA peut nécessiter du temps supplémentaire pour produire une traduction complète.",
   "noTranslationAvailable": "Aucune traduction disponible",
   "selectTextToTranslate": "Sélectionner du texte sur la page pour traduire",
   "textTooLong": "Le texte est trop long pour être traduit. Maximum {{maxWords}} mots autorisés, mais {{currentWords}} mots ont été sélectionnés.",

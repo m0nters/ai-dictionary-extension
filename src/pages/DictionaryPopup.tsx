@@ -1,9 +1,10 @@
 import { changeLanguage } from "@/config";
 import { useTranslation } from "@/hooks";
 import "@/index.css";
-import { parseTranslationJSON } from "@/utils";
+import { ttsService } from "@/services";
+import { parseTranslationJSON, updatePopupHeight } from "@/utils";
 import { LoaderCircle, RotateCcw, X } from "lucide-react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { createRoot } from "react-dom/client";
 import { useTranslation as useReactI18next } from "react-i18next";
 import { DictionaryRenderer } from "./DictionaryRenderer";
@@ -11,7 +12,10 @@ import { DictionaryRenderer } from "./DictionaryRenderer";
 export function DictionaryPopup() {
   const { result, translateText } = useTranslation();
   const { t } = useReactI18next();
+  const [showLoadingTip, setShowLoadingTip] = useState(false);
+  const [loadingTime, setLoadingTime] = useState(0);
 
+  // transfering messages stuff
   useEffect(() => {
     // Listen for messages from content script
     const handleMessage = (event: MessageEvent) => {
@@ -19,6 +23,10 @@ export function DictionaryPopup() {
         changeLanguage(event.data.appLanguage).then(() => {
           translateText(event.data.text);
         });
+      }
+      // Listen for when the popup is about to be closed from outside
+      if (event.data.type === "POPUP_CLOSING") {
+        ttsService.stop();
       }
     };
 
@@ -29,8 +37,82 @@ export function DictionaryPopup() {
 
     return () => {
       window.removeEventListener("message", handleMessage);
+      // Stop any playing TTS when popup unmounts
+      ttsService.stop();
     };
   }, []);
+
+  // Show tip after 10 seconds of loading
+  useEffect(() => {
+    let timer: NodeJS.Timeout;
+
+    if (result.loading) {
+      setShowLoadingTip(false);
+      timer = setTimeout(() => {
+        setShowLoadingTip(true);
+      }, 10000);
+    } else {
+      setShowLoadingTip(false);
+    }
+
+    return () => {
+      if (timer) clearTimeout(timer);
+    };
+  }, [result.loading]);
+
+  // Timer to track loading time
+  useEffect(() => {
+    let interval: NodeJS.Timeout;
+    let startTime: number;
+
+    if (result.loading) {
+      startTime = Date.now();
+      setLoadingTime(0);
+
+      interval = setInterval(() => {
+        const elapsed = (Date.now() - startTime) / 1000;
+        setLoadingTime(elapsed);
+      }, 100); // Update every 100ms for smooth display
+    } else {
+      setLoadingTime(0);
+    }
+
+    return () => {
+      if (interval) clearInterval(interval);
+    };
+  }, [result.loading]);
+
+  // Monitor content height changes and notify parent
+  useEffect(() => {
+    // Initial height update
+    updatePopupHeight();
+
+    // Update height whenever content changes
+    const observer = new MutationObserver(() => {
+      updatePopupHeight();
+    });
+
+    const contentWrapper = document.getElementById(
+      "dictionary-content-wrapper",
+    );
+    if (contentWrapper) {
+      observer.observe(contentWrapper, {
+        childList: true,
+        subtree: true,
+        attributes: true,
+        characterData: true,
+      });
+    }
+
+    // Also update on window resize
+    const handleResize = () => updatePopupHeight();
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("resize", handleResize);
+    };
+  }, [result.loading, result.error, result.translation, showLoadingTip]);
 
   const closePopup = () => {
     window.parent.postMessage({ type: "CLOSE_POPUP" }, "*");
@@ -65,13 +147,23 @@ export function DictionaryPopup() {
         <div className="w-full">
           {result.loading && (
             <div
-              className="flex items-center justify-center py-12"
+              className="flex flex-col items-center justify-center py-12"
               key="loading"
             >
-              <LoaderCircle className="h-6 w-6 animate-spin text-blue-600" />
-              <span className="ml-2 text-sm text-gray-500">
-                {t("common:loading")}
-              </span>
+              <div className="flex items-center">
+                <LoaderCircle className="h-6 w-6 animate-spin text-blue-600" />
+                <span className="ml-2 text-sm text-gray-500">
+                  {t("common:loading")}
+                </span>
+              </div>
+              <div className="mt-2 text-xs text-gray-400">
+                {loadingTime.toFixed(1)}s
+              </div>
+              {showLoadingTip && (
+                <p className="animate-fade-in mt-4 max-w-xs text-center text-xs text-gray-400">
+                  {t("common:loadingTip")}
+                </p>
+              )}
             </div>
           )}
 

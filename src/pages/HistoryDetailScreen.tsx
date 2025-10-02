@@ -27,6 +27,8 @@ export function HistoryDetailScreen() {
     return null;
   }
 
+  console.log(entry);
+
   return (
     <div className="animate-slide-in-right h-full w-full overflow-y-auto bg-gradient-to-br from-indigo-50 to-purple-50">
       {/* Header */}

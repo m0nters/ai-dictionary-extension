@@ -4,6 +4,7 @@
   "step2": "Click the \"dictionary\" button that appears",
   "step3": "View detailed translation with pronunciation",
   "loading": "Loading...",
+  "loadingTip": "The word has multiple meanings, or there is a large amount of content, so the AI may require additional time to produce a thorough translation.",
   "noTranslationAvailable": "No translation available",
   "selectTextToTranslate": "Select text on the page to translate",
   "textTooLong": "Text is too long for translation. Maximum {{maxWords}} words allowed, but {{currentWords}} words were selected.",
