@@ -58,6 +58,20 @@ export const removeHistoryEntry = async (id: string): Promise<void> => {
 };
 
 /**
+ * Remove multiple history entries in a single operation
+ */
+export const removeHistoryEntries = async (ids: string[]): Promise<void> => {
+  try {
+    const entries = await getHistory();
+    const idsSet = new Set(ids);
+    const updatedEntries = entries.filter((entry) => !idsSet.has(entry.id));
+    await saveHistoryToStorage(updatedEntries);
+  } catch (error) {
+    console.error("Failed to remove history entries:", error);
+  }
+};
+
+/**
  * Toggle pin status of a history entry
  */
 export const togglePinEntry = async (id: string): Promise<void> => {

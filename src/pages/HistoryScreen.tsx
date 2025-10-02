@@ -4,6 +4,7 @@ import { useDebounce } from "@/hooks";
 import {
   clearHistory,
   getHistoryStorageUsage,
+  removeHistoryEntries,
   removeHistoryEntry,
   searchHistory,
   togglePinEntry,
@@ -20,10 +21,10 @@ export function HistoryScreen() {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [entries, setEntries] = useState<HistoryEntry[]>([]);
-  const [showConfirmDialog, setShowConfirmDialog] = useState(false);
   const [selectedEntries, setSelectedEntries] = useState<Set<string>>(
     new Set(),
   );
+  const [showConfirmDialog, setShowConfirmDialog] = useState(false);
   const [showBulkDeleteConfirm, setShowBulkDeleteConfirm] = useState(false);
   const [storageUsage, setStorageUsage] = useState<{
     historyEntryCount: number;
@@ -73,6 +74,7 @@ export function HistoryScreen() {
     try {
       await clearHistory();
       setEntries([]);
+      setSelectedEntries(new Set());
       setStorageUsage(null);
     } catch (error) {
       console.error("Failed to clear history:", error);
@@ -140,11 +142,14 @@ export function HistoryScreen() {
   };
 
   const handleBulkDelete = async () => {
+    if (selectedEntries.size === entries.length) {
+      // If all entries are selected, treat as clear all
+      handleConfirmClearHistory();
+      return;
+    }
     try {
-      // Delete all selected entries
-      await Promise.all(
-        Array.from(selectedEntries).map((id) => removeHistoryEntry(id)),
-      );
+      // Delete all selected entries in a single operation
+      await removeHistoryEntries(Array.from(selectedEntries));
       setSelectedEntries(new Set());
       setShowBulkDeleteConfirm(false);
       await displayResultedEntry();
