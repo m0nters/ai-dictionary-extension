@@ -1,7 +1,8 @@
+import { SelectionCheckbox } from "@/components/ui";
 import { SearchOperatorType } from "@/constants";
 import { getDisplayText } from "@/services";
 import { HistoryEntry } from "@/types";
-import { ArrowRight, Check, Clock, Globe, Pin, Trash2 } from "lucide-react";
+import { ArrowRight, Clock, Globe, Pin, Trash2 } from "lucide-react";
 import React from "react";
 import { useTranslation } from "react-i18next";
 
@@ -57,19 +58,16 @@ export function HistoryEntryCard({
       }`}
     >
       {/* Selection Circle - appears on hover or when selected */}
-      <div
+      <SelectionCheckbox
+        isSelected={isSelected}
         onClick={handleSelectionClick}
-        className={`absolute top-3 left-3 flex h-5 w-5 cursor-pointer items-center justify-center rounded-full border-2 transition-all duration-200 ${
-          isSelected
-            ? "border-indigo-500 bg-indigo-500 opacity-100"
-            : "border-gray-300 bg-white opacity-0 group-hover:opacity-100 hover:border-indigo-400 hover:bg-indigo-50"
+        className={`absolute top-3 left-3 ${
+          isSelected ? "opacity-100" : "opacity-0 group-hover:opacity-100"
         }`}
         title={
           isSelected ? t("history:deselectEntry") : t("history:selectEntry")
         }
-      >
-        {isSelected && <Check className="h-3 w-3 text-white" />}
-      </div>
+      />
 
       <div className="flex items-center justify-between">
         {/* Main info section */}
