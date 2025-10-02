@@ -63,7 +63,7 @@ export function HistoryScreen() {
 
       // Update storage usage
       const usage = await getHistoryStorageUsage();
-      setStorageUsage(usage);
+      usage?.historyEntryCount ? setStorageUsage(usage) : setStorageUsage(null);
     } catch (error) {
       console.error("Failed to load history:", error);
       setEntries([]);
