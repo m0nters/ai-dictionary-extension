@@ -5,6 +5,7 @@
   "step3": "Detaillierte Übersetzung mit Aussprache anzeigen",
   "loading": "Laden...",
   "loadingTip": "Das Wort hat mehrere Bedeutungen oder es gibt eine große Menge an Inhalt, daher kann die KI zusätzliche Zeit benötigen, um eine gründliche Übersetzung zu erstellen.",
+  "thoughtFor": "Nachgedacht für {{time}}s",
   "noTranslationAvailable": "Keine Übersetzung verfügbar",
   "selectTextToTranslate": "Text auf der Seite auswählen, um zu übersetzen",
   "textTooLong": "Text ist zu lang für die Übersetzung. Maximal {{maxWords}} Wörter erlaubt, aber {{currentWords}} Wörter wurden ausgewählt.",

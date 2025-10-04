@@ -14,6 +14,7 @@ export function DictionaryPopup() {
   const { t } = useReactI18next();
   const [showLoadingTip, setShowLoadingTip] = useState(false);
   const [loadingTime, setLoadingTime] = useState(0);
+  const [finalLoadingTime, setFinalLoadingTime] = useState<number | null>(null); // final time after loading
 
   // transfering messages stuff
   useEffect(() => {
@@ -74,6 +75,9 @@ export function DictionaryPopup() {
         setLoadingTime(elapsed);
       }, 100); // Update every 100ms for smooth display
     } else {
+      if (loadingTime > 0) {
+        setFinalLoadingTime(loadingTime);
+      }
       setLoadingTime(0);
     }
 
@@ -127,9 +131,16 @@ export function DictionaryPopup() {
     <div className="z-99999 flex h-full w-full flex-col bg-white">
       {/* Close button - properly aligned */}
       <div
-        className="sticky top-0 z-10 flex justify-end bg-white/70 px-4 py-2 backdrop-blur-sm"
+        className="sticky top-0 z-10 flex items-center justify-between bg-white/70 px-4 py-2 backdrop-blur-sm"
         id="close-button"
       >
+        {/* Show final loading time after translation completes */}
+        {!result.loading && finalLoadingTime !== null && (
+          <div className="text-xs text-gray-400">
+            {t("common:thoughtFor", { time: finalLoadingTime.toFixed(1) })}
+          </div>
+        )}
+        <div className="flex-1"></div>
         <button
           onClick={closePopup}
           className="flex cursor-pointer rounded-full p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500"

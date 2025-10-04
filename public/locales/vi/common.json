@@ -5,6 +5,7 @@
   "step3": "Xem bản dịch chi tiết với phiên âm",
   "loading": "Đang tải...",
   "loadingTip": "Từ này có nhiều nghĩa hoặc có lượng nội dung lớn, do đó AI có thể cần thêm thời gian để tạo ra bản dịch chi tiết.",
+  "thoughtFor": "Suy nghĩ trong {{time}}s",
   "noTranslationAvailable": "Không có bản dịch khả dụng",
   "selectTextToTranslate": "Chọn văn bản trên trang để dịch",
   "textTooLong": "Văn bản quá dài để dịch. Cho phép tối đa {{maxWords}} từ, nhưng đã chọn {{currentWords}} từ.",
