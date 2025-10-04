@@ -98,7 +98,7 @@ async function isExtensionEnabled(): Promise<boolean> {
   extensionEnabled = await isExtensionEnabled();
 })();
 
-// Listen for extension toggle messages (from App.tsx)
+// Listen for messages (from App.tsx)
 chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
   if (message.type === "EXTENSION_TOGGLE") {
     extensionEnabled = message.enabled;
@@ -107,6 +107,21 @@ chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
     if (!extensionEnabled) {
       removeDictionaryButton();
       removeDictionaryPopup();
+    }
+
+    sendResponse({ success: true });
+  }
+
+  // Listen for language change messages and forward to dictionary popup
+  if (message.type === "LANGUAGE_CHANGED") {
+    if (dictionaryPopup && dictionaryPopup.contentWindow) {
+      dictionaryPopup.contentWindow.postMessage(
+        {
+          type: "LANGUAGE_CHANGED",
+          language: message.language,
+        },
+        "*",
+      );
     }
 
     sendResponse({ success: true });

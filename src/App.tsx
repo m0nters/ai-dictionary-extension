@@ -80,6 +80,18 @@ function App() {
       .then(() => {
         setSaved(true);
         setTimeout(() => setSaved(false), 5000);
+
+        // Broadcast language change to all content scripts (dictionary popups)
+        chrome.tabs.query({}, (tabs) => {
+          tabs.forEach((tab) => {
+            if (tab.id) {
+              chrome.tabs.sendMessage(tab.id, {
+                type: "LANGUAGE_CHANGED",
+                language: value,
+              });
+            }
+          });
+        });
       })
       .catch((error) => {
         console.error("Failed to change app language:", error);

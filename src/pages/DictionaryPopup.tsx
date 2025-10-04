@@ -20,6 +20,9 @@ export function DictionaryPopup() {
   useEffect(() => {
     // Listen for messages from content script
     const handleMessage = (event: MessageEvent) => {
+      // when this popup is ready (signal below to the parent -- content script),
+      // content script fixed the height of the container, then send the signal
+      // back again for this popup to translate text
       if (event.data.type === "TRANSLATE_TEXT") {
         changeLanguage(event.data.appLanguage).then(() => {
           translateText(event.data.text);
@@ -28,6 +31,10 @@ export function DictionaryPopup() {
       // Listen for when the popup is about to be closed from outside
       if (event.data.type === "POPUP_CLOSING") {
         ttsService.stop();
+      }
+      // Listen for language changes from extension popup
+      if (event.data.type === "LANGUAGE_CHANGED") {
+        changeLanguage(event.data.language);
       }
     };
 
