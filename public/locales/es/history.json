@@ -25,5 +25,6 @@
   "deleteSelected": "Eliminar seleccionadas",
   "confirmBulkDeleteTitle": "Eliminar entradas seleccionadas",
   "confirmBulkDeleteMessage_one": "¿Estás seguro de que quieres eliminar {{count}} entrada seleccionada? Esta acción no se puede deshacer.",
-  "confirmBulkDeleteMessage_other": "¿Estás seguro de que quieres eliminar {{count}} entradas seleccionadas? Esta acción no se puede deshacer."
+  "confirmBulkDeleteMessage_other": "¿Estás seguro de que quieres eliminar {{count}} entradas seleccionadas? Esta acción no se puede deshacer.",
+  "downloadAsPng": "Descargar como PNG"
 }
