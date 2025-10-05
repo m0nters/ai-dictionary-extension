@@ -2,6 +2,15 @@
 
 A Chrome extension that provides instant translation using Google's Gemini AI when you select text on any webpage.
 
+Screenshots:
+
+<div align="left">
+  <img src="examples\home.png" width="175" />
+  <img src="examples\history.png" width="175" />
+  <img src="examples\history2.png" width="175" />
+  <img src="examples\history-detail.png" width="175" />
+</div>
+
 ## Table of Contents
 
 - [Features](#features)
@@ -18,11 +27,15 @@ A Chrome extension that provides instant translation using Google's Gemini AI wh
 
 - 📱 **Instant Translation**: Select any text and click "dictionary" to get translations
 - 🌍 **Multiple Languages**: Support for Vietnamese, English, Japanese, Korean, Chinese, French, German, and Spanish
-- 🎯 **Smart Detection**: Automatically detects any language
-- 📚 **Dictionary Mode**: For single words, shows pronunciation, meaning, and example sentences just like professional dictionary standards
+- 🎯 **Smart Detection**: Automatically detects any language (or you can choose manually if needed)
+- 📚 **Dictionary Mode**: For single words, shows pronunciation, meanings, synonyms, idioms, phrasal verbs, and example sentences just like professional dictionary standards
 - 💬 **Sentence Translation**: For phrases and sentences, provides clean translations
-- 📖 **Translation History**: Automatically saves translations with search functionality, you can delete or pin any of them as you wish
-- ⚡ **Fast & Lightweight**: Built with React and Vite
+- 🔊 **Text-to-Speech**: Listen to pronunciations with built-in TTS for multiple accents (e.g., UK/US for English)
+- 📖 **Translation History**: Automatically saves translations with advanced search functionality
+- 📌 **Pin Translations**: Pin important translations to keep them at the top
+- 🗑️ **Bulk Operations**: Select and delete multiple history entries at once
+- 📥 **Export as PNG**: Download any translation from history as a high-quality image
+- ⚡ **Performance Metrics**: See how long AI took to generate each translation
 
 ---
 
@@ -49,20 +62,34 @@ npm run build
 ### Basic Translation
 
 1. **Select text** on any webpage
-2. **Click the "dictionary" button** that appears above the selected text
+2. **Click the "dictionary" button** that appears near the selected text
 3. **View the translation** in the popup window
-4. **Change translated language** using the dropdown in the popup header
+   - For single words: See detailed dictionary information with pronunciations, meanings, examples, synonyms, idioms, and phrasal verbs
+   - For phrases/sentences: Get clean, contextual translations
+4. **Listen to pronunciation** by clicking the speaker icon (for supported languages)
+
+### Managing the Extension
+
+1. **Open the extension popup** by clicking the extension icon in Chrome toolbar
+2. **Change app language** using the dropdown (changes UI language everywhere instantly)
+3. **Select target translation language** from the "Translate to" dropdown
+4. **Toggle extension** on/off using the switch at the bottom
 
 ### Using Translation History
 
-1. **Open the extension popup** by clicking the extension icon in Chrome toolbar
-2. **Click the "History" button** to view your recent translations
-3. **Search your history** using the search bar (searches text, translations, and language pairs)
-4. **Click any history entry** to view the full translation details
-5. **Pin entries** by clicking the pin icon next to any translation
-6. **Delete entries** by clicking the trash icon next to any translation
-
-**Note**: The extension automatically saves your last 20 translations locally in your browser.
+1. **Access history** by clicking the "History" button in the extension popup
+2. **Search your history** using the search bar at the top
+   - Search by original text, translations, or language pairs
+   - Use operators like `lang:en`, `to:vi`, or `from:ja` for advanced filtering
+3. **Pin important entries** by clicking the pin icon - pinned items stay at the top
+4. **Select multiple entries**:
+   - Hover over any card to see the selection circle
+   - Click to select/deselect individual entries
+   - Use "Select All" / "Deselect All" buttons
+   - Delete selected entries in bulk
+5. **View full details** by clicking on any history card
+6. **Download as PNG** by clicking the download button in the detail view, the translation is saved locally in your machine.
+7. **Clear all history** using the "Clear All" button (with confirmation)
 
 ---
 
@@ -143,3 +170,9 @@ Update `README.md` at [Supported Languages](#supported-languages) section
 - The AI model takes a while to load responses. We could switch to a lighter model to speed things up, but this might lead to less accurate results in some cases.
 - Since the output is AI-generated, each response is unique, so the results aren’t consistent every time.
 - Generating responses uses tokens, which means if the app goes into production, it won’t—and shouldn’t—be free. The reality is, users will often seek out free alternatives, so the business model for this kind of app isn’t guaranteed to succeed.
+
+---
+
+## License
+
+GPL-3.0 License
