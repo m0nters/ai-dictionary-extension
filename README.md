@@ -5,10 +5,10 @@ A Chrome extension that provides instant translation using Google's Gemini AI wh
 Screenshots:
 
 <div align="left">
-  <img src="examples\home.png" width="175" />
-  <img src="examples\history.png" width="175" />
-  <img src="examples\history2.png" width="175" />
-  <img src="examples\history-detail.png" width="175" />
+  <img src="examples\home.png" width="200" alt="Home Screen" />
+  <img src="examples\history.png" width="200" alt="History Screen" />
+  <img src="examples\history2.png" width="200" alt="History Screen" />
+  <img src="examples\history-detail.png" width="200" alt="History Detail Screen" />
 </div>
 
 ## Table of Contents
