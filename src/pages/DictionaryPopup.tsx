@@ -109,7 +109,7 @@ export function DictionaryPopup() {
     if (contentWrapper) {
       observer.observe(contentWrapper, {
         childList: true,
-        subtree: true,
+        // subtree: true, // this causes a weird bug of playing a speaker when scrolling will update the scroll position of the popup
         attributes: true,
         characterData: true,
       });

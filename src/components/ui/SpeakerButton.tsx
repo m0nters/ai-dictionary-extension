@@ -1,5 +1,4 @@
 import { ttsService } from "@/services";
-import { LoaderCircle } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { RxSpeakerLoud } from "react-icons/rx";
@@ -23,7 +22,6 @@ export function SpeakerButton({
 }) {
   const { t } = useTranslation();
   const [isPlaying, setIsPlaying] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
   const speakSlow = useRef(false);
 
   useEffect(() => {
@@ -37,7 +35,6 @@ export function SpeakerButton({
       setIsPlaying(false);
     } else {
       // If not playing, start speech
-      setIsLoading(true);
       try {
         await ttsService.speak(
           word,
@@ -54,7 +51,6 @@ export function SpeakerButton({
         console.error("TTS error:", error);
         setIsPlaying(false);
       } finally {
-        setIsLoading(false);
         speakSlow.current = !speakSlow.current;
       }
     }
@@ -63,27 +59,14 @@ export function SpeakerButton({
   return (
     <button
       onClick={handleSpeak}
-      disabled={isLoading}
       className={`rounded-full p-2 transition-colors ${
-        isLoading
-          ? "cursor-wait bg-gray-100 text-gray-400"
-          : isPlaying
-            ? `cursor-pointer ${speakingBackgroundColor} ${speakingTextColor}`
-            : `cursor-pointer text-gray-500 ${hoverBackgroundColor} ${hoverTextColor}`
+        isPlaying
+          ? `cursor-pointer ${speakingBackgroundColor} ${speakingTextColor}`
+          : `cursor-pointer text-gray-500 ${hoverBackgroundColor} ${hoverTextColor}`
       } ${className}`}
-      title={
-        isLoading
-          ? t("common:loading")
-          : isPlaying
-            ? t("common:stop")
-            : t("common:speak")
-      }
+      title={isPlaying ? t("common:stop") : t("common:speak")}
     >
-      {isLoading ? (
-        <LoaderCircle size={12} className="animate-spin" />
-      ) : (
-        <RxSpeakerLoud size={12} />
-      )}
+      <RxSpeakerLoud size={12} />
     </button>
   );
 }
