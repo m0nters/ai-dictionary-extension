@@ -465,6 +465,7 @@ export const translateWithGemini = async (
  * When debugging, comment function above and uncomment function below,
  * this is for saving tokens, API calls are not free!
  */
+
 // export const translateWithGemini = async (
 //   // @ts-ignore
 //   text: String,
@@ -788,6 +789,32 @@ export const translateWithGemini = async (
 // }
 // \`\`\`
 //   `;
+
+//   return translation;
+// };
+
+/* ====================================== */
+
+// export const translateWithGemini = async (
+//   // @ts-ignore
+//   text: String,
+//   // @ts-ignore
+//   translatedLangCode: String,
+//   // @ts-ignore
+//   sourceLangCode: String,
+// ): Promise<string> => {
+//   const translation = `
+//   \`\`\`json
+//   {
+//       "main_country_code": "us",
+//       "main_tts_language_code": "en-US",
+//       "source_language_code": "en",
+//       "text": "He has refused for a long time, after such dissolutions, to cause others to be elected; whereby the Legislative powers, incapable of Annihilation, have returned to the People at large for their exercise; the State remaining in the mean time exposed to all the dangers of invasion from without, and convulsions within.\\n\\nHe has endeavoured to prevent the population of these States; for that purpose obstructing the Laws for Naturalization of Foreigners; refusing to pass others to encourage their migrations hither, and raising the conditions of new Appropriations of Lands.",
+//       "translated_language_code": "vi",
+//       "translation": "Ông ta đã từ chối trong một thời gian dài, sau những lần giải tán như vậy, không cho phép bầu cử những người khác; theo đó, các quyền lực Lập pháp, không thể bị xóa bỏ, đã trở về với Toàn thể Dân chúng để họ thực thi; trong khi đó, Nhà nước vẫn phải đối mặt với mọi hiểm nguy từ sự xâm lược từ bên ngoài và những biến động từ bên trong.\\n\\nÔng ta đã cố gắng ngăn chặn sự gia tăng dân số của các Bang này; vì mục đích đó, ông ta đã cản trở các Luật Nhập tịch cho Người nước ngoài; từ chối thông qua các luật khác để khuyến khích họ di cư đến đây, và nâng cao các điều kiện để cấp đất mới."
+//   }
+//   \`\`\`
+// `;
 
 //   return translation;
 // };

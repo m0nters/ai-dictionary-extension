@@ -2,7 +2,7 @@ import { CopyButton, SpeakerButton } from "@/components";
 import { DEFAULT_SOURCE_LANGUAGE_CODE } from "@/constants";
 import { PhraseTranslation } from "@/types";
 import { renderText } from "@/utils";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { SourceLanguageRenderer } from "./SourceLanguageRenderer";
 
 /**
@@ -16,9 +16,33 @@ function CollapsibleTextSection({
   isInitiallyExpanded?: boolean;
 }) {
   const [isExpanded, setIsExpanded] = useState(isInitiallyExpanded);
+  const [isSticky, setIsSticky] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  // Only enable sticky behavior for history detail view (which has scrollable content)
+  // Dictionary popup doesn't scroll internally, so skip sticky logic
+  useEffect(() => {
+    const scrollableParent = containerRef.current?.closest(
+      ".overflow-y-auto",
+    ) as HTMLElement;
+
+    const handleScroll = () => {
+      if (!containerRef.current) return;
+      const containerRect = containerRef.current.getBoundingClientRect();
+      setIsSticky(containerRect.bottom > 200);
+    };
+
+    scrollableParent.addEventListener("scroll", handleScroll);
+
+    handleScroll(); // Initial check
+
+    return () => {
+      scrollableParent.removeEventListener("scroll", handleScroll);
+    };
+  }, [isExpanded]);
 
   return (
-    <div className="mt-2 flex items-start">
+    <div ref={containerRef} className="relative mt-2 flex items-start">
       <button
         onClick={() => setIsExpanded(!isExpanded)}
         className={`cursor-pointer rounded-full bg-blue-400 transition-all duration-300 ease-in-out ${isExpanded ? "mt-1 mr-2 h-6 w-1" : "mt-2 mr-0 h-3 w-3 -translate-x-1"}`}
@@ -32,7 +56,7 @@ function CollapsibleTextSection({
           {renderText(text)}
         </p>
       </div>
-      <CopyButton text={text} />
+      <CopyButton text={text} className={isSticky ? "sticky top-20" : ""} />
     </div>
   );
 }
