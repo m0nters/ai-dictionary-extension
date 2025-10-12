@@ -4,7 +4,6 @@ import {
   DEFAULT_SOURCE_LANGUAGE_CODE,
 } from "@/constants";
 import { HistoryDetailScreen, HistoryScreen, MainScreen } from "@/pages";
-import { checkPrivilegePage } from "@/utils";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
@@ -19,8 +18,6 @@ function App() {
     DEFAULT_LANGUAGE_CODE,
   );
   const [extensionEnabled, setExtensionEnabled] = useState(true);
-  const [saved, setSaved] = useState(false);
-  const [isPrivilegePage, setIsPrivilegePage] = useState(false);
 
   // Load saved settings once at mount
   useEffect(() => {
@@ -58,50 +55,8 @@ function App() {
     );
   }, []);
 
-  // Check if current tab is a privilege page
-  useEffect(() => {
-    chrome.tabs.query({ active: true, currentWindow: true }, async (tabs) => {
-      const activeTab = tabs[0];
-      if (activeTab?.id) {
-        const isRestricted = await checkPrivilegePage(activeTab.id);
-        setIsPrivilegePage(isRestricted);
-      }
-    });
-  }, []);
-
-  const handleChangeAppLanguage = (value: string) => {
-    if (value === appLangCode) return;
-
-    // Update local state immediately for responsive UI
-    setAppLangCode(value);
-
-    // Handle async language change without blocking the dropdown
-    changeLanguage(value)
-      .then(() => {
-        setSaved(true);
-        setTimeout(() => setSaved(false), 5000);
-
-        // Broadcast language change to all content scripts (dictionary popups)
-        chrome.tabs.query({}, (tabs) => {
-          tabs.forEach((tab) => {
-            if (tab.id) {
-              chrome.tabs.sendMessage(tab.id, {
-                type: "LANGUAGE_CHANGED",
-                language: value,
-              });
-            }
-          });
-        });
-      })
-      .catch((error) => {
-        console.error("Failed to change app language:", error);
-        // Revert local state on error
-        setAppLangCode(i18n.language);
-      });
-  };
-
   const handleChangeSourceLanguage = (value: string) => {
-    if (value === sourceLangCode) return;
+    if (value === sourceLangCode) return; // just a double check, we have checked this in MainScreen already
     setSourceLangCode(value);
 
     chrome.storage.sync.set({ sourceLangCode: value }, () => {
@@ -112,8 +67,6 @@ function App() {
         );
         return;
       }
-      setSaved(true);
-      setTimeout(() => setSaved(false), 5000);
     });
   };
 
@@ -129,9 +82,33 @@ function App() {
         );
         return;
       }
-      setSaved(true);
-      setTimeout(() => setSaved(false), 5000);
     });
+  };
+
+  const handleChangeAppLanguage = async (value: string) => {
+    if (value === appLangCode) return;
+
+    // Update local state immediately for responsive UI
+    setAppLangCode(value);
+
+    try {
+      await changeLanguage(value);
+      // Broadcast language change to all content scripts (dictionary popups)
+      chrome.tabs.query({}, (tabs) => {
+        tabs.forEach((tab) => {
+          if (tab.id) {
+            chrome.tabs.sendMessage(tab.id, {
+              type: "LANGUAGE_CHANGED",
+              language: value,
+            });
+          }
+        });
+      });
+    } catch (error) {
+      console.error("Failed to change app language:", error);
+      // Revert local state on error
+      setAppLangCode(i18n.language);
+    }
   };
 
   const handleExtensionToggle = (enabled: boolean) => {
@@ -150,18 +127,15 @@ function App() {
       chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
         const activeTab = tabs[0];
         if (activeTab?.id && activeTab.url) {
-          // Skip special Chrome pages where content scripts can't run
-          if (!isPrivilegePage) {
-            chrome.tabs
-              .sendMessage(activeTab.id, {
-                type: "EXTENSION_TOGGLE",
-                enabled: enabled,
-              })
-              .catch(() => {
-                // Silently handle content script not being available
-                // This is normal for pages where content scripts don't run
-              });
-          }
+          chrome.tabs
+            .sendMessage(activeTab.id, {
+              type: "EXTENSION_TOGGLE",
+              enabled: enabled,
+            })
+            .catch(() => {
+              // Silently handle content script not being available
+              // This is normal for pages where content scripts don't run
+            });
         }
       });
     });
@@ -178,13 +152,11 @@ function App() {
                 appLangCode={appLangCode}
                 sourceLangCode={sourceLangCode}
                 translatedLangCode={translatedLangCode}
-                onChangeAppLanguage={handleChangeAppLanguage}
                 onChangeSourceLanguage={handleChangeSourceLanguage}
                 onChangeTranslatedLanguage={handleChangeTranslatedLanguage}
+                onChangeAppLanguage={handleChangeAppLanguage}
                 extensionEnabled={extensionEnabled}
                 onExtensionToggle={handleExtensionToggle}
-                saved={saved}
-                isPrivilegePage={isPrivilegePage}
               />
             }
           />

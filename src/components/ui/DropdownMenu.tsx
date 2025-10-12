@@ -12,7 +12,6 @@ interface DropdownMenuProps {
   options: DropdownOption[];
   pin?: DropdownOption; // Option to pin at the top
   onChange: (value: string) => void;
-  callback?: () => void;
   placeholder?: string;
   className?: string;
   focusColor?: string;
@@ -25,7 +24,6 @@ export function DropdownMenu({
   options,
   pin,
   onChange,
-  callback,
   placeholder,
   className = "",
   focusColor = "indigo",
@@ -84,9 +82,6 @@ export function DropdownMenu({
 
   const handleOptionClick = (optionValue: string) => {
     onChange(optionValue);
-    if (callback) {
-      callback();
-    }
     setIsOpen(false);
     setSearchTerm(""); // Clear search when option is selected
   };

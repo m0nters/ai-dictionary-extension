@@ -4,6 +4,7 @@ import {
   SUPPORTED_SOURCE_LANGUAGE,
   SUPPORTED_TRANSLATED_LANGUAGE,
 } from "@/constants";
+import { checkPrivilegePage } from "@/utils";
 import {
   AlertTriangle,
   ArrowRight,
@@ -15,7 +16,7 @@ import {
   MousePointer2,
   Settings,
 } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 
@@ -23,30 +24,67 @@ interface MainScreenProps {
   appLangCode: string;
   sourceLangCode: string;
   translatedLangCode: string;
-  onChangeAppLanguage: (value: string) => void;
   onChangeSourceLanguage: (value: string) => void;
   onChangeTranslatedLanguage: (value: string) => void;
+  onChangeAppLanguage: (value: string) => Promise<void>;
   extensionEnabled: boolean;
   onExtensionToggle: (enabled: boolean) => void;
-  saved: boolean;
-  isPrivilegePage?: boolean;
 }
 
 export function MainScreen({
   appLangCode,
   sourceLangCode,
   translatedLangCode,
-  onChangeAppLanguage,
   onChangeSourceLanguage,
   onChangeTranslatedLanguage,
+  onChangeAppLanguage,
   extensionEnabled,
   onExtensionToggle,
-  saved,
-  isPrivilegePage = false,
 }: MainScreenProps) {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const [sectionChanged, setSectionChanged] = useState<string | null>(null);
+  const [isPrivilegePage, setIsPrivilegePage] = useState(false);
+  const [saved1, setSaved1] = useState(false);
+  const [saved2, setSaved2] = useState(false);
+
+  // Check if current tab is a privilege page
+  useEffect(() => {
+    chrome.tabs.query({ active: true, currentWindow: true }, async (tabs) => {
+      const activeTab = tabs[0];
+      if (activeTab?.id) {
+        const isRestricted = await checkPrivilegePage(activeTab.id);
+        setIsPrivilegePage(isRestricted);
+      }
+    });
+  }, []);
+
+  const displaySave1 = () => {
+    setSaved1(true);
+    setTimeout(() => setSaved1(false), 1000);
+  };
+
+  const displaySave2 = () => {
+    setSaved2(true);
+    setTimeout(() => setSaved2(false), 1000);
+  };
+
+  const handleSourceLanguageChange = (langCode: string) => {
+    if (langCode === sourceLangCode) return;
+    onChangeSourceLanguage(langCode);
+    displaySave1();
+  };
+
+  const handleTranslatedLanguageChange = (langCode: string) => {
+    if (langCode === translatedLangCode) return;
+    onChangeTranslatedLanguage(langCode);
+    displaySave1();
+  };
+
+  const handleAppLanguageChange = async (langCode: string) => {
+    if (langCode === appLangCode) return;
+    await onChangeAppLanguage(langCode);
+    displaySave2();
+  };
 
   return (
     <div className="animate-slide-in-right relative h-full w-full overflow-x-hidden overflow-y-auto bg-gradient-to-br from-indigo-50 to-purple-50 select-none">
@@ -102,15 +140,13 @@ export function MainScreen({
 
         {/* Privilege Page Warning */}
         {isPrivilegePage && (
-          <div className="mb-4 rounded-2xl bg-transparent">
-            <div className="flex items-start space-x-2">
-              <div className="flex h-4 w-4 items-center justify-center">
-                <AlertTriangle className="h-4 w-4 translate-y-1 text-orange-600" />
-              </div>
-              <p className="mt-1 text-xs text-orange-700">
-                {t("popup:privilegePageDescription")}
-              </p>
+          <div className="mb-4 flex items-start space-x-2">
+            <div className="flex h-4 w-4 items-center justify-center">
+              <AlertTriangle className="h-4 w-4 text-orange-600" />
             </div>
+            <p className="text-xs text-orange-700">
+              {t("popup:privilegePageDescription")}
+            </p>
           </div>
         )}
 
@@ -153,8 +189,7 @@ export function MainScreen({
                   })),
                 ]}
                 pin={{ value: "auto", label: t("popup:autoDetect") }}
-                onChange={onChangeSourceLanguage}
-                callback={() => setSectionChanged("section1")}
+                onChange={handleSourceLanguageChange}
                 focusColor="blue"
                 canSearch={true}
                 className="w-[125px]"
@@ -170,7 +205,7 @@ export function MainScreen({
               />
             </div>
 
-            {/* Target Language Dropdown */}
+            {/* Translated Language Dropdown */}
             <div className="flex-1">
               <div className="mb-2 translate-x-0.5 text-xs font-medium text-gray-600">
                 {t("popup:to")}
@@ -181,8 +216,7 @@ export function MainScreen({
                   value: lang.code,
                   label: `${t(`languages:${lang.code}`)} (${lang.nativeName})`,
                 }))}
-                onChange={onChangeTranslatedLanguage}
-                callback={() => setSectionChanged("section1")}
+                onChange={handleTranslatedLanguageChange}
                 focusColor="indigo"
                 canSearch={true}
                 className="w-[125px]"
@@ -191,18 +225,16 @@ export function MainScreen({
           </div>
 
           {/* Save indicator*/}
-          {sectionChanged === "section1" && (
-            <div
-              className={`overflow-hidden transition-all duration-300 ease-out ${
-                saved ? "mt-3 max-h-20" : "mt-0 max-h-0"
-              }`}
-            >
-              <div className="animate-fade-in flex items-center space-x-2 text-green-600">
-                <Check className="h-4 w-4" />
-                <span className="text-xs font-medium">{t("popup:saved")}</span>
-              </div>
+          <div
+            className={`overflow-hidden transition-all duration-300 ease-out ${
+              saved1 ? "mt-3 max-h-20" : "mt-0 max-h-0"
+            }`}
+          >
+            <div className="animate-fade-in flex items-center space-x-2 text-green-600">
+              <Check className="h-4 w-4" />
+              <span className="text-xs font-medium">{t("popup:saved")}</span>
             </div>
-          )}
+          </div>
         </div>
 
         {/* App Language Setting */}
@@ -233,26 +265,23 @@ export function MainScreen({
                 value: lang.code,
                 label: lang.nativeName,
               }))}
-              onChange={onChangeAppLanguage}
-              callback={() => setSectionChanged("section2")}
+              onChange={handleAppLanguageChange}
               focusColor="purple"
               sorted={false}
             />
           </div>
 
           {/* Save indicator*/}
-          {sectionChanged === "section2" && (
-            <div
-              className={`overflow-hidden transition-all duration-300 ease-out ${
-                saved ? "mt-3 max-h-20" : "mt-0 max-h-0"
-              }`}
-            >
-              <div className="animate-fade-in flex items-center space-x-2 text-green-600">
-                <Check className="h-4 w-4" />
-                <span className="text-xs font-medium">{t("popup:saved")}</span>
-              </div>
+          <div
+            className={`overflow-hidden transition-all duration-300 ease-out ${
+              saved2 ? "mt-3 max-h-20" : "mt-0 max-h-0"
+            }`}
+          >
+            <div className="animate-fade-in flex items-center space-x-2 text-green-600">
+              <Check className="h-4 w-4" />
+              <span className="text-xs font-medium">{t("popup:saved")}</span>
             </div>
-          )}
+          </div>
         </div>
 
         {/* History Button */}
