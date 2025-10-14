@@ -16,7 +16,6 @@
   "stop": "Stop",
   "dropdown": {
     "search": "Search...",
-    "noOptionsFound": "No options found",
-    "selectOption": "Select..."
+    "noOptionsFound": "No options found"
   }
 }

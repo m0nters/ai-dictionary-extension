@@ -297,7 +297,9 @@ export function HistoryScreen() {
                   isSelected={selectedEntries.size === entries.length}
                 />
                 <span className="text-xs font-medium text-indigo-600">
-                  {t("history:selectAll")}
+                  {selectedEntries.size === entries.length
+                    ? t("history:deselectAll")
+                    : t("history:selectAll")}
                 </span>
               </button>
             </div>

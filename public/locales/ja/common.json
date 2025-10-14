@@ -16,7 +16,6 @@
   "stop": "停止",
   "dropdown": {
     "search": "検索...",
-    "noOptionsFound": "オプションが見つかりません",
-    "selectOption": "選択..."
+    "noOptionsFound": "オプションが見つかりません"
   }
 }

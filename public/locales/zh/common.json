@@ -16,7 +16,6 @@
   "stop": "停止",
   "dropdown": {
     "search": "搜索...",
-    "noOptionsFound": "未找到选项",
-    "selectOption": "选择..."
+    "noOptionsFound": "未找到选项"
   }
 }
