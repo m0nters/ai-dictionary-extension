@@ -363,7 +363,9 @@ export function HistoryScreen() {
         title={
           selectedEntries.size === entries.length
             ? t("history:confirmClearAllTitle")
-            : t("history:confirmBulkDeleteTitle")
+            : t("history:confirmBulkDeleteTitle", {
+                count: selectedEntries.size,
+              })
         }
         message={
           selectedEntries.size === entries.length

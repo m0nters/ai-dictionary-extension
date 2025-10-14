@@ -23,7 +23,8 @@
   "selectAll": "Tout sélectionner",
   "deselectAll": "Tout désélectionner",
   "deleteSelected": "Supprimer la sélection",
-  "confirmBulkDeleteTitle": "Supprimer les entrées sélectionnées",
+  "confirmBulkDeleteTitle_one": "Supprimer l'entrée sélectionnée",
+  "confirmBulkDeleteTitle_other": "Supprimer les entrées sélectionnées",
   "confirmBulkDeleteMessage_one": "Êtes-vous sûr de vouloir supprimer {{count}} entrée sélectionnée ? Cette action est irréversible.",
   "confirmBulkDeleteMessage_other": "Êtes-vous sûr de vouloir supprimer {{count}} entrées sélectionnées ? Cette action est irréversible.",
   "downloadAsPng": "Télécharger en PNG"
