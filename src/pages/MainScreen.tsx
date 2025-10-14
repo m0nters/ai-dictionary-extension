@@ -12,9 +12,11 @@ import {
   ChevronRight,
   Clock,
   Info,
+  KeyRound,
   Languages,
   MousePointer2,
   Settings,
+  Trash2,
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -29,6 +31,7 @@ interface MainScreenProps {
   onChangeAppLanguage: (value: string) => Promise<void>;
   extensionEnabled: boolean;
   onExtensionToggle: (enabled: boolean) => void;
+  onDeleteApiKey: () => void;
 }
 
 export function MainScreen({
@@ -40,12 +43,14 @@ export function MainScreen({
   onChangeAppLanguage,
   extensionEnabled,
   onExtensionToggle,
+  onDeleteApiKey,
 }: MainScreenProps) {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const [isPrivilegePage, setIsPrivilegePage] = useState(false);
   const [saved1, setSaved1] = useState(false);
   const [saved2, setSaved2] = useState(false);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
   // Check if current tab is a privilege page
   useEffect(() => {
@@ -101,9 +106,11 @@ export function MainScreen({
             <img src="/logo/logo.png" alt="App Logo" className="h-16 w-16" />
             <div>
               <h1 className="bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-xl font-bold text-transparent">
-                {t("popup:appTitle")}
+                {t("mainScreen:appTitle")}
               </h1>
-              <p className="text-sm text-gray-500">{t("popup:appSubtitle")}</p>
+              <p className="text-sm text-gray-500">
+                {t("mainScreen:appSubtitle")}
+              </p>
             </div>
           </div>
 
@@ -129,10 +136,10 @@ export function MainScreen({
           <div className="absolute inset-0 z-10 flex items-center justify-center rounded-2xl bg-gray-900/10 backdrop-blur-xs">
             <div className="text-center">
               <div className="mb-1 text-sm font-semibold text-black">
-                {t("popup:extensionDisabled")}
+                {t("mainScreen:extensionDisabled")}
               </div>
               <div className="text-xs text-gray-900">
-                {t("popup:toggleToEnable")}
+                {t("mainScreen:toggleToEnable")}
               </div>
             </div>
           </div>
@@ -145,7 +152,7 @@ export function MainScreen({
               <AlertTriangle className="h-4 w-4 text-orange-600" />
             </div>
             <p className="text-xs text-orange-700">
-              {t("popup:privilegePageDescription")}
+              {t("errors:privilegePageDescription")}
             </p>
           </div>
         )}
@@ -169,7 +176,7 @@ export function MainScreen({
                 !extensionEnabled ? "text-gray-400" : "text-indigo-500"
               }`}
             />
-            <span>{t("popup:translate")}</span>
+            <span>{t("mainScreen:translate")}</span>
           </label>
 
           {/* Source and Target Language Selection */}
@@ -177,18 +184,18 @@ export function MainScreen({
             {/* Source Language Dropdown */}
             <div className="flex-1">
               <div className="mb-2 translate-x-0.5 text-xs font-medium text-gray-600">
-                {t("popup:from")}
+                {t("mainScreen:from")}
               </div>
               <DropdownMenu
                 value={sourceLangCode}
                 options={[
-                  { value: "auto", label: t("popup:autoDetect") },
+                  { value: "auto", label: t("mainScreen:autoDetect") },
                   ...SUPPORTED_SOURCE_LANGUAGE.map((lang) => ({
                     value: lang.code,
                     label: `${t(`languages:${lang.code}`)} (${lang.nativeName})`,
                   })),
                 ]}
-                pin={{ value: "auto", label: t("popup:autoDetect") }}
+                pin={{ value: "auto", label: t("mainScreen:autoDetect") }}
                 onChange={handleSourceLanguageChange}
                 focusColor="indigo"
                 canSearch={true}
@@ -208,7 +215,7 @@ export function MainScreen({
             {/* Translated Language Dropdown */}
             <div className="flex-1">
               <div className="mb-2 translate-x-0.5 text-xs font-medium text-gray-600">
-                {t("popup:to")}
+                {t("mainScreen:to")}
               </div>
               <DropdownMenu
                 value={translatedLangCode}
@@ -232,7 +239,9 @@ export function MainScreen({
           >
             <div className="animate-fade-in flex items-center space-x-2 text-green-600">
               <Check className="h-4 w-4" />
-              <span className="text-xs font-medium">{t("popup:saved")}</span>
+              <span className="text-xs font-medium">
+                {t("mainScreen:saved")}
+              </span>
             </div>
           </div>
         </div>
@@ -256,7 +265,7 @@ export function MainScreen({
                   !extensionEnabled ? "text-gray-400" : "text-purple-500"
                 }`}
               />
-              <span>{t("popup:appLanguage")}</span>
+              <span>{t("mainScreen:appLanguage")}</span>
             </label>
 
             <DropdownMenu
@@ -279,7 +288,9 @@ export function MainScreen({
           >
             <div className="animate-fade-in flex items-center space-x-2 text-green-600">
               <Check className="h-4 w-4" />
-              <span className="text-xs font-medium">{t("popup:saved")}</span>
+              <span className="text-xs font-medium">
+                {t("mainScreen:saved")}
+              </span>
             </div>
           </div>
         </div>
@@ -350,7 +361,7 @@ export function MainScreen({
                 !extensionEnabled ? "text-gray-400" : ""
               }`}
             />
-            <span>{t("common:howToUse")}</span>
+            <span>{t("mainScreen:howToUse")}</span>
           </h3>
           <ul className="space-y-1 text-xs text-gray-600">
             <li className="flex items-start space-x-2">
@@ -359,7 +370,7 @@ export function MainScreen({
                   !extensionEnabled ? "bg-gray-400" : "bg-indigo-400"
                 }`}
               ></span>
-              <span>{t("common:step1")}</span>
+              <span>{t("mainScreen:step1")}</span>
             </li>
             <li className="flex items-start space-x-2">
               <MousePointer2
@@ -367,7 +378,7 @@ export function MainScreen({
                   !extensionEnabled ? "text-gray-400" : "text-purple-400"
                 }`}
               />
-              <span>{t("common:step2")}</span>
+              <span>{t("mainScreen:step2")}</span>
             </li>
             <li className="flex items-start space-x-2">
               <span
@@ -375,9 +386,46 @@ export function MainScreen({
                   !extensionEnabled ? "bg-gray-400" : "bg-indigo-400"
                 }`}
               ></span>
-              <span>{t("common:step3")}</span>
+              <span>{t("mainScreen:step3")}</span>
             </li>
           </ul>
+        </div>
+
+        {/* Delete API Key Section */}
+        <div className="mt-4">
+          {!showDeleteConfirm ? (
+            <button
+              onClick={() => setShowDeleteConfirm(true)}
+              className="flex w-full cursor-pointer items-center justify-center space-x-2 rounded-xl border-2 border-red-200 bg-red-50 p-3 text-sm font-medium text-red-600 transition-all duration-200 hover:border-red-300 hover:bg-red-100"
+            >
+              <KeyRound className="h-4 w-4" />
+              <span>{t("api:deleteApiKey")}</span>
+            </button>
+          ) : (
+            <div className="animate-fade-in rounded-xl border-2 border-red-300 bg-red-50 p-4">
+              <p className="mb-3 text-center text-sm font-semibold text-red-700">
+                {t("api:deleteApiKeyConfirm")}
+              </p>
+              <div className="flex space-x-2">
+                <button
+                  onClick={() => {
+                    onDeleteApiKey();
+                    setShowDeleteConfirm(false);
+                  }}
+                  className="flex flex-1 cursor-pointer items-center justify-center space-x-2 rounded-lg bg-red-600 py-2 text-sm font-semibold text-white transition-all duration-200 hover:bg-red-700"
+                >
+                  <Trash2 className="h-4 w-4" />
+                  <span>{t("api:confirmDelete")}</span>
+                </button>
+                <button
+                  onClick={() => setShowDeleteConfirm(false)}
+                  className="flex-1 cursor-pointer rounded-lg border-2 border-gray-300 bg-white py-2 text-sm font-semibold text-gray-700 transition-all duration-200 hover:bg-gray-50"
+                >
+                  {t("common:cancel")}
+                </button>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>

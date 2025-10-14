@@ -1,7 +1,30 @@
+// IMPORTANT: this file cannot use i18n, if you want to throw an error that needs
+// i18n and display it for user on popup, throw a conventional string and handle
+// it in `useTranslation.ts`
 import { AVAILABLE_LANGUAGES, DEFAULT_SOURCE_LANGUAGE_CODE } from "@/constants";
 
-const API_KEY = import.meta.env.VITE_API_KEY as string;
 export const MAX_WORDS_LIMIT = 250;
+
+/**
+ * Gets the API key from Chrome storage
+ */
+const getApiKey = async (): Promise<string> => {
+  return new Promise((resolve, reject) => {
+    chrome.storage.sync.get(["geminiApiKey"], (data) => {
+      if (chrome.runtime.lastError) {
+        reject(new Error("Failed to get API key from storage."));
+        return;
+      }
+
+      if (!data.geminiApiKey) {
+        reject(new Error("API_KEY_MISSING")); // conventional string
+        return;
+      }
+
+      resolve(data.geminiApiKey);
+    });
+  });
+};
 
 /**
  * Counts the number of words in a text
@@ -418,8 +441,11 @@ export const translateWithGemini = async (
   // Validate text length before translation
   const validation = validateTextLength(text);
   if (!validation.isValid) {
-    throw new Error(`TEXT_TOO_LONG:${validation.wordCount}`);
+    throw new Error(`TEXT_TOO_LONG:${validation.wordCount}`); // conventional string
   }
+
+  // Get API key from storage
+  const API_KEY = await getApiKey();
 
   const prompt = generateTranslationPrompt(
     text,

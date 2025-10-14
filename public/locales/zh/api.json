@@ -1,0 +1,16 @@
+{
+  "apiKeyRequired": "需要API密钥",
+  "apiKeyDescription": "输入您的Gemini API密钥以开始使用扩展程序",
+  "geminiApiKey": "Gemini API密钥",
+  "enterApiKey": "在此输入您的API密钥...",
+  "saveAndContinue": "保存并继续",
+  "howToGetApiKey": "如何获取您的API密钥",
+  "apiKeyStep1": "访问Google AI Studio：https://aistudio.google.com/api-keys",
+  "apiKeyStep2": "使用您的Google账户登录",
+  "apiKeyStep3": "点击“创建API密钥”按钮",
+  "apiKeyStep4": "复制生成的API密钥并粘贴到上方",
+  "apiKeyPrivacy": "您的API密钥存储在本地，永不共享",
+  "deleteApiKey": "删除API密钥",
+  "deleteApiKeyConfirm": "您确定要删除您的API密钥吗？",
+  "confirmDelete": "是，删除"
+}

@@ -1,0 +1,16 @@
+{
+  "apiKeyRequired": "APIキー必要",
+  "apiKeyDescription": "拡張機能を使用するには、Gemini APIキーを入力してください",
+  "geminiApiKey": "Gemini APIキー",
+  "enterApiKey": "ここにAPIキーを入力...",
+  "saveAndContinue": "保存して続行",
+  "howToGetApiKey": "APIキーの取得方法",
+  "apiKeyStep1": "Google AI Studio（https://aistudio.google.com/api-keys）にアクセス",
+  "apiKeyStep2": "Googleアカウントでサインイン",
+  "apiKeyStep3": "「APIキーを作成」ボタンをクリック",
+  "apiKeyStep4": "生成されたAPIキーをコピーして上記に貼り付け",
+  "apiKeyPrivacy": "APIキーはローカルに保存され、共有されることはありません",
+  "deleteApiKey": "APIキーを削除",
+  "deleteApiKeyConfirm": "APIキーを削除しますか？",
+  "confirmDelete": "はい、削除"
+}

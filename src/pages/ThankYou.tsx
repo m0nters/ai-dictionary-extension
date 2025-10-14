@@ -143,7 +143,7 @@ export function ThankYou() {
             </div>
             <div>
               <h3 className="mb-2 text-lg font-semibold text-gray-800">
-                {t("common:howToUse")}
+                {t("thankYou:howToUse")}
               </h3>
               <p className="leading-relaxed text-gray-600">
                 {t("thankYou:usageDescription")}

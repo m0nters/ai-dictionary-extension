@@ -1,14 +1,8 @@
 {
-  "appTitle": "AI词典",
-  "appSubtitle": "快速AI翻译",
-  "translate": "翻译",
-  "from": "从",
-  "to": "到",
-  "autoDetect": "自动",
-  "appLanguage": "应用语言",
-  "sourceLanguage": "源语言",
-  "saved": "已保存！",
-  "extensionDisabled": "扩展已禁用",
-  "toggleToEnable": "使用上面的开关启用",
-  "privilegePageDescription": "无权翻译此页面（可能原因：新标签页或浏览器特权页面等）"
+  "loadingTip": "该词有多种含义或内容量较大，因此人工智能可能需要额外时间来生成彻底的翻译。",
+  "thoughtFor": "思考了{{time}}s",
+  "noTranslationAvailable": "无可用翻译",
+  "selectTextToTranslate": "选择页面上的文本进行翻译",
+  "sourceLanguage": "源语言：",
+  "autoDetect": "自动"
 }

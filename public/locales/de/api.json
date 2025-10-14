@@ -1,0 +1,16 @@
+{
+  "apiKeyRequired": "API-Schlüssel erforderlich",
+  "apiKeyDescription": "Geben Sie Ihren Gemini-API-Schlüssel ein, um die Erweiterung zu nutzen",
+  "geminiApiKey": "Gemini-API-Schlüssel",
+  "enterApiKey": "Geben Sie hier Ihren API-Schlüssel ein...",
+  "saveAndContinue": "Speichern & Fortfahren",
+  "howToGetApiKey": "So erhalten Sie Ihren API-Schlüssel",
+  "apiKeyStep1": "Besuchen Sie Google AI Studio unter https://aistudio.google.com/api-keys",
+  "apiKeyStep2": "Melden Sie sich mit Ihrem Google-Konto an",
+  "apiKeyStep3": "Klicken Sie auf die Schaltfläche 'API-Schlüssel erstellen'",
+  "apiKeyStep4": "Kopieren Sie den generierten API-Schlüssel und fügen Sie ihn oben ein",
+  "apiKeyPrivacy": "Ihr API-Schlüssel wird lokal gespeichert und niemals weitergegeben",
+  "deleteApiKey": "API-Schlüssel löschen",
+  "deleteApiKeyConfirm": "Sind Sie sicher, dass Sie Ihren API-Schlüssel löschen möchten?",
+  "confirmDelete": "Ja, löschen"
+}

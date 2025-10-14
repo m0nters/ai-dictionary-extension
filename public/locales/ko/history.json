@@ -16,12 +16,12 @@
   "storageUsage": "저장소 사용량",
   "entriesCount": "{{count}}개 항목",
   "selectEntry": "항목 선택",
-  "deselectEntry": "선택 취소",
+  "deselectEntry": "항목 선택 해제",
   "selectedCount": "{{count}}개 선택됨",
   "selectAll": "모두 선택",
   "deselectAll": "모두 선택 해제",
   "deleteSelected": "선택 항목 삭제",
-  "confirmBulkDeleteTitle": "선택 항목 삭제",
-  "confirmBulkDeleteMessage": "선택한 {{count}}개 항목을 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.",
+  "confirmBulkDeleteTitle": "선택한 항목 삭제",
+  "confirmBulkDeleteMessage": "{{count}}개 선택한 항목을 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.",
   "downloadAsPng": "PNG로 다운로드"
 }

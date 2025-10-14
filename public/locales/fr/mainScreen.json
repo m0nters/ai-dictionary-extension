@@ -1,0 +1,16 @@
+{
+  "appTitle": "Dictionnaire IA",
+  "appSubtitle": "Traduction rapide par IA",
+  "translate": "Traduire",
+  "from": "De",
+  "to": "À",
+  "autoDetect": "Automatique",
+  "appLanguage": "Langue de l'application",
+  "saved": "Enregistré !",
+  "extensionDisabled": "Extension désactivée",
+  "toggleToEnable": "Utilisez le commutateur ci-dessus pour activer",
+  "howToUse": "Comment utiliser",
+  "step1": "Surligner du texte sur les pages web",
+  "step2": "Cliquer sur le bouton « dictionnaire » qui apparaît",
+  "step3": "Voir la traduction détaillée avec la prononciation"
+}

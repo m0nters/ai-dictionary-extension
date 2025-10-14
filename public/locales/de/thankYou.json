@@ -1,6 +1,6 @@
 {
-  "title": "Dank!",
-  "subtitle": "Vielen Dank für die Installation des AI Dictionary! Jetzt können Sie intelligente Übersetzungen erleben.",
+  "title": "Vielen Dank!",
+  "subtitle": "Vielen Dank für die Installation des KI-Wörterbuchs! Sie sind bereit für intelligente Übersetzungen.",
   "featuresTitle": "Hauptfunktionen",
   "features": {
     "aiTranslation": {
@@ -8,8 +8,8 @@
       "description": "Übersetzen Sie Wörter, Phrasen und Sätze mit intelligenter KI"
     },
     "multiLanguage": {
-      "title": "8 Sprachen Unterstützung",
-      "description": "Unterstützung für 8 Oberflächensprachen"
+      "title": "Unterstützung für 8 Sprachen",
+      "description": "Unterstützung für 8 Benutzeroberflächensprachen"
     },
     "professional": {
       "title": "Professionelles Wörterbuch",
@@ -17,9 +17,10 @@
     },
     "everywhere": {
       "title": "Funktioniert überall",
-      "description": "Funktioniert auf jeder Webseite"
+      "description": "Funktioniert auf allen Websites"
     }
   },
-  "usageDescription": "Um zu beginnen, markieren Sie einfach ein beliebiges Wort auf einer Webseite und klicken Sie auf die erscheinende Wörterbuch-Schaltfläche!",
+  "howToUse": "So wird’s gemacht",
+  "usageDescription": "Um zu beginnen, markieren Sie einfach ein Wort auf einer Webseite und klicken Sie auf die erscheinende Schaltfläche „Wörterbuch“!",
   "author": "Autor:"
 }

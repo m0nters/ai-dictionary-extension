@@ -4,4 +4,5 @@ export * from "./CopyButton";
 export * from "./DropdownMenu";
 export * from "./SelectionCheckbox";
 export * from "./SpeakerButton";
+export * from "./TextWithLinks";
 export * from "./ToggleSwitch";

@@ -1,0 +1,16 @@
+{
+  "appTitle": "AI词典",
+  "appSubtitle": "快速AI翻译",
+  "translate": "翻译",
+  "from": "从",
+  "to": "到",
+  "autoDetect": "自动",
+  "appLanguage": "应用语言",
+  "saved": "已保存！",
+  "extensionDisabled": "扩展程序已禁用",
+  "toggleToEnable": "使用上方开关启用",
+  "howToUse": "使用方法",
+  "step1": "在网页上高亮显示文本",
+  "step2": "点击出现的“词典”按钮",
+  "step3": "查看带发音的详细翻译"
+}

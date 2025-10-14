@@ -1,0 +1,16 @@
+{
+  "apiKeyRequired": "API Key Required",
+  "apiKeyDescription": "Enter your Gemini API key to start using the extension",
+  "geminiApiKey": "Gemini API Key",
+  "enterApiKey": "Enter your API key here...",
+  "saveAndContinue": "Save & Continue",
+  "howToGetApiKey": "How to Get Your API Key",
+  "apiKeyStep1": "Visit Google AI Studio at https://aistudio.google.com/api-keys",
+  "apiKeyStep2": "Sign in with your Google account",
+  "apiKeyStep3": "Click 'Create API Key' button",
+  "apiKeyStep4": "Copy the generated API key and paste it above",
+  "apiKeyPrivacy": "Your API key is stored locally and never shared",
+  "deleteApiKey": "Delete API Key",
+  "deleteApiKeyConfirm": "Are you sure you want to delete your API key?",
+  "confirmDelete": "Yes, Delete"
+}

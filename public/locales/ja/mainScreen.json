@@ -1,0 +1,16 @@
+{
+  "appTitle": "AI辞書",
+  "appSubtitle": "高速AI翻訳",
+  "translate": "翻訳する",
+  "from": "から",
+  "to": "へ",
+  "autoDetect": "自動",
+  "appLanguage": "アプリの言語",
+  "saved": "保存しました！",
+  "extensionDisabled": "拡張機能が無効です",
+  "toggleToEnable": "上記のトグルを使用して有効にしてください",
+  "howToUse": "使い方",
+  "step1": "ウェブページ上のテキストをハイライト",
+  "step2": "表示される「辞書」ボタンをクリック",
+  "step3": "発音付きの詳細な翻訳を表示"
+}

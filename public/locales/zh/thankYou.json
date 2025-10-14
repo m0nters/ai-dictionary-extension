@@ -1,25 +1,26 @@
 {
-  "title": "谢谢!",
-  "subtitle": "感谢您安装AI词典！您已准备好体验智能查词。",
-  "featuresTitle": "突出功能",
+  "title": "谢谢！",
+  "subtitle": "感谢您安装AI词典！您已准备好体验智能翻译。",
+  "featuresTitle": "主要功能",
   "features": {
     "aiTranslation": {
-      "title": "AI翻译",
+      "title": "AI驱动的翻译",
       "description": "使用智能AI翻译单词、短语和句子"
     },
     "multiLanguage": {
-      "title": "8种语言",
+      "title": "支持8种语言",
       "description": "支持8种界面语言"
     },
     "professional": {
       "title": "专业词典",
-      "description": "专业发音和定义"
+      "description": "专业的发音和定义"
     },
     "everywhere": {
       "title": "随处可用",
-      "description": "在任何网页上都能工作"
+      "description": "在所有网站上均可使用"
     }
   },
-  "usageDescription": "要开始使用，只需在任何网页上高亮显示任何单词，然后点击出现的\"词典\"按钮！",
+  "howToUse": "使用方法",
+  "usageDescription": "要开始使用，只需在网页上高亮显示任意单词，然后点击出现的“词典”按钮！",
   "author": "作者："
 }

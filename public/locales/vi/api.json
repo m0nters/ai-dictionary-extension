@@ -1,0 +1,16 @@
+{
+  "apiKeyRequired": "Yêu cầu khóa API",
+  "apiKeyDescription": "Nhập khóa API Gemini của bạn để bắt đầu sử dụng tiện ích mở rộng",
+  "geminiApiKey": "Khóa API Gemini",
+  "enterApiKey": "Nhập khóa API của bạn tại đây...",
+  "saveAndContinue": "Lưu & Tiếp tục",
+  "howToGetApiKey": "Cách lấy khóa API của bạn",
+  "apiKeyStep1": "Truy cập Google AI Studio tại https://aistudio.google.com/api-keys",
+  "apiKeyStep2": "Đăng nhập bằng tài khoản Google của bạn",
+  "apiKeyStep3": "Nhấp vào nút 'Tạo khóa API'",
+  "apiKeyStep4": "Sao chép khóa API được tạo và dán vào phía trên",
+  "apiKeyPrivacy": "Khóa API của bạn được lưu trữ cục bộ và không bao giờ được chia sẻ",
+  "deleteApiKey": "Xóa khóa API",
+  "deleteApiKeyConfirm": "Bạn có chắc chắn muốn xóa khóa API của mình không?",
+  "confirmDelete": "Có, xóa"
+}

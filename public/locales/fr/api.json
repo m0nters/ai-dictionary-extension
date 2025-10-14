@@ -1,0 +1,16 @@
+{
+  "apiKeyRequired": "Clé API requise",
+  "apiKeyDescription": "Entrez votre clé API Gemini pour commencer à utiliser l'extension",
+  "geminiApiKey": "Clé API Gemini",
+  "enterApiKey": "Entrez votre clé API ici...",
+  "saveAndContinue": "Enregistrer et continuer",
+  "howToGetApiKey": "Comment obtenir votre clé API",
+  "apiKeyStep1": "Visitez Google AI Studio à https://aistudio.google.com/api-keys",
+  "apiKeyStep2": "Connectez-vous avec votre compte Google",
+  "apiKeyStep3": "Cliquez sur le bouton 'Créer une clé API'",
+  "apiKeyStep4": "Copiez la clé API générée et collez-la ci-dessus",
+  "apiKeyPrivacy": "Votre clé API est stockée localement et jamais partagée",
+  "deleteApiKey": "Supprimer la clé API",
+  "deleteApiKeyConfirm": "Êtes-vous sûr de vouloir supprimer votre clé API ?",
+  "confirmDelete": "Oui, supprimer"
+}

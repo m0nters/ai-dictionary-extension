@@ -1,0 +1,6 @@
+{
+  "textTooLong": "Văn bản quá dài để dịch. Cho phép tối đa {{maxWords}} từ, nhưng đã chọn {{currentWords}} từ.",
+  "privilegePageDescription": "Không có quyền dịch trang này (các lý do có thể: tab mới hoặc trang đặc quyền của trình duyệt, v.v.)",
+  "apiKeyInvalid": "Khóa API không hợp lệ. Vui lòng kiểm tra khóa của bạn.",
+  "apiKeyMissing": "Không tìm thấy khóa API. Vui lòng cấu hình khóa API của bạn trong cửa sổ bật lên của tiện ích mở rộng."
+}

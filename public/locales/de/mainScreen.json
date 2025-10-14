@@ -1,0 +1,16 @@
+{
+  "appTitle": "KI-Wörterbuch",
+  "appSubtitle": "Schnelle KI-Übersetzung",
+  "translate": "Übersetzen",
+  "from": "Von",
+  "to": "Nach",
+  "autoDetect": "Automatisch",
+  "appLanguage": "App-Sprache",
+  "saved": "Gespeichert!",
+  "extensionDisabled": "Erweiterung deaktiviert",
+  "toggleToEnable": "Verwenden Sie den Schalter oben, um zu aktivieren",
+  "howToUse": "So wird’s gemacht",
+  "step1": "Text auf Webseiten markieren",
+  "step2": "Klicken Sie auf die Schaltfläche „Wörterbuch“, die erscheint",
+  "step3": "Detaillierte Übersetzung mit Aussprache anzeigen"
+}

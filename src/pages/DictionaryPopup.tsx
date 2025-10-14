@@ -144,7 +144,7 @@ export function DictionaryPopup() {
         {/* Show final loading time after translation completes */}
         {!result.loading && finalLoadingTime !== null && (
           <div className="text-xs text-gray-400">
-            {t("common:thoughtFor", { time: finalLoadingTime.toFixed(1) })}
+            {t("popup:thoughtFor", { time: finalLoadingTime.toFixed(1) })}
           </div>
         )}
         <div className="flex-1"></div>
@@ -179,7 +179,7 @@ export function DictionaryPopup() {
               </div>
               {showLoadingTip && (
                 <p className="animate-fade-in mt-4 max-w-xs text-center text-xs text-gray-400">
-                  {t("common:loadingTip")}
+                  {t("popup:loadingTip")}
                 </p>
               )}
             </div>
@@ -213,13 +213,13 @@ export function DictionaryPopup() {
             !result.translation &&
             result.text && (
               <p className="py-8 text-center text-sm text-gray-400">
-                {t("common:noTranslationAvailable")}
+                {t("popup:noTranslationAvailable")}
               </p>
             )}
 
           {!result.text && (
             <p className="py-8 text-center text-sm text-gray-400">
-              {t("common:selectTextToTranslate")}
+              {t("popup:selectTextToTranslate")}
             </p>
           )}
         </div>

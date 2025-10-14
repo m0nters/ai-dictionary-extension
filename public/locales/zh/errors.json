@@ -1,0 +1,6 @@
+{
+  "textTooLong": "文本太长无法翻译。最多允许{{maxWords}}个字，但选择了{{currentWords}}个字。",
+  "privilegePageDescription": "无权翻译此页面（可能原因：新标签页或浏览器特权页面等）",
+  "apiKeyInvalid": "API密钥无效。请检查您的密钥。",
+  "apiKeyMissing": "未找到API密钥。请在扩展程序弹出窗口中配置您的API密钥。"
+}

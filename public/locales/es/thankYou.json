@@ -1,7 +1,7 @@
 {
   "title": "¡Gracias!",
-  "subtitle": "¡Gracias por instalar Diccionario IA! Estás listo para experimentar la traducción inteligente.",
-  "featuresTitle": "Características clave",
+  "subtitle": "Gracias por instalar el Diccionario de IA. ¡Estás listo para experimentar traducciones inteligentes!",
+  "featuresTitle": "Características principales",
   "features": {
     "aiTranslation": {
       "title": "Traducción con IA",
@@ -20,6 +20,7 @@
       "description": "Funciona en todos los sitios web"
     }
   },
-  "usageDescription": "Para comenzar, simplemente resalta cualquier palabra en una página web y haz clic en el botón de diccionario que aparece!",
+  "howToUse": "Cómo usar",
+  "usageDescription": "Para comenzar, simplemente resalta cualquier palabra en una página web y haz clic en el botón de \"diccionario\" que aparece.",
   "author": "Autor:"
 }

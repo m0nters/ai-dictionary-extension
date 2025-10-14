@@ -16,12 +16,12 @@
   "storageUsage": "ストレージ使用量",
   "entriesCount": "{{count}}件のエントリ",
   "selectEntry": "エントリを選択",
-  "deselectEntry": "選択を解除",
-  "selectedCount": "{{count}}件選択中",
+  "deselectEntry": "エントリの選択を解除",
+  "selectedCount": "{{count}}件選択済み",
   "selectAll": "すべて選択",
-  "deselectAll": "すべて解除",
-  "deleteSelected": "選択した項目を削除",
+  "deselectAll": "すべて選択解除",
+  "deleteSelected": "選択したものを削除",
   "confirmBulkDeleteTitle": "選択したエントリを削除",
-  "confirmBulkDeleteMessage": "選択した{{count}}件のエントリを削除しますか？この操作は元に戻せません。",
+  "confirmBulkDeleteMessage": "{{count}}件の選択したエントリを削除しますか？この操作は元に戻せません。",
   "downloadAsPng": "PNGとしてダウンロード"
 }

@@ -3,7 +3,12 @@ import {
   DEFAULT_LANGUAGE_CODE,
   DEFAULT_SOURCE_LANGUAGE_CODE,
 } from "@/constants";
-import { HistoryDetailScreen, HistoryScreen, MainScreen } from "@/pages";
+import {
+  ApiKeyScreen,
+  HistoryDetailScreen,
+  HistoryScreen,
+  MainScreen,
+} from "@/pages";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
@@ -18,6 +23,7 @@ function App() {
     DEFAULT_LANGUAGE_CODE,
   );
   const [extensionEnabled, setExtensionEnabled] = useState(true);
+  const [apiKey, setApiKey] = useState<string | null>(null);
 
   // Load saved settings once at mount
   useEffect(() => {
@@ -27,6 +33,7 @@ function App() {
         "appLangCode",
         "sourceLangCode",
         "extensionEnabled",
+        "geminiApiKey",
       ],
       (data) => {
         if (
@@ -50,6 +57,10 @@ function App() {
 
         if (typeof data.extensionEnabled === "boolean") {
           setExtensionEnabled(data.extensionEnabled);
+        }
+
+        if (data.geminiApiKey) {
+          setApiKey(data.geminiApiKey);
         }
       },
     );
@@ -141,6 +152,47 @@ function App() {
     });
   };
 
+  const handleApiKeySubmit = (newApiKey: string) => {
+    setApiKey(newApiKey);
+
+    // Save to chrome storage
+    chrome.storage.sync.set({ geminiApiKey: newApiKey }, () => {
+      if (chrome.runtime.lastError) {
+        console.error(
+          "Failed to save API key to storage:",
+          chrome.runtime.lastError,
+        );
+      }
+    });
+  };
+
+  const handleDeleteApiKey = () => {
+    setApiKey(null);
+
+    // Remove from chrome storage
+    chrome.storage.sync.remove("geminiApiKey", () => {
+      if (chrome.runtime.lastError) {
+        console.error(
+          "Failed to delete API key from storage:",
+          chrome.runtime.lastError,
+        );
+      }
+    });
+  };
+
+  // Show API key screen if no API key is set
+  if (!apiKey) {
+    return (
+      <div className="relative h-[574px] w-100 overflow-hidden">
+        <ApiKeyScreen
+          onApiKeySubmit={handleApiKeySubmit}
+          appLangCode={appLangCode}
+          onChangeAppLanguage={handleChangeAppLanguage}
+        />
+      </div>
+    );
+  }
+
   return (
     <MemoryRouter>
       <div className="relative h-[574px] w-100 overflow-hidden">
@@ -157,6 +209,7 @@ function App() {
                 onChangeAppLanguage={handleChangeAppLanguage}
                 extensionEnabled={extensionEnabled}
                 onExtensionToggle={handleExtensionToggle}
+                onDeleteApiKey={handleDeleteApiKey}
               />
             }
           />

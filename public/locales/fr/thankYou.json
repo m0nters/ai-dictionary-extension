@@ -1,15 +1,15 @@
 {
-  "title": "Remercier!",
-  "subtitle": "Merci d'avoir installé AI Dictionary ! Vous êtes maintenant prêt à découvrir la traduction intelligente.",
+  "title": "Merci !",
+  "subtitle": "Merci d'avoir installé le Dictionnaire IA ! Vous êtes prêt à découvrir des traductions intelligentes.",
   "featuresTitle": "Fonctionnalités principales",
   "features": {
     "aiTranslation": {
-      "title": "Traduction IA",
-      "description": "Traduisez des mots, phrases et phrases avec une IA intelligente"
+      "title": "Traduction alimentée par IA",
+      "description": "Traduisez des mots, des phrases et des sentences avec une IA intelligente"
     },
     "multiLanguage": {
       "title": "Support de 8 langues",
-      "description": "Support de 8 langues d'interface"
+      "description": "Support pour 8 langues d'interface"
     },
     "professional": {
       "title": "Dictionnaire professionnel",
@@ -17,9 +17,10 @@
     },
     "everywhere": {
       "title": "Fonctionne partout",
-      "description": "Fonctionne sur toutes les pages web"
+      "description": "Fonctionne sur tous les sites web"
     }
   },
-  "usageDescription": "Pour commencer, surlignez simplement n'importe quel mot sur une page web et cliquez sur le bouton dictionnaire qui apparaît !",
+  "howToUse": "Comment utiliser",
+  "usageDescription": "Pour commencer, il suffit de surligner un mot sur une page web et de cliquer sur le bouton « dictionnaire » qui apparaît !",
   "author": "Auteur :"
 }

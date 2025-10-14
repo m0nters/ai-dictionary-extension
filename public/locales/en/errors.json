@@ -1,0 +1,6 @@
+{
+  "textTooLong": "Text is too long for translation. Maximum {{maxWords}} words allowed, but {{currentWords}} words were selected.",
+  "privilegePageDescription": "No permission to translate this page (possible reasons: new tab or browser privilege pages, etc.)",
+  "apiKeyInvalid": "API key invalid. Please check your key.",
+  "apiKeyMissing": "API key not found. Please configure your API key in the extension popup."
+}

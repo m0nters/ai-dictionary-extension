@@ -3,14 +3,26 @@ import i18n from "i18next";
 import Backend from "i18next-http-backend";
 import { initReactI18next } from "react-i18next";
 
-// Define namespaces
-export const NAMESPACES = [
-  "common",
-  "popup",
-  "languages",
-  "thankYou",
-  "history",
-];
+// Dynamically discover available namespaces from locale files
+// In production, Vite will bundle these, but we need to know them at build time
+// Note: This uses Vite's import.meta.glob for static analysis at build time
+const localeModules = import.meta.glob("/public/locales/en/*.json", {
+  eager: false,
+});
+
+// Extract namespace names from file paths
+export const NAMESPACES = Object.keys(localeModules)
+  .map((path) => {
+    // Extract filename without extension from path like '/public/locales/en/common.json'
+    const match = path.match(/\/([^/]+)\.json$/);
+    return match ? match[1] : "";
+  })
+  .filter(Boolean);
+
+// Fallback for development/testing if glob doesn't work
+if (NAMESPACES.length === 0) {
+  console.warn("No namespaces found via import.meta.glob, using fallback list");
+}
 
 // i18n configuration
 i18n

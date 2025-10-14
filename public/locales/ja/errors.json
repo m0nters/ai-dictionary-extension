@@ -1,0 +1,6 @@
+{
+  "textTooLong": "テキストが長すぎて翻訳できません。最大{{maxWords}}語まで許可されていますが、{{currentWords}}語が選択されました。",
+  "privilegePageDescription": "このページを翻訳する権限がありません（理由の可能性：新しいタブやブラウザの特権ページなど）",
+  "apiKeyInvalid": "APIキーが無効です。キーを確認してください。",
+  "apiKeyMissing": "APIキーが見つかりません。拡張機能のポップアップでAPIキーを設定してください。"
+}

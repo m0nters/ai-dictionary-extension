@@ -1,0 +1,16 @@
+{
+  "apiKeyRequired": "API 키 필요",
+  "apiKeyDescription": "확장 프로그램을 사용하려면 Gemini API 키를 입력하세요",
+  "geminiApiKey": "Gemini API 키",
+  "enterApiKey": "여기에 API 키를 입력하세요...",
+  "saveAndContinue": "저장 및 계속",
+  "howToGetApiKey": "API 키를 얻는 방법",
+  "apiKeyStep1": "https://aistudio.google.com/apikey에서 Google AI Studio를 방문",
+  "apiKeyStep2": "Google 계정으로 로그인",
+  "apiKeyStep3": "'API 키 생성' 버튼을 클릭",
+  "apiKeyStep4": "생성된 API 키를 복사하여 위에 붙여넣기",
+  "apiKeyPrivacy": "API 키는 로컬에 저장되며 절대 공유되지 않습니다",
+  "deleteApiKey": "API 키 삭제",
+  "deleteApiKeyConfirm": "API 키를 삭제하시겠습니까?",
+  "confirmDelete": "예, 삭제"
+}

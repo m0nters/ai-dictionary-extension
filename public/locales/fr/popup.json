@@ -1,14 +1,8 @@
 {
-  "appTitle": "Dictionnaire IA",
-  "appSubtitle": "Traduction IA rapide",
-  "translate": "Traduire",
-  "from": "De",
-  "to": "À",
-  "autoDetect": "Automatique",
-  "appLanguage": "Langue de l'app",
-  "sourceLanguage": "Langue source",
-  "saved": "Sauvegardé !",
-  "extensionDisabled": "Extension Désactivée",
-  "toggleToEnable": "Utilisez le commutateur ci-dessus pour activer",
-  "privilegePageDescription": "Aucune autorisation pour traduire cette page (raisons possibles : nouvel onglet ou pages privilégiées du navigateur, etc.)"
+  "loadingTip": "Le mot a plusieurs significations ou il y a une grande quantité de contenu, donc l'IA peut nécessiter du temps supplémentaire pour produire une traduction complète.",
+  "thoughtFor": "Réfléchi pendant {{time}}s",
+  "noTranslationAvailable": "Aucune traduction disponible",
+  "selectTextToTranslate": "Sélectionner du texte sur la page pour traduire",
+  "sourceLanguage": "Langue source :",
+  "autoDetect": "Automatique"
 }

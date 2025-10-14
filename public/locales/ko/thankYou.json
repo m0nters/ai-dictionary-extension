@@ -1,11 +1,11 @@
 {
-  "title": "감사하다!",
-  "subtitle": "AI 사전을 설치해 주셔서 감사합니다! 이제 지능형 번역을 경험하실 준비가 되었습니다.",
+  "title": "감사합니다!",
+  "subtitle": "AI 사전을 설치해 주셔서 감사합니다! 스마트 번역을 경험할 준비가 되었습니다.",
   "featuresTitle": "주요 기능",
   "features": {
     "aiTranslation": {
       "title": "AI 기반 번역",
-      "description": "스마트 AI로 단어, 구문, 문장을 번역"
+      "description": "스마트 AI로 단어, 구문, 문장 번역"
     },
     "multiLanguage": {
       "title": "8개 언어 지원",
@@ -17,9 +17,10 @@
     },
     "everywhere": {
       "title": "어디서나 작동",
-      "description": "모든 웹페이지에서 작동"
+      "description": "모든 웹사이트에서 작동"
     }
   },
-  "usageDescription": "시작하려면 웹페이지의 아무 단어나 강조 표시하고 나타나는 사전 버튼을 클릭하세요!",
-  "author": "작성자："
+  "howToUse": "사용 방법",
+  "usageDescription": "시작하려면 웹페이지에서 원하는 단어를 강조 표시하고 나타나는 '사전' 버튼을 클릭하세요!",
+  "author": "작성자:"
 }

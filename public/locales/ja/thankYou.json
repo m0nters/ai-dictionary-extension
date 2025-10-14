@@ -1,11 +1,11 @@
 {
-  "title": "感謝！",
-  "subtitle": "AI辞書をインストールしていただきありがとうございます。これで、インテリジェントな翻訳を体験していただけます。",
+  "title": "ありがとう！",
+  "subtitle": "AI辞書をインストールしてくれてありがとう！スマートな翻訳を体験する準備ができました。",
   "featuresTitle": "主な機能",
   "features": {
     "aiTranslation": {
-      "title": "AI搭載翻訳",
-      "description": "スマートAIで単語、フレーズ、文章を翻訳"
+      "title": "AIによる翻訳",
+      "description": "スマートなAIで単語、フレーズ、文を翻訳"
     },
     "multiLanguage": {
       "title": "8言語サポート",
@@ -16,10 +16,11 @@
       "description": "プロフェッショナルな発音と定義"
     },
     "everywhere": {
-      "title": "どこでも動作",
-      "description": "あらゆるウェブページで動作"
+      "title": "どこでも機能",
+      "description": "すべてのウェブサイトで動作"
     }
   },
-  "usageDescription": "開始するには、ウェブページ上の任意の単語をハイライトして、表示される辞書ボタンをクリックしてください！",
+  "howToUse": "使い方",
+  "usageDescription": "始めるには、ウェブページ上の任意の単語をハイライトして、表示される「辞書」ボタンをクリックしてください！",
   "author": "作者："
 }

@@ -1,14 +1,8 @@
 {
-  "appTitle": "AI辞書",
-  "appSubtitle": "高速AI翻訳",
-  "translate": "翻訳する",
-  "from": "から",
-  "to": "へ",
-  "autoDetect": "自動",
-  "appLanguage": "アプリ言語",
-  "sourceLanguage": "元の言語",
-  "saved": "保存しました！",
-  "extensionDisabled": "拡張機能が無効になっています",
-  "toggleToEnable": "上のトグルを使用して有効にします",
-  "privilegePageDescription": "このページを翻訳する権限がありません（理由の可能性：新しいタブやブラウザの特権ページなど）"
+  "loadingTip": "この単語には複数の意味があるか、コンテンツの量が多いため、AIが徹底的な翻訳を作成するのに追加の時間が必要になる場合があります。",
+  "thoughtFor": "{{time}}s考えました",
+  "noTranslationAvailable": "翻訳がありません",
+  "selectTextToTranslate": "ページ上のテキストを選択して翻訳",
+  "sourceLanguage": "元の言語：",
+  "autoDetect": "自動"
 }

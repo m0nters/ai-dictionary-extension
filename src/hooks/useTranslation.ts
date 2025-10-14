@@ -102,10 +102,12 @@ export const useTranslation = () => {
         // Handle word count limit error
         if (error.message.startsWith("TEXT_TOO_LONG:")) {
           const wordCount = error.message.split(":")[1];
-          errorMessage = t("common:textTooLong", {
+          errorMessage = t("errors:textTooLong", {
             maxWords: MAX_WORDS_LIMIT,
             currentWords: wordCount,
           });
+        } else if (error.message === "API_KEY_MISSING") {
+          errorMessage = t("errors:apiKeyMissing");
         } else {
           errorMessage = error.message;
         }

@@ -1,0 +1,16 @@
+{
+  "appTitle": "AI Dictionary",
+  "appSubtitle": "Fast AI Translation",
+  "translate": "Translate",
+  "from": "From",
+  "to": "To",
+  "autoDetect": "Auto",
+  "appLanguage": "App Language",
+  "saved": "Saved!",
+  "extensionDisabled": "Extension Disabled",
+  "toggleToEnable": "Use the toggle above to enable",
+  "howToUse": "How to use",
+  "step1": "Highlight text on web pages",
+  "step2": "Click the \"dictionary\" button that appears",
+  "step3": "View detailed translation with pronunciation"
+}

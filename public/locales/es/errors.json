@@ -1,0 +1,6 @@
+{
+  "textTooLong": "El texto es demasiado largo para traducir. Se permite un máximo de {{maxWords}} palabras, pero se seleccionaron {{currentWords}} palabras.",
+  "privilegePageDescription": "Sin permiso para traducir esta página (razones posibles: nueva pestaña o páginas privilegiadas del navegador, etc.)",
+  "apiKeyInvalid": "Clave de API no válida. Por favor, verifique su clave.",
+  "apiKeyMissing": "Clave de API no encontrada. Por favor, configure su clave de API en el popup de la extensión."
+}

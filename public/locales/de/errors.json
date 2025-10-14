@@ -1,0 +1,6 @@
+{
+  "textTooLong": "Text ist zu lang für die Übersetzung. Maximal {{maxWords}} Wörter erlaubt, aber {{currentWords}} Wörter wurden ausgewählt.",
+  "privilegePageDescription": "Keine Berechtigung zum Übersetzen dieser Seite (mögliche Gründe: neuer Tab oder privilegierte Browserseiten usw.)",
+  "apiKeyInvalid": "API-Schlüssel ungültig. Bitte überprüfen Sie Ihren Schlüssel.",
+  "apiKeyMissing": "API-Schlüssel nicht gefunden. Bitte konfigurieren Sie Ihren API-Schlüssel im Erweiterungs-Popup."
+}

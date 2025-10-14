@@ -1,14 +1,8 @@
 {
-  "appTitle": "Từ điển AI",
-  "appSubtitle": "Dịch nhanh với AI",
-  "translate": "Dịch",
-  "from": "Từ",
-  "to": "Sang",
-  "autoDetect": "Tự động",
-  "appLanguage": "Ngôn ngữ ứng dụng",
-  "sourceLanguage": "Ngôn ngữ nguồn",
-  "saved": "Đã lưu!",
-  "extensionDisabled": "Tiện ích mở rộng bị vô hiệu hóa",
-  "toggleToEnable": "Sử dụng công tắc ở trên để kích hoạt",
-  "privilegePageDescription": "Không có quyền dịch trang này (các lý do có thể: tab mới hoặc trang đặc quyền của trình duyệt, v.v.)"
+  "loadingTip": "Từ này có nhiều nghĩa hoặc có lượng nội dung lớn, do đó AI có thể cần thêm thời gian để tạo ra bản dịch chi tiết.",
+  "thoughtFor": "Suy nghĩ trong {{time}}s",
+  "noTranslationAvailable": "Không có bản dịch",
+  "selectTextToTranslate": "Chọn văn bản trên trang để dịch",
+  "sourceLanguage": "Ngôn ngữ nguồn:",
+  "autoDetect": "Tự động"
 }
