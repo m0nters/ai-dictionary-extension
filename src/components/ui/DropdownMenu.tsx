@@ -1,5 +1,5 @@
 import { ChevronDown, Search } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 interface DropdownOption {
@@ -12,58 +12,93 @@ interface DropdownMenuProps {
   options: DropdownOption[];
   pin?: DropdownOption; // Option to pin at the top
   onChange: (value: string) => void;
-  placeholder?: string;
   className?: string;
   focusColor?: string;
   canSearch?: boolean;
-  sorted?: boolean;
+  isSorted?: boolean;
 }
+
+// Move color classes outside component to avoid recreation
+const FOCUS_COLOR_CLASSES = {
+  dropdown: {
+    purple: "focus:border-purple-500 focus:ring-purple-100",
+    indigo: "focus:border-indigo-500 focus:ring-indigo-100",
+  },
+  option: {
+    purple: "bg-purple-50 text-purple-700",
+    indigo: "bg-indigo-50 text-indigo-700",
+  },
+} as const;
 
 export function DropdownMenu({
   value,
   options,
   pin,
   onChange,
-  placeholder,
   className = "",
   focusColor = "indigo",
   canSearch = false,
-  sorted = true,
+  isSorted = true,
 }: DropdownMenuProps) {
   const { t } = useTranslation("common");
   const [isOpen, setIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
+  const [focusedIndex, setFocusedIndex] = useState(0);
   const dropdownRef = useRef<HTMLDivElement>(null);
-  const optionsRef = useRef<HTMLDivElement>(null);
   const searchInputRef = useRef<HTMLInputElement>(null);
+  const optionRefs = useRef<(HTMLButtonElement | null)[]>([]);
 
-  // Use i18n fallback if no placeholder provided
-  const displayPlaceholder = placeholder || t("dropdown.selectOption");
+  // Memoize sorted and pinned options - only recalculate when options or pin changes
+  const sortedOptions = useMemo(() => {
+    let result = isSorted
+      ? [...options].sort((a, b) => a.label.localeCompare(b.label))
+      : options;
 
-  // Sort options by label
-  const sortedOptions = sorted
-    ? [...options].sort((a, b) => a.label.localeCompare(b.label))
-    : options;
+    // If pin option is provided, place it at the top
+    if (pin) {
+      // Remove pin from options if it exists to avoid duplication
+      const withoutPin = result.filter((option) => option.value !== pin.value);
+      result = [pin, ...withoutPin];
+    }
 
-  // If pin option is provided, place it at the top
-  if (pin) {
-    // Remove pin from options if it exists to avoid duplication
-    const filteredOptions = sortedOptions.filter(
-      (option) => option.value !== pin.value,
+    return result;
+  }, [options, pin, isSorted]);
+
+  // Memoize lowercase search term to avoid repeated toLowerCase calls
+  const searchTermLower = useMemo(() => searchTerm.toLowerCase(), [searchTerm]);
+
+  // Memoize filtered options
+  const filteredOptions = useMemo(() => {
+    if (!searchTermLower) return sortedOptions;
+    return sortedOptions.filter((option) =>
+      option.label.toLowerCase().includes(searchTermLower),
     );
-    // Place pin option at the top
-    sortedOptions.splice(0, 0, pin);
-    // Append the rest of the options
-    sortedOptions.splice(1, sortedOptions.length - 1, ...filteredOptions);
-  }
+  }, [sortedOptions, searchTermLower]);
 
-  // Filter options based on search term
-  const filteredOptions = sortedOptions.filter((option) =>
-    option.label.toLowerCase().includes(searchTerm.toLowerCase()),
+  // Memoize selected option - find from original sortedOptions, not filtered
+  const selectedOption = useMemo(
+    () => sortedOptions.find((option) => option.value === value),
+    [sortedOptions, value],
   );
 
-  const selectedOption = sortedOptions.find((option) => option.value === value);
+  // Memoize color classes
+  const dropdownColorClass = useMemo(
+    () =>
+      FOCUS_COLOR_CLASSES.dropdown[
+        focusColor as keyof typeof FOCUS_COLOR_CLASSES.dropdown
+      ] || FOCUS_COLOR_CLASSES.dropdown.indigo,
+    [focusColor],
+  );
 
+  const optionColorClass = useMemo(
+    () =>
+      FOCUS_COLOR_CLASSES.option[
+        focusColor as keyof typeof FOCUS_COLOR_CLASSES.option
+      ] || FOCUS_COLOR_CLASSES.option.indigo,
+    [focusColor],
+  );
+
+  // Click outside handler
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
@@ -80,38 +115,100 @@ export function DropdownMenu({
     };
   }, []);
 
-  const handleOptionClick = (optionValue: string) => {
-    onChange(optionValue);
-    setIsOpen(false);
-    setSearchTerm(""); // Clear search when option is selected
-  };
+  // Keyboard navigation - only attach when dropdown is open
+  useEffect(() => {
+    if (!isOpen) return;
 
-  const toggleDropdown = () => {
-    setIsOpen(!isOpen);
-    if (!isOpen && canSearch) {
-      // Focus search input when opening dropdown
-      setTimeout(() => {
-        searchInputRef.current?.focus();
-      }, 100);
-    } else {
-      // Clear search when closing dropdown
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (filteredOptions.length === 0) return;
+
+      switch (e.key) {
+        case "Enter":
+          e.preventDefault();
+          if (filteredOptions[focusedIndex]) {
+            handleOptionClick(filteredOptions[focusedIndex].value);
+          }
+          break;
+        case "ArrowDown":
+          e.preventDefault();
+          setFocusedIndex((prev) =>
+            prev < filteredOptions.length - 1 ? prev + 1 : prev,
+          );
+          break;
+        case "ArrowUp":
+          e.preventDefault();
+          setFocusedIndex((prev) => (prev > 0 ? prev - 1 : prev));
+          break;
+        case "Escape":
+          e.preventDefault();
+          setIsOpen(false);
+          setSearchTerm("");
+          setFocusedIndex(0);
+          break;
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isOpen, filteredOptions, focusedIndex]); // Include all dependencies
+
+  // Memoize handlers to avoid recreating functions
+  const handleOptionClick = useCallback(
+    (optionValue: string) => {
+      onChange(optionValue);
+      setIsOpen(false);
       setSearchTerm("");
-    }
-  };
+      setFocusedIndex(0);
+    },
+    [onChange],
+  );
 
-  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchTerm(e.target.value);
-  };
+  const toggleDropdown = useCallback(() => {
+    setIsOpen((prev) => {
+      const newIsOpen = !prev;
 
-  const getFocusColorClasses = (color: string) => {
-    switch (color) {
-      case "purple":
-        return "focus:border-purple-500 focus:ring-purple-100";
-      case "indigo":
-      default:
-        return "focus:border-indigo-500 focus:ring-indigo-100";
+      if (newIsOpen) {
+        // Set focus to currently selected option when opening
+        const selectedIndex = filteredOptions.findIndex(
+          (option) => option.value === value,
+        );
+        setFocusedIndex(selectedIndex >= 0 ? selectedIndex : 0);
+
+        if (canSearch) {
+          // Focus search input when opening dropdown
+          setTimeout(() => {
+            searchInputRef.current?.focus();
+          }, 250);
+        }
+      } else {
+        // Clear search when closing dropdown
+        setTimeout(() => {
+          setSearchTerm("");
+          setFocusedIndex(0);
+        }, 300);
+      }
+
+      return newIsOpen;
+    });
+  }, [canSearch, filteredOptions, value]);
+
+  const handleSearchChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setSearchTerm(e.target.value);
+      setFocusedIndex(0); // Reset focus to first option when search changes
+    },
+    [],
+  );
+
+  // Scroll focused option into view
+  useEffect(() => {
+    if (isOpen && optionRefs.current[focusedIndex]) {
+      optionRefs.current[focusedIndex]?.scrollIntoView({
+        block: "center",
+        behavior: "instant",
+      });
     }
-  };
+  }, [focusedIndex, isOpen]);
 
   return (
     <div className={`relative ${className}`} ref={dropdownRef}>
@@ -119,14 +216,14 @@ export function DropdownMenu({
       <button
         type="button"
         onClick={toggleDropdown}
-        className={`w-full cursor-pointer appearance-none rounded-xl border-2 border-gray-200 bg-white p-3 text-left shadow-sm transition-all duration-200 hover:border-gray-300 focus:ring-4 focus:outline-none ${getFocusColorClasses(focusColor)}`}
+        className={`w-full cursor-pointer appearance-none rounded-xl border-2 border-gray-200 bg-white p-3 text-left shadow-sm transition-all duration-200 hover:border-gray-300 focus:ring-4 focus:outline-none ${dropdownColorClass}`}
       >
         <div className="flex items-center justify-between">
           <span
             className="truncate text-gray-900"
-            title={selectedOption ? selectedOption.label : displayPlaceholder}
+            title={selectedOption?.label}
           >
-            {selectedOption ? selectedOption.label : displayPlaceholder}
+            {selectedOption?.label}
           </span>
           <ChevronDown
             className={`h-5 w-5 text-gray-400 transition-transform duration-300 ease-out ${
@@ -157,6 +254,7 @@ export function DropdownMenu({
                 type="text"
                 value={searchTerm}
                 onChange={handleSearchChange}
+                // onKeyDown={handleKeyDown}
                 placeholder={t("dropdown.search")}
                 className="w-full rounded-lg border border-gray-200 py-2 pr-3 pl-9 text-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 focus:outline-none"
                 onClick={(e) => e.stopPropagation()}
@@ -166,7 +264,6 @@ export function DropdownMenu({
         )}
 
         <div
-          ref={optionsRef}
           className={`max-h-60 overflow-y-auto transition-all duration-300 ease-out ${
             isOpen ? "animate-slide-down" : "animate-slide-up"
           }`}
@@ -179,12 +276,17 @@ export function DropdownMenu({
             filteredOptions.map((option, index) => (
               <button
                 key={option.value}
+                ref={(el) => {
+                  optionRefs.current[index] = el;
+                }}
                 type="button"
                 onClick={() => handleOptionClick(option.value)}
-                className={`w-full truncate px-3 py-2.5 text-left text-sm transition-all duration-150 hover:bg-gray-50 focus:bg-gray-50 focus:outline-none ${
+                className={`w-full truncate px-3 py-2.5 text-left text-sm transition-all duration-150 focus:outline-none ${
                   option.value === value
-                    ? `bg-${focusColor}-50 text-${focusColor}-700 font-medium`
-                    : "text-gray-900"
+                    ? `${optionColorClass} font-medium` // priority to selected option CSS than focused option CSS
+                    : index === focusedIndex
+                      ? "bg-gray-100"
+                      : "text-gray-900 hover:bg-gray-100 focus:bg-gray-100"
                 } ${index === 0 && !canSearch ? "rounded-t-xl" : ""} ${
                   index === filteredOptions.length - 1 ? "rounded-b-xl" : ""
                 }`}

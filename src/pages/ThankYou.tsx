@@ -15,12 +15,10 @@ export function ThankYou() {
     if (value === selectedLanguage) return;
     setSelectedLanguage(value);
     setIsVisible(false);
-    await new Promise((r) => setTimeout(r, 800));
-    await changeLanguage(value);
-    // Trigger the fade-in animation after language change
-    setTimeout(() => {
+    setTimeout(async () => {
+      await changeLanguage(value);
       setIsVisible(true);
-    }, 0);
+    }, 800);
   };
 
   // Create language options for dropdown
@@ -83,7 +81,6 @@ export function ThankYou() {
           value={i18n.language}
           options={languageOptions}
           onChange={handleLanguageChange}
-          placeholder="Language"
           className="min-w-[140px]"
           focusColor="indigo"
         />

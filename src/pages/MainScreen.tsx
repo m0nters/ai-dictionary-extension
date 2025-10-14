@@ -190,7 +190,7 @@ export function MainScreen({
                 ]}
                 pin={{ value: "auto", label: t("popup:autoDetect") }}
                 onChange={handleSourceLanguageChange}
-                focusColor="blue"
+                focusColor="indigo"
                 canSearch={true}
                 className="w-[125px]"
               />
@@ -267,7 +267,7 @@ export function MainScreen({
               }))}
               onChange={handleAppLanguageChange}
               focusColor="purple"
-              sorted={false}
+              isSorted={false}
             />
           </div>
 
