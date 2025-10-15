@@ -1,7 +1,8 @@
-// IMPORTANT: this file cannot use i18n, if you want to throw an error that needs
-// i18n and display it for user on popup, throw a conventional string and handle
-// it in `useTranslation.ts`
+// IMPORTANT: DO NOT use i18n in hook or service, if you want to throw an error
+// that needs i18n and display it for user on popup, throw an AppException with
+// error code and handle the translation in the component layer
 import { AVAILABLE_LANGUAGES, DEFAULT_SOURCE_LANGUAGE_CODE } from "@/constants";
+import { AppException } from "@/types";
 
 export const MAX_WORDS_LIMIT = 250;
 
@@ -17,7 +18,7 @@ const getApiKey = async (): Promise<string> => {
       }
 
       if (!data.geminiApiKey) {
-        reject(new Error("API_KEY_MISSING")); // conventional string
+        reject(new AppException({ code: "API_KEY_MISSING" }));
         return;
       }
 
@@ -441,7 +442,10 @@ export const translateWithGemini = async (
   // Validate text length before translation
   const validation = validateTextLength(text);
   if (!validation.isValid) {
-    throw new Error(`TEXT_TOO_LONG:${validation.wordCount}`); // conventional string
+    throw new AppException({
+      code: "TEXT_TOO_LONG",
+      data: { wordCount: validation.wordCount.toString() },
+    });
   }
 
   // Get API key from storage

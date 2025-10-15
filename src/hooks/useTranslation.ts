@@ -2,21 +2,15 @@ import {
   DEFAULT_LANGUAGE_CODE,
   DEFAULT_SOURCE_LANGUAGE_CODE,
 } from "@/constants";
-import {
-  MAX_WORDS_LIMIT,
-  saveTranslation,
-  translateWithGemini,
-} from "@/services";
-import { TranslationResult } from "@/types";
+import { saveTranslation, translateWithGemini } from "@/services";
+import { AppException, TranslationResult } from "@/types";
 import { parseTranslationJSON, updatePopupHeight } from "@/utils";
 import { useEffect, useState } from "react";
-import { useTranslation as useReactI18next } from "react-i18next";
 
 /**
  * Custom hook for managing translation state and functionality
  */
 export const useTranslation = () => {
-  const { t } = useReactI18next();
   const [result, setResult] = useState<TranslationResult>({
     text: "",
     translation: "",
@@ -96,28 +90,25 @@ export const useTranslation = () => {
       // Update popup height after translation is set
       updatePopupHeight();
     } catch (error) {
-      let errorMessage = "Translation failed";
-
-      if (error instanceof Error) {
-        // Handle word count limit error
-        if (error.message.startsWith("TEXT_TOO_LONG:")) {
-          const wordCount = error.message.split(":")[1];
-          errorMessage = t("errors:textTooLong", {
-            maxWords: MAX_WORDS_LIMIT,
-            currentWords: wordCount,
-          });
-        } else if (error.message === "API_KEY_MISSING") {
-          errorMessage = t("errors:apiKeyMissing");
-        } else {
-          errorMessage = error.message;
-        }
+      // convert all of the errors to `AppException`
+      // then keep transfering them to the component layer for i18n handling
+      if (error instanceof AppException) {
+        setResult((prev) => ({
+          ...prev,
+          loading: false,
+          error: error,
+        }));
+      } else if (error instanceof Error) {
+        // Handle other generic errors
+        setResult((prev) => ({
+          ...prev,
+          loading: false,
+          error: new AppException({
+            code: "GENERAL_ERROR",
+            data: { message: error.message },
+          }),
+        }));
       }
-
-      setResult((prev) => ({
-        ...prev,
-        loading: false,
-        error: errorMessage,
-      }));
 
       // Update popup height after error is set
       updatePopupHeight();

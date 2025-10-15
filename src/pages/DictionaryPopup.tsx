@@ -1,7 +1,8 @@
 import { changeLanguage } from "@/config";
 import { useTranslation } from "@/hooks";
 import "@/index.css";
-import { ttsService } from "@/services";
+import { MAX_WORDS_LIMIT, ttsService } from "@/services";
+import { AppException } from "@/types";
 import { parseTranslationJSON, updatePopupHeight } from "@/utils";
 import { LoaderCircle, RotateCcw, X } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -134,6 +135,26 @@ export function DictionaryPopup() {
     ? parseTranslationJSON(result.translation)
     : null;
 
+  // Translate error codes to localized messages
+  const getErrorMessage = (error: AppException): string => {
+    switch (error.code) {
+      case "TEXT_TOO_LONG":
+        return t("errors:textTooLong", {
+          maxWords: MAX_WORDS_LIMIT,
+          currentWords: parseInt(error.data?.wordCount || "0", 10),
+        });
+      case "API_KEY_MISSING":
+        return t("errors:apiKeyMissing");
+      case "GENERAL_ERROR": // for generic errors with message
+        return (
+          error.data?.message ||
+          "An unknown error occurred with no message, this should not happen, contact admin for support"
+        );
+      default:
+        return "Undefined error code, this should not happen, contact admin for support";
+    }
+  };
+
   return (
     <div className="z-99999 flex h-full w-full flex-col bg-white">
       {/* Close button - properly aligned */}
@@ -190,7 +211,7 @@ export function DictionaryPopup() {
               className="flex flex-col items-center justify-center text-center text-sm text-red-500"
               key="error"
             >
-              <p>{result.error}</p>
+              <p>{getErrorMessage(result.error)}</p>
               <button
                 onClick={() => {
                   if (result.text) {
