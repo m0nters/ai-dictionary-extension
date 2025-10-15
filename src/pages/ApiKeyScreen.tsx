@@ -1,5 +1,6 @@
-import { DropdownMenu, TextWithLinks } from "@/components";
+import { DropdownMenu } from "@/components";
 import { SUPPORTED_APP_LANGUAGE } from "@/constants";
+import { renderText } from "@/utils";
 import { Check, Info, Key, Lock, Settings } from "lucide-react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -146,25 +147,25 @@ export function ApiKeyScreen({
               <span className="flex h-5 w-5 flex-shrink-0 -translate-y-0.5 items-center justify-center rounded-full bg-indigo-100 text-xs font-semibold text-indigo-600">
                 1
               </span>
-              <TextWithLinks text={t("api:apiKeyStep1")} />
+              {renderText(t("api:apiKeyStep1"))}
             </li>
             <li className="flex items-start space-x-2">
               <span className="flex h-5 w-5 flex-shrink-0 -translate-y-0.5 items-center justify-center rounded-full bg-indigo-100 text-xs font-semibold text-indigo-600">
                 2
               </span>
-              <TextWithLinks text={t("api:apiKeyStep2")} />
+              {renderText(t("api:apiKeyStep2"))}
             </li>
             <li className="flex items-start space-x-2">
               <span className="flex h-5 w-5 flex-shrink-0 -translate-y-0.5 items-center justify-center rounded-full bg-indigo-100 text-xs font-semibold text-indigo-600">
                 3
               </span>
-              <TextWithLinks text={t("api:apiKeyStep3")} />
+              {renderText(t("api:apiKeyStep3"))}
             </li>
             <li className="flex items-start space-x-2">
               <span className="flex h-5 w-5 flex-shrink-0 -translate-y-0.5 items-center justify-center rounded-full bg-indigo-100 text-xs font-semibold text-indigo-600">
                 4
               </span>
-              <TextWithLinks text={t("api:apiKeyStep4")} />
+              {renderText(t("api:apiKeyStep4"))}
             </li>
           </ol>
         </div>

@@ -21,6 +21,15 @@ export const renderText = (text: string) => {
               "bg-gray-100 text-gray-800 px-1 py-0.5 rounded text-sm font-mono",
           },
         },
+        a: {
+          component: "a",
+          props: {
+            className:
+              "font-semibold text-indigo-600 underline decoration-indigo-300 decoration-2 underline-offset-2 transition-colors hover:text-indigo-700 hover:decoration-indigo-400",
+            target: "_blank",
+            rel: "noopener noreferrer",
+          },
+        },
       },
     },
     children: text,
