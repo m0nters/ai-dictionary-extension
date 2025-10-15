@@ -55,6 +55,22 @@ npm run build
 3. Click "Load unpacked"
 4. Select the `dist` folder from this project
 
+### 3. Configure API Key
+
+Before you can use the extension, you need to provide a Google Gemini API key:
+
+1. **Click the extension icon** in Chrome toolbar to open the popup
+2. You'll see the **API Key Required** screen on first launch
+3. **Get your API key**:
+   - Visit [Google AI Studio](https://aistudio.google.com/apikey)
+   - Sign in with your Google account
+   - Click "Create API Key"
+   - Copy the generated API key
+4. **Enter your API key** in the extension popup and click "Save & Continue"
+5. Your API key is **stored locally** in Chrome storage and never shared
+
+**Note**: You can delete your API key anytime from the extension popup settings.
+
 ---
 
 ## Usage
