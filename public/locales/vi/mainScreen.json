@@ -1,5 +1,4 @@
 {
-  "appTitle": "Từ điển AI",
   "appSubtitle": "Dịch nhanh bằng AI",
   "translate": "Dịch",
   "from": "Từ",
@@ -11,6 +10,6 @@
   "toggleToEnable": "Sử dụng nút chuyển đổi phía trên để kích hoạt",
   "howToUse": "Cách sử dụng",
   "step1": "Tô sáng văn bản trên các trang web",
-  "step2": "Nhấp vào nút \"từ điển\" xuất hiện",
+  "step2": "Nhấp vào nút \"tra từ điển\" xuất hiện",
   "step3": "Xem bản dịch chi tiết kèm phát âm"
 }

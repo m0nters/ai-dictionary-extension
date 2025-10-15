@@ -18,7 +18,7 @@ const DICTIONARY = {
   ko: "사전",
   fr: "dictionnaire",
   es: "diccionario",
-  de: "Wörterbuch",
+  de: "wörterbuch",
 } as const;
 
 async function getCurrentAppLanguage(): Promise<string> {

@@ -1,6 +1,6 @@
 {
   "title": "Vielen Dank!",
-  "subtitle": "Vielen Dank für die Installation des KI-Wörterbuchs! Sie sind bereit für intelligente Übersetzungen.",
+  "subtitle": "Vielen Dank für die Installation von VibeLex! Sie sind bereit für intelligente Übersetzungen.",
   "featuresTitle": "Hauptfunktionen",
   "features": {
     "aiTranslation": {
@@ -21,6 +21,6 @@
     }
   },
   "howToUse": "So wird’s gemacht",
-  "usageDescription": "Um zu beginnen, markieren Sie einfach ein Wort auf einer Webseite und klicken Sie auf die erscheinende Schaltfläche „Wörterbuch“!",
+  "usageDescription": "Um zu beginnen, markieren Sie einfach ein Wort auf einer Webseite und klicken Sie auf die erscheinende Schaltfläche „wörterbuch“!",
   "author": "Autor:"
 }

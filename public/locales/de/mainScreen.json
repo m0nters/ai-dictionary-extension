@@ -1,5 +1,4 @@
 {
-  "appTitle": "KI-Wörterbuch",
   "appSubtitle": "Schnelle KI-Übersetzung",
   "translate": "Übersetzen",
   "from": "Von",
@@ -11,6 +10,6 @@
   "toggleToEnable": "Verwenden Sie den Schalter oben, um zu aktivieren",
   "howToUse": "So wird’s gemacht",
   "step1": "Text auf Webseiten markieren",
-  "step2": "Klicken Sie auf die Schaltfläche „Wörterbuch“, die erscheint",
+  "step2": "Klicken Sie auf die Schaltfläche „wörterbuch“, die erscheint",
   "step3": "Detaillierte Übersetzung mit Aussprache anzeigen"
 }

@@ -106,7 +106,7 @@ export function MainScreen({
             <img src="/logo/logo.png" alt="App Logo" className="h-16 w-16" />
             <div>
               <h1 className="bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-xl font-bold text-transparent">
-                {t("mainScreen:appTitle")}
+                VibeLex
               </h1>
               <p className="text-sm text-gray-500">
                 {t("mainScreen:appSubtitle")}
