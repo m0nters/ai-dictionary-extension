@@ -3,6 +3,6 @@
   "thoughtFor": "Réfléchi pendant {{time}}s",
   "noTranslationAvailable": "Aucune traduction disponible",
   "selectTextToTranslate": "Sélectionner du texte sur la page pour traduire",
-  "sourceLanguage": "Langue source :",
+  "sourceLanguage": "Langue source",
   "autoDetect": "Automatique"
 }

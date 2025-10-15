@@ -3,6 +3,6 @@
   "thoughtFor": "{{time}}s考えました",
   "noTranslationAvailable": "翻訳がありません",
   "selectTextToTranslate": "ページ上のテキストを選択して翻訳",
-  "sourceLanguage": "元の言語：",
+  "sourceLanguage": "元の言語",
   "autoDetect": "自動"
 }

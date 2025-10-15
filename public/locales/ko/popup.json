@@ -3,6 +3,6 @@
   "thoughtFor": "{{time}}s 동안 생각함",
   "noTranslationAvailable": "번역이 없습니다",
   "selectTextToTranslate": "페이지에서 번역할 텍스트를 선택",
-  "sourceLanguage": "원어:",
+  "sourceLanguage": "원어",
   "autoDetect": "자동"
 }

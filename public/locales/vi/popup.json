@@ -3,6 +3,6 @@
   "thoughtFor": "Suy nghĩ trong {{time}}s",
   "noTranslationAvailable": "Không có bản dịch",
   "selectTextToTranslate": "Chọn văn bản trên trang để dịch",
-  "sourceLanguage": "Ngôn ngữ nguồn:",
+  "sourceLanguage": "Ngôn ngữ nguồn",
   "autoDetect": "Tự động"
 }

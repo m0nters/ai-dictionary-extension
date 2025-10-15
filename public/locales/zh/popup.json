@@ -3,6 +3,6 @@
   "thoughtFor": "思考了{{time}}s",
   "noTranslationAvailable": "无可用翻译",
   "selectTextToTranslate": "选择页面上的文本进行翻译",
-  "sourceLanguage": "源语言：",
+  "sourceLanguage": "源语言",
   "autoDetect": "自动"
 }
