@@ -4,7 +4,7 @@ import { SearchOperatorType } from "@/constants";
 import { useDebounce } from "@/hooks";
 import {
   clearHistory,
-  getHistoryStorageUsage,
+  getDisplayedEntriesUsage,
   removeHistoryEntries,
   removeHistoryEntry,
   searchHistory,
@@ -21,7 +21,7 @@ export function HistoryScreen() {
   const navigate = useNavigate();
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [searchQuery, setSearchQuery] = useState("");
-  const [entries, setEntries] = useState<HistoryEntry[]>([]);
+  const [entries, setEntries] = useState<HistoryEntry[]>([]); // displayed result
   const [selectedEntries, setSelectedEntries] = useState<Set<string>>(
     new Set(),
   );
@@ -29,7 +29,7 @@ export function HistoryScreen() {
   const [showBulkDeleteConfirm, setShowBulkDeleteConfirm] = useState(false);
   const [storageUsage, setStorageUsage] = useState<{
     historyEntryCount: number;
-    historyUsageKB: string;
+    historySizeKB: string;
   } | null>(null);
 
   const debouncedSearchQuery = useDebounce(searchQuery, 300);
@@ -62,8 +62,8 @@ export function HistoryScreen() {
       const historyEntries = await searchHistory(debouncedSearchQuery);
       setEntries(historyEntries);
 
-      // Update storage usage
-      const usage = await getHistoryStorageUsage();
+      // Update storage usage based on displayed entries
+      const usage = getDisplayedEntriesUsage(historyEntries);
       setStorageUsage(usage);
     } catch (error) {
       console.error("Failed to load history:", error);
@@ -274,7 +274,7 @@ export function HistoryScreen() {
                 })}
               </span>
               <span className="font-medium">
-                {storageUsage.historyUsageKB} KB
+                {storageUsage.historySizeKB} KB
               </span>
             </div>
           </div>

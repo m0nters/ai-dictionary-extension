@@ -57,6 +57,23 @@ export const getHistory = async (): Promise<HistoryEntry[]> => {
 };
 
 /**
+ * Get displayed entries count and size usage
+ */
+export const getDisplayedEntriesUsage = (entries: HistoryEntry[]) => {
+  if (entries.length === 0) return null;
+
+  // Convert entries to JSON string to calculate size
+  const entriesJson = JSON.stringify(entries);
+  const sizeBytes = new Blob([entriesJson]).size;
+
+  return {
+    historyEntryCount: entries.length,
+    historySizeBytes: sizeBytes,
+    historySizeKB: (sizeBytes / 1024).toFixed(2),
+  };
+};
+
+/**
  * Get detailed storage usage information for history data
  */
 export const getHistoryStorageUsage = async () => {
