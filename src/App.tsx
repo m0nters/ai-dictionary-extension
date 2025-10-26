@@ -66,6 +66,10 @@ function App() {
     );
   }, []);
 
+  useEffect(() => {
+    handleExtensionToggle(!!apiKey);
+  }, [apiKey]);
+
   const handleChangeSourceLanguage = (value: string) => {
     if (value === sourceLangCode) return; // just a double check, we have checked this in MainScreen already
     setSourceLangCode(value);
