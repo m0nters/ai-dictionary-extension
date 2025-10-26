@@ -92,11 +92,11 @@ export function MainScreen({
   };
 
   return (
-    <div className="animate-slide-in-right relative h-full w-full overflow-x-hidden overflow-y-auto bg-gradient-to-br from-indigo-50 to-purple-50 select-none">
+    <div className="animate-slide-in-right relative h-full w-full overflow-x-hidden overflow-y-auto bg-linear-to-br from-indigo-50 to-purple-50 select-none">
       {/* Background decoration */}
       <div className="absolute inset-0 z-0">
-        <div className="animate-blob-slow absolute top-0 right-0 h-32 w-32 translate-x-16 -translate-y-16 rounded-full bg-gradient-to-br from-indigo-300 to-purple-300 opacity-50"></div>
-        <div className="animate-blob-slow animation-delay-2000 absolute bottom-0 left-0 h-24 w-24 -translate-x-12 translate-y-12 rounded-full bg-gradient-to-tr from-purple-300 to-indigo-300 opacity-30"></div>
+        <div className="animate-blob-slow absolute top-0 right-0 h-32 w-32 translate-x-16 -translate-y-16 rounded-full bg-linear-to-br from-indigo-300 to-purple-300 opacity-50"></div>
+        <div className="animate-blob-slow animation-delay-2000 absolute bottom-0 left-0 h-24 w-24 -translate-x-12 translate-y-12 rounded-full bg-linear-to-tr from-purple-300 to-indigo-300 opacity-30"></div>
       </div>
 
       {/* Header */}
@@ -105,7 +105,7 @@ export function MainScreen({
           <div className="flex items-center space-x-3">
             <img src="/logo/logo.png" alt="App Logo" className="h-16 w-16" />
             <div>
-              <h1 className="bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-xl font-bold text-transparent">
+              <h1 className="bg-linear-to-r from-indigo-600 to-purple-600 bg-clip-text text-xl font-bold text-transparent">
                 VibeLex
               </h1>
               <p className="text-sm text-gray-500">
@@ -430,7 +430,7 @@ export function MainScreen({
 
         {/* Usage instructions */}
         <div
-          className={`mt-4 rounded-xl border border-indigo-200/50 bg-gradient-to-r from-indigo-500/10 to-purple-500/10 p-4 transition-all duration-300 ${
+          className={`mt-4 rounded-xl border border-indigo-200/50 bg-linear-to-r from-indigo-500/10 to-purple-500/10 p-4 transition-all duration-300 ${
             !extensionEnabled
               ? "border-gray-300/30 bg-gray-500/10 opacity-50"
               : ""
@@ -451,7 +451,7 @@ export function MainScreen({
           <ul className="space-y-1 text-xs text-gray-600">
             <li className="flex items-start space-x-2">
               <span
-                className={`mt-1.5 h-1.5 w-1.5 flex-shrink-0 rounded-full transition-colors duration-300 ${
+                className={`mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full transition-colors duration-300 ${
                   !extensionEnabled ? "bg-gray-400" : "bg-indigo-400"
                 }`}
               ></span>
@@ -459,7 +459,7 @@ export function MainScreen({
             </li>
             <li className="flex items-start space-x-2">
               <MousePointer2
-                className={`mt-1 h-3 w-3 flex-shrink-0 transition-colors duration-300 ${
+                className={`mt-1 h-3 w-3 shrink-0 transition-colors duration-300 ${
                   !extensionEnabled ? "text-gray-400" : "text-purple-400"
                 }`}
               />
@@ -467,7 +467,7 @@ export function MainScreen({
             </li>
             <li className="flex items-start space-x-2">
               <span
-                className={`mt-1.5 h-1.5 w-1.5 flex-shrink-0 rounded-full transition-colors duration-300 ${
+                className={`mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full transition-colors duration-300 ${
                   !extensionEnabled ? "bg-gray-400" : "bg-indigo-400"
                 }`}
               ></span>

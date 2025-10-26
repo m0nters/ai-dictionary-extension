@@ -180,19 +180,6 @@ function App() {
     });
   };
 
-  // Show API key screen if no API key is set
-  if (!apiKey) {
-    return (
-      <div className="relative h-[574px] w-100 overflow-hidden">
-        <ApiKeyScreen
-          onApiKeySubmit={handleApiKeySubmit}
-          appLangCode={appLangCode}
-          onChangeAppLanguage={handleChangeAppLanguage}
-        />
-      </div>
-    );
-  }
-
   return (
     <MemoryRouter>
       <div className="relative h-[574px] w-100 overflow-hidden">
@@ -200,17 +187,25 @@ function App() {
           <Route
             path="/"
             element={
-              <MainScreen
-                appLangCode={appLangCode}
-                sourceLangCode={sourceLangCode}
-                translatedLangCode={translatedLangCode}
-                onChangeSourceLanguage={handleChangeSourceLanguage}
-                onChangeTranslatedLanguage={handleChangeTranslatedLanguage}
-                onChangeAppLanguage={handleChangeAppLanguage}
-                extensionEnabled={extensionEnabled}
-                onExtensionToggle={handleExtensionToggle}
-                onDeleteApiKey={handleDeleteApiKey}
-              />
+              !apiKey ? (
+                <ApiKeyScreen
+                  onApiKeySubmit={handleApiKeySubmit}
+                  appLangCode={appLangCode}
+                  onChangeAppLanguage={handleChangeAppLanguage}
+                />
+              ) : (
+                <MainScreen
+                  appLangCode={appLangCode}
+                  sourceLangCode={sourceLangCode}
+                  translatedLangCode={translatedLangCode}
+                  onChangeSourceLanguage={handleChangeSourceLanguage}
+                  onChangeTranslatedLanguage={handleChangeTranslatedLanguage}
+                  onChangeAppLanguage={handleChangeAppLanguage}
+                  extensionEnabled={extensionEnabled}
+                  onExtensionToggle={handleExtensionToggle}
+                  onDeleteApiKey={handleDeleteApiKey}
+                />
+              )
             }
           />
           <Route path="/history" element={<HistoryScreen />} />
