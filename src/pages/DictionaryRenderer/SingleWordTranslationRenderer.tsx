@@ -22,7 +22,9 @@ export function SingleWordTranslationRenderer({
           isAutoDetected={
             sourceLangCodeSetting === DEFAULT_SOURCE_LANGUAGE_CODE
           }
-          mainCountryCode={singleWordTranslation.main_country_code}
+          mainCountryCode={
+            singleWordTranslation.source_language_main_country_code
+          }
         />
       )}
       <div className="mb-4">
@@ -38,7 +40,12 @@ export function SingleWordTranslationRenderer({
             key={index}
             entry={meaning}
             word={singleWordTranslation.word}
-            mainTtsCode={singleWordTranslation.main_tts_language_code!}
+            sourceTtsLanguageCode={
+              singleWordTranslation.source_tts_language_code || ""
+            }
+            translatedTtsLanguageCode={
+              singleWordTranslation.translated_tts_language_code || ""
+            }
           />
         ))}
       </div>

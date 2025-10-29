@@ -15,7 +15,7 @@ export function SourceLanguageRenderer({
   const { t } = useTranslation();
 
   return (
-    <div className="mb-4 flex items-center justify-center rounded-lg border border-gray-200 bg-gradient-to-r from-gray-50 to-blue-50 p-3 shadow-sm">
+    <div className="mb-4 flex items-center justify-center rounded-lg border border-gray-200 bg-linear-to-r from-gray-50 to-blue-50 p-3 shadow-sm">
       <div className="flex flex-wrap items-center justify-center space-x-2">
         <div className="text-sm font-semibold text-gray-700">
           {`${t("popup:sourceLanguage")}:`}

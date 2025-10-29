@@ -100,10 +100,12 @@ export const generateTranslationPrompt = (
   }
 - **Translated Language**
   - Include the \`translated_language_code\` field as a string which is, in this context, "${translatedLangCode}".
-- **Main Country Code**
-  - Always include a \`main_country_code\` field containing the main country code (ISO 3166-1 alpha-2) for the source language in lowercase (e.g., "us" for English, "cn" for Chinese, "jp" for Japanese, etc.).
-- **TTS Language Code**
-  - Always include a \`main_tts_language_code\` field containing the primary TTS language code (IETF BCP 47) for the source language (e.g., "en-US", "zh-CN", "ja-JP", etc.).
+- **Main Country Codes**
+  - Always include a \`source_language_main_country_code\` field containing the main country code (ISO 3166-1 alpha-2) for the source language in lowercase (e.g., "us" for English, "cn" for Chinese, "jp" for Japanese, etc.).
+  - Always include a \`translated_language_main_country_code\` field containing the main country code (ISO 3166-1 alpha-2) for the translated language in lowercase (e.g., "us" for English, "vn" for Vietnamese, "cn" for Chinese, "jp" for Japanese, etc.).
+- **TTS Language Codes**
+  - Always include a \`source_tts_language_code\` field containing the primary TTS language code (IETF BCP 47) for the source language (e.g., "en-US", "zh-CN", "ja-JP", etc.).
+  - Always include a \`translated_tts_language_code\` field containing the primary TTS language code (IETF BCP 47) for the translated language (e.g., "en-US", "vi-VN", "zh-CN", "ja-JP", etc.).
 - **Single word/Collocation/Idiom input:**
   - For words that has more than 1 pronunciation variants in source language (e.g., "run" is an English word, has pronunciation variants of UK, US), provide both variants as objects with \`ipa\` and \`tts_code\` fields. The \`ipa\` field should be an array of strings to accommodate multiple pronunciations within the same variant (e.g., "usurpation" has US: ["/ˌjuː.zɜːˈpeɪ.ʃən/", "/ˌjuː.sɜːˈpeɪ.ʃən/"], UK: ["/ˌjuː.sɜːˈpeɪ.ʃən/", "/ˌjuː.zɜːˈpeɪ.ʃən/"]). For others that don't have pronunciation variants, just use that single one as a string (e.g., Pinyin for Chinese).
   - When multiple IPA pronunciations exist for the same variant, include all common pronunciations in the array, prioritizing the most standard or widely accepted pronunciation first.
@@ -153,8 +155,7 @@ export const generateTranslationPrompt = (
 - **Gibberish or non-language input:**
   - Return "No translation available." but in translated language. (e.g., "Không có bản dịch" in Vietnamese, "没有可用的翻译" in Chinese)
   ${!sourceLangName ? `- \`source_language_code\` field must be this exact string, "unknown"` : ""} 
-  - \`main_country_code\` field can be omitted.
-  - \`main_tts_language_code\` field can be omitted.
+  - \`source_language_main_country_code\`, \`translated_language_main_country_code\`, \`source_tts_language_code\`, \`translated_tts_language_code\` fields can be omitted.
 
 - **Output Format:** Output JSON only! Use JSON format with the structure following these examples below:
   - e.g.1., English "ran" to Vietnamese, this is an example of an output of a word that has many meanings:
@@ -163,8 +164,10 @@ export const generateTranslationPrompt = (
     {
       \"source_language_code\": \"en\",
       \"translated_language_code\": \"vi\",
-      \"main_country_code\": \"us\",
-      \"main_tts_language_code\": \"en-US\",
+      \"source_language_main_country_code\": \"us\",
+      \"translated_language_main_country_code\": \"vn\",
+      \"source_tts_language_code\": \"en-US\",
+      \"translated_tts_language_code\": \"vi-VN\",
       \"word\": \"run\",
       \"verb_forms\": [\"run\", \"ran\", \"run\"],
       \"meanings\": [
@@ -284,8 +287,10 @@ export const generateTranslationPrompt = (
     {
       \"source_language_code\": \"zh\",
       \"translated_language_code\": \"vi\",
-      \"main_country_code\": \"cn\",
-      \"main_tts_language_code\": \"zh-CN\",
+      \"source_language_main_country_code\": \"cn\",
+      \"translated_language_main_country_code\": \"vn\",
+      \"source_tts_language_code\": \"zh-CN\",
+      \"translated_tts_language_code\": \"vi-VN\",
       \"word\": \"跑\",
       \"meanings\": [
         {
@@ -362,8 +367,10 @@ export const generateTranslationPrompt = (
     {
       \"source_language_code\": \"en\",
       \"translated_language_code\": \"en\",
-      \"main_country_code\": \"us\",
-      \"main_tts_language_code\": \"en-US\",
+      \"source_language_main_country_code\": \"us\",
+      \"translated_language_main_country_code\": \"us\",
+      \"source_tts_language_code\": \"en-US\",
+      \"translated_tts_language_code\": \"en-US\",
       \"word\": \"resource\",
       \"meanings\": [
         {
@@ -402,8 +409,10 @@ export const generateTranslationPrompt = (
     {
       \"source_language_code\": \"en\",
       \"translated_language_code\": \"vi\",
-      \"main_country_code\": \"us\",
-      \"main_tts_language_code\": \"en-US\",
+      \"source_language_main_country_code\": \"us\",
+      \"translated_language_main_country_code\": \"vn\",
+      \"source_tts_language_code\": \"en-US\",
+      \"translated_tts_language_code\": \"vi-VN\",
       \"text\": \"Good morning!\",
       \"translation\": \"Chào buổi sáng!\"
     }
@@ -836,7 +845,7 @@ export const translateWithGemini = async (
 //   const translation = `
 //   \`\`\`json
 //   {
-//       "main_country_code": "us",
+//       "source_language_main_country_code": "us",
 //       "main_tts_language_code": "en-US",
 //       "source_language_code": "en",
 //       "text": "He has refused for a long time, after such dissolutions, to cause others to be elected; whereby the Legislative powers, incapable of Annihilation, have returned to the People at large for their exercise; the State remaining in the mean time exposed to all the dangers of invasion from without, and convulsions within.\\n\\nHe has endeavoured to prevent the population of these States; for that purpose obstructing the Laws for Naturalization of Foreigners; refusing to pass others to encourage their migrations hither, and raising the conditions of new Appropriations of Lands.",

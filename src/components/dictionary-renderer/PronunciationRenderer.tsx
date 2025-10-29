@@ -5,13 +5,13 @@ import { hasPronunciationVariants } from "@/utils";
 interface PronunciationRendererProps {
   pronunciation: string | PronunciationVariants;
   word: string;
-  mainTtsCode: string;
+  ttsCode: string;
 }
 
 export function PronunciationRenderer({
   pronunciation,
   word,
-  mainTtsCode,
+  ttsCode,
 }: PronunciationRendererProps) {
   const styleMap = {
     UK: "bg-blue-100 text-blue-700",
@@ -58,11 +58,7 @@ export function PronunciationRenderer({
   return (
     <span className="ml-2 inline-flex items-end gap-1">
       <span className="text-base text-gray-600">{pronunciation as string}</span>
-      <SpeakerButton
-        word={word}
-        ttsCode={mainTtsCode}
-        className="translate-y-1"
-      />
+      <SpeakerButton word={word} ttsCode={ttsCode} className="translate-y-1" />
     </span>
   );
 }

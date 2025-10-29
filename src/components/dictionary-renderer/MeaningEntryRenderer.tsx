@@ -6,13 +6,15 @@ import { PronunciationRenderer } from "./PronunciationRenderer";
 interface MeaningEntryRendererProps {
   entry: MeaningEntry;
   word: string;
-  mainTtsCode: string;
+  sourceTtsLanguageCode: string;
+  translatedTtsLanguageCode: string;
 }
 
 export function MeaningEntryRenderer({
   entry,
   word,
-  mainTtsCode,
+  sourceTtsLanguageCode,
+  translatedTtsLanguageCode,
 }: MeaningEntryRendererProps) {
   return (
     <div>
@@ -22,7 +24,7 @@ export function MeaningEntryRenderer({
         <PronunciationRenderer
           pronunciation={entry.pronunciation}
           word={word}
-          mainTtsCode={mainTtsCode}
+          ttsCode={sourceTtsLanguageCode}
         />
       </div>
 
@@ -51,7 +53,7 @@ export function MeaningEntryRenderer({
                 <div className="flex h-5 w-5 items-center justify-center">
                   <SpeakerButton
                     word={example.text.replace(/\*\*/g, "")}
-                    ttsCode={mainTtsCode}
+                    ttsCode={sourceTtsLanguageCode}
                     className="translate-y-0.5"
                   />
                 </div>
@@ -62,9 +64,18 @@ export function MeaningEntryRenderer({
                 </p>
               )}
               {example.translation && (
-                <p className="text-sm font-normal text-blue-700">
-                  {renderText(example.translation)}
-                </p>
+                <div className="flex items-start justify-between gap-1">
+                  <p className="text-sm font-normal text-blue-700">
+                    {renderText(example.translation)}
+                  </p>
+                  <div className="flex h-5 w-5 items-center justify-center">
+                    <SpeakerButton
+                      word={example.translation.replace(/\*\*/g, "")}
+                      ttsCode={translatedTtsLanguageCode}
+                      className="translate-y-0.5"
+                    />
+                  </div>
+                </div>
               )}
             </div>
           ))}
@@ -74,11 +85,13 @@ export function MeaningEntryRenderer({
       {/* Idioms Section */}
       {entry.idioms && entry.idioms.items && entry.idioms.items.length > 0 && (
         <div className="mt-8 mb-4">
+          {/* Label */}
           <div className="mb-2 flex items-center space-x-2">
             <span className="rounded-full border border-teal-200 bg-teal-50 px-2 py-1 text-xs font-medium text-teal-600">
               {entry.idioms.label}
             </span>
           </div>
+          {/* Content */}
           <div className="ml-2 space-y-3">
             {entry.idioms.items.map((idiom, index) => (
               <div
@@ -91,7 +104,7 @@ export function MeaningEntryRenderer({
                   </h4>
                   <SpeakerButton
                     word={idiom.idiom}
-                    ttsCode={mainTtsCode}
+                    ttsCode={sourceTtsLanguageCode}
                     hoverBackgroundColor="hover:bg-teal-100"
                     hoverTextColor="hover:text-teal-600"
                     speakingBackgroundColor="bg-teal-200"
@@ -111,7 +124,7 @@ export function MeaningEntryRenderer({
                           <div className="flex h-5 w-5 items-center justify-center">
                             <SpeakerButton
                               word={example.text.replace(/\*\*/g, "")}
-                              ttsCode={mainTtsCode}
+                              ttsCode={sourceTtsLanguageCode}
                               hoverBackgroundColor="hover:bg-teal-100"
                               hoverTextColor="hover:text-teal-600"
                               speakingBackgroundColor="bg-teal-200"
@@ -126,9 +139,22 @@ export function MeaningEntryRenderer({
                           </p>
                         )}
                         {example.translation && (
-                          <p className="pl-4 text-xs text-teal-700">
-                            {renderText(example.translation)}
-                          </p>
+                          <div className="flex items-start justify-between gap-1">
+                            <p className="pl-4 text-xs text-teal-700">
+                              {renderText(example.translation)}
+                            </p>
+                            <div className="flex h-5 w-5 items-center justify-center">
+                              <SpeakerButton
+                                word={example.translation.replace(/\*\*/g, "")}
+                                ttsCode={translatedTtsLanguageCode}
+                                hoverBackgroundColor="hover:bg-teal-100"
+                                hoverTextColor="hover:text-teal-600"
+                                speakingBackgroundColor="bg-teal-200"
+                                speakingTextColor="text-teal-700"
+                                className="scale-75"
+                              />
+                            </div>
+                          </div>
                         )}
                       </div>
                     ))}
@@ -162,7 +188,7 @@ export function MeaningEntryRenderer({
                     </h4>
                     <SpeakerButton
                       word={phrasalVerb.phrasal_verb}
-                      ttsCode={mainTtsCode}
+                      ttsCode={sourceTtsLanguageCode}
                       hoverBackgroundColor="hover:bg-amber-100"
                       hoverTextColor="hover:text-amber-600"
                       speakingBackgroundColor="bg-amber-200"
@@ -177,14 +203,14 @@ export function MeaningEntryRenderer({
                     <div className="space-y-2">
                       {phrasalVerb.examples.map((example, exampleIndex) => (
                         <div key={exampleIndex}>
-                          <div className="relative mb-1 flex items-start justify-between gap-1">
+                          <div className="mb-1 flex items-start justify-between gap-1">
                             <p className="border-l-4 border-amber-300 pl-3 text-xs font-medium text-gray-800">
                               {renderText(example.text)}
                             </p>
                             <div className="flex h-5 w-5 items-center justify-center">
                               <SpeakerButton
                                 word={example.text.replace(/\*\*/g, "")}
-                                ttsCode={mainTtsCode}
+                                ttsCode={sourceTtsLanguageCode}
                                 hoverBackgroundColor="hover:bg-amber-100"
                                 hoverTextColor="hover:text-amber-600"
                                 speakingBackgroundColor="bg-amber-200"
@@ -199,9 +225,25 @@ export function MeaningEntryRenderer({
                             </p>
                           )}
                           {example.translation && (
-                            <p className="pl-4 text-xs text-amber-700">
-                              {renderText(example.translation)}
-                            </p>
+                            <div className="flex items-start justify-between gap-1">
+                              <p className="pl-4 text-xs text-amber-700">
+                                {renderText(example.translation)}
+                              </p>
+                              <div className="flex h-5 w-5 items-center justify-center">
+                                <SpeakerButton
+                                  word={example.translation.replace(
+                                    /\*\*/g,
+                                    "",
+                                  )}
+                                  ttsCode={translatedTtsLanguageCode}
+                                  hoverBackgroundColor="hover:bg-amber-100"
+                                  hoverTextColor="hover:text-amber-600"
+                                  speakingBackgroundColor="bg-amber-200"
+                                  speakingTextColor="text-amber-700"
+                                  className="scale-75"
+                                />
+                              </div>
+                            </div>
                           )}
                         </div>
                       ))}

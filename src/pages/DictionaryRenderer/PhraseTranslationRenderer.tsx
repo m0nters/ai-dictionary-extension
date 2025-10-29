@@ -85,13 +85,13 @@ export function PhraseTranslationRenderer({
           isAutoDetected={
             sourceLangCodeSetting === DEFAULT_SOURCE_LANGUAGE_CODE
           }
-          mainCountryCode={phraseTranslation.main_country_code}
+          mainCountryCode={phraseTranslation.source_language_main_country_code}
         />
       )}
-      {phraseTranslation.main_tts_language_code && (
+      {phraseTranslation.translated_tts_language_code && (
         <SpeakerButton
           word={phraseTranslation.text}
-          ttsCode={phraseTranslation.main_tts_language_code}
+          ttsCode={phraseTranslation.translated_tts_language_code}
           className="-translate-x-3"
         />
       )}
