@@ -47,11 +47,10 @@ export function SpeakerButton({
             setIsPlaying(false);
           },
         );
+        speakSlow.current = !speakSlow.current;
       } catch (error) {
         console.error("TTS error:", error);
         setIsPlaying(false);
-      } finally {
-        speakSlow.current = !speakSlow.current;
       }
     }
   };
