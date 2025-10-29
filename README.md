@@ -153,10 +153,10 @@ Adding a new (app) language to the extension requires updating several areas. He
 
 #### 1.1. (Optional) Validate i18n
 
-Run the validation script to ensure all files are properly set up:
+Run the validation script to ensure all required keys are present:
 
 ```bash
-npm run validate-locales
+npm run i18n:check
 ```
 
 If validation passes, build and test the extension:
