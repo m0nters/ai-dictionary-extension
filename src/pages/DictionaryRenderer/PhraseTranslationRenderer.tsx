@@ -106,10 +106,7 @@ export function PhraseTranslationRenderer({
           className="-translate-x-3"
         />
       )}
-      <CollapsibleTextSection
-        text={phraseTranslation.translation}
-        className="mt-2"
-      />
+      <CollapsibleTextSection text={phraseTranslation.translation} />
     </div>
   );
 }
