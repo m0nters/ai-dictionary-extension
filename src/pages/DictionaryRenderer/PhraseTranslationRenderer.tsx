@@ -88,10 +88,10 @@ export function PhraseTranslationRenderer({
           mainCountryCode={phraseTranslation.source_language_main_country_code}
         />
       )}
-      {phraseTranslation.translated_tts_language_code && (
+      {phraseTranslation.source_tts_language_code && (
         <SpeakerButton
           word={phraseTranslation.text}
-          ttsCode={phraseTranslation.translated_tts_language_code}
+          ttsCode={phraseTranslation.source_tts_language_code}
           className="-translate-x-3"
         />
       )}
@@ -99,6 +99,13 @@ export function PhraseTranslationRenderer({
         text={phraseTranslation.text}
         isInitiallyExpanded={isHistoryDetailView}
       />
+      {phraseTranslation.translated_tts_language_code && (
+        <SpeakerButton
+          word={phraseTranslation.translation}
+          ttsCode={phraseTranslation.translated_tts_language_code}
+          className="-translate-x-3"
+        />
+      )}
       <CollapsibleTextSection
         text={phraseTranslation.translation}
         className="mt-2"
