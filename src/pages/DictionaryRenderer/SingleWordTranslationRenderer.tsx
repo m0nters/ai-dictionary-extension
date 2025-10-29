@@ -1,8 +1,7 @@
+import { MeaningEntryRenderer, VerbFormsRenderer } from "@/components";
 import { DEFAULT_SOURCE_LANGUAGE_CODE } from "@/constants";
 import { SingleWordTranslation } from "@/types";
-import { MeaningEntryRenderer } from "./MeaningEntryRenderer";
 import { SourceLanguageRenderer } from "./SourceLanguageRenderer";
-import { VerbFormsRenderer } from "./VerbFormsRenderer";
 
 interface SingleWordTranslationRendererProps {
   singleWordTranslation: SingleWordTranslation;

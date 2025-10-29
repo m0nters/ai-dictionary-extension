@@ -11,9 +11,11 @@ import { SourceLanguageRenderer } from "./SourceLanguageRenderer";
 function CollapsibleTextSection({
   text,
   isInitiallyExpanded = true,
+  className = "",
 }: {
   text: string;
   isInitiallyExpanded?: boolean;
+  className?: string;
 }) {
   const [isExpanded, setIsExpanded] = useState(isInitiallyExpanded);
   const [isSticky, setIsSticky] = useState(false);
@@ -42,7 +44,10 @@ function CollapsibleTextSection({
   }, [isExpanded]);
 
   return (
-    <div ref={containerRef} className="relative mt-2 flex items-start">
+    <div
+      ref={containerRef}
+      className={`relative flex items-start ${className}`}
+    >
       <button
         onClick={() => setIsExpanded(!isExpanded)}
         className={`cursor-pointer rounded-full bg-blue-400 transition-all duration-300 ease-in-out ${isExpanded ? "mt-1 mr-2 h-6 w-1" : "mt-2 mr-0 h-3 w-3 -translate-x-1"}`}
@@ -94,7 +99,10 @@ export function PhraseTranslationRenderer({
         text={phraseTranslation.text}
         isInitiallyExpanded={isHistoryDetailView}
       />
-      <CollapsibleTextSection text={phraseTranslation.translation} />
+      <CollapsibleTextSection
+        text={phraseTranslation.translation}
+        className="mt-2"
+      />
     </div>
   );
 }
