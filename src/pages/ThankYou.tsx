@@ -67,7 +67,7 @@ export function ThankYou() {
   //   };
 
   return (
-    <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-gradient-to-br from-gray-100 to-indigo-100 p-4">
+    <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-linear-to-br from-gray-100 to-indigo-100 p-4">
       {/* Animated background elements */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="animate-blob absolute -top-4 -left-4 h-72 w-72 rounded-full bg-indigo-200 opacity-50 mix-blend-multiply blur-xl filter"></div>
@@ -97,7 +97,7 @@ export function ThankYou() {
           <img src="/logo/logo.png" alt="App Logo" className="h-36 w-36" />
 
           <h1 className="mb-4 text-5xl font-bold text-gray-800 md:text-6xl">
-            <span className="bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
+            <span className="bg-linear-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
               {t("thankYou:title")}
             </span>
           </h1>

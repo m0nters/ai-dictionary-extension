@@ -18,10 +18,9 @@ const parseSearchOperators = (
   let remainingText = query;
 
   // Use the shared regex pattern
-  const operatorRegex = new RegExp(SEARCH_OPERATOR_REGEX);
   let match;
 
-  while ((match = operatorRegex.exec(query)) !== null) {
+  while ((match = SEARCH_OPERATOR_REGEX.exec(query)) !== null) {
     const operatorType = match[1].toLowerCase() as SearchOperatorType;
     const langCode = match[2].toLowerCase();
 

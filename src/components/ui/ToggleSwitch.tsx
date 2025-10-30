@@ -34,7 +34,7 @@ export function ToggleSwitch({
         onClick={handleToggle}
         className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors duration-200 focus:ring-2 focus:ring-offset-2 focus:outline-none ${
           enabled
-            ? "bg-gradient-to-r from-indigo-500 to-purple-600 focus:ring-indigo-500"
+            ? "bg-linear-to-r from-indigo-500 to-purple-600 focus:ring-indigo-500"
             : "bg-gray-300 focus:ring-gray-300"
         }`}
         aria-pressed={enabled}

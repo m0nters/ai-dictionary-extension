@@ -5,7 +5,7 @@ interface VerbFormsRendererProps {
 export function VerbFormsRenderer({ verbForms }: VerbFormsRendererProps) {
   return (
     <div className="mb-4">
-      <div className="rounded-xl border border-violet-200 bg-gradient-to-r from-violet-50 to-purple-50 p-4 shadow-sm">
+      <div className="rounded-xl border border-violet-200 bg-linear-to-r from-violet-50 to-purple-50 p-4 shadow-sm">
         <div className="mb-3 flex items-center space-x-2">
           <div className="h-2 w-2 rounded-full bg-violet-400"></div>
           <span className="rounded-full bg-violet-100 px-3 py-1 text-xs font-bold tracking-wide text-violet-700">
