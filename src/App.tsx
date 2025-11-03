@@ -191,13 +191,7 @@ function App() {
           <Route
             path="/"
             element={
-              !apiKey ? (
-                <ApiKeyScreen
-                  onApiKeySubmit={handleApiKeySubmit}
-                  appLangCode={appLangCode}
-                  onChangeAppLanguage={handleChangeAppLanguage}
-                />
-              ) : (
+              apiKey ? (
                 <MainScreen
                   appLangCode={appLangCode}
                   sourceLangCode={sourceLangCode}
@@ -208,6 +202,12 @@ function App() {
                   extensionEnabled={extensionEnabled}
                   onExtensionToggle={handleExtensionToggle}
                   onDeleteApiKey={handleDeleteApiKey}
+                />
+              ) : (
+                <ApiKeyScreen
+                  onApiKeySubmit={handleApiKeySubmit}
+                  appLangCode={appLangCode}
+                  onChangeAppLanguage={handleChangeAppLanguage}
                 />
               )
             }
