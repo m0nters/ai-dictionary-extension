@@ -66,10 +66,6 @@ function App() {
     );
   }, []);
 
-  useEffect(() => {
-    handleExtensionToggle(!!apiKey);
-  }, [apiKey]);
-
   const handleChangeSourceLanguage = (value: string) => {
     if (value === sourceLangCode) return; // just a double check, we have checked this in MainScreen already
     setSourceLangCode(value);
@@ -158,6 +154,7 @@ function App() {
 
   const handleApiKeySubmit = (newApiKey: string) => {
     setApiKey(newApiKey);
+    handleExtensionToggle(true); // first time API key submission enables the extension
 
     // Save to chrome storage
     chrome.storage.sync.set({ geminiApiKey: newApiKey }, () => {
@@ -172,6 +169,7 @@ function App() {
 
   const handleDeleteApiKey = () => {
     setApiKey(null);
+    handleExtensionToggle(false);
 
     // Remove from chrome storage
     chrome.storage.sync.remove("geminiApiKey", () => {
