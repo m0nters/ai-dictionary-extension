@@ -212,7 +212,7 @@ export function HistoryScreen() {
       {/* Header */}
       <div className="sticky top-0 z-10 border-b border-indigo-100 bg-white/70 backdrop-blur-sm">
         <div className="flex items-center justify-between p-4">
-          <div className="flex items-center space-x-3">
+          <div className="flex items-center space-x-2">
             <BackButton />
             <div className="flex items-center space-x-2">
               <Clock className="h-5 w-5 text-indigo-600" />
