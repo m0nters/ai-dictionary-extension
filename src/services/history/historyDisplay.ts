@@ -30,15 +30,8 @@ export const getDisplayText = (
       secondaryText: ipa ? `${ipa}` : "",
     };
   } else if (isPhraseTranslation(translation)) {
-    // Truncate long text with ellipsis
-    const maxLength = 30;
-    const truncatedText =
-      translation.text.length > maxLength
-        ? translation.text.substring(0, maxLength) + "..."
-        : translation.text;
-
     return {
-      primaryText: truncatedText,
+      primaryText: translation.text,
       secondaryText: "",
     };
   }

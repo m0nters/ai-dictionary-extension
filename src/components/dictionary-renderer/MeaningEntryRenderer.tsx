@@ -20,7 +20,9 @@ export function MeaningEntryRenderer({
     <div>
       {/* Word and Pronunciation Header (original style) */}
       <div className="mb-4">
-        <h1 className="mb-1 text-xl font-semibold text-blue-600">{word}</h1>
+        <h1 className="mb-1 text-xl font-semibold wrap-break-word text-blue-600">
+          {word}
+        </h1>
         <PronunciationRenderer
           pronunciation={entry.pronunciation}
           word={word}
@@ -47,10 +49,10 @@ export function MeaningEntryRenderer({
               className="mb-3 ml-4 rounded-lg border-l-4 border-blue-200 bg-blue-50 p-3"
             >
               <div className="mb-1 flex items-start justify-between gap-1">
-                <p className="text-sm font-medium text-gray-800">
+                <p className="min-w-0 flex-1 text-sm font-medium wrap-break-word text-gray-800">
                   {renderText(example.text)}
                 </p>
-                <div className="flex h-5 w-5 items-center justify-center">
+                <div className="flex h-5 w-5 shrink-0 items-center justify-center">
                   <SpeakerButton
                     word={example.text.replace(/\*\*/g, "")}
                     ttsCode={sourceTtsLanguageCode}
@@ -65,10 +67,10 @@ export function MeaningEntryRenderer({
               )}
               {example.translation && (
                 <div className="flex items-start justify-between gap-1">
-                  <p className="text-sm font-normal text-blue-700">
+                  <p className="min-w-0 flex-1 text-sm font-normal wrap-break-word text-blue-700">
                     {renderText(example.translation)}
                   </p>
-                  <div className="flex h-5 w-5 items-center justify-center">
+                  <div className="flex h-5 w-5 shrink-0 items-center justify-center">
                     <SpeakerButton
                       word={example.translation.replace(/\*\*/g, "")}
                       ttsCode={translatedTtsLanguageCode}
@@ -118,10 +120,10 @@ export function MeaningEntryRenderer({
                     {idiom.examples.map((example, exampleIndex) => (
                       <div key={exampleIndex}>
                         <div className="mb-1 flex items-start justify-between gap-1">
-                          <p className="border-l-4 border-teal-300 pl-3 text-xs font-medium text-gray-800">
+                          <p className="min-w-0 flex-1 border-l-4 border-teal-300 pl-3 text-xs font-medium wrap-break-word text-gray-800">
                             {renderText(example.text)}
                           </p>
-                          <div className="flex h-5 w-5 items-center justify-center">
+                          <div className="flex h-5 w-5 shrink-0 items-center justify-center">
                             <SpeakerButton
                               word={example.text.replace(/\*\*/g, "")}
                               ttsCode={sourceTtsLanguageCode}
@@ -140,10 +142,10 @@ export function MeaningEntryRenderer({
                         )}
                         {example.translation && (
                           <div className="flex items-start justify-between gap-1">
-                            <p className="pl-4 text-xs text-teal-700">
+                            <p className="min-w-0 flex-1 pl-4 text-xs wrap-break-word text-teal-700">
                               {renderText(example.translation)}
                             </p>
-                            <div className="flex h-5 w-5 items-center justify-center">
+                            <div className="flex h-5 w-5 shrink-0 items-center justify-center">
                               <SpeakerButton
                                 word={example.translation.replace(/\*\*/g, "")}
                                 ttsCode={translatedTtsLanguageCode}
@@ -204,10 +206,10 @@ export function MeaningEntryRenderer({
                       {phrasalVerb.examples.map((example, exampleIndex) => (
                         <div key={exampleIndex}>
                           <div className="mb-1 flex items-start justify-between gap-1">
-                            <p className="border-l-4 border-amber-300 pl-3 text-xs font-medium text-gray-800">
+                            <p className="min-w-0 flex-1 border-l-4 border-amber-300 pl-3 text-xs font-medium wrap-break-word text-gray-800">
                               {renderText(example.text)}
                             </p>
-                            <div className="flex h-5 w-5 items-center justify-center">
+                            <div className="flex h-5 w-5 shrink-0 items-center justify-center">
                               <SpeakerButton
                                 word={example.text.replace(/\*\*/g, "")}
                                 ttsCode={sourceTtsLanguageCode}
@@ -226,10 +228,10 @@ export function MeaningEntryRenderer({
                           )}
                           {example.translation && (
                             <div className="flex items-start justify-between gap-1">
-                              <p className="pl-4 text-xs text-amber-700">
+                              <p className="min-w-0 flex-1 pl-4 text-xs wrap-break-word text-amber-700">
                                 {renderText(example.translation)}
                               </p>
-                              <div className="flex h-5 w-5 items-center justify-center">
+                              <div className="flex h-5 w-5 shrink-0 items-center justify-center">
                                 <SpeakerButton
                                   word={example.translation.replace(
                                     /\*\*/g,

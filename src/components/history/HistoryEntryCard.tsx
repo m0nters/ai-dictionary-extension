@@ -73,11 +73,17 @@ export function HistoryEntryCard({
         {/* Main info section */}
         <div className="min-w-0 flex-1">
           <div className="mb-2">
-            <h3 className="truncate text-base font-semibold text-gray-800 transition-colors group-hover:text-indigo-800">
+            <h3
+              className="max-w-60 truncate text-base font-semibold text-gray-800 transition-colors group-hover:text-indigo-800"
+              title={displayInfo.primaryText}
+            >
               {displayInfo.primaryText}
             </h3>
             {displayInfo.secondaryText && (
-              <p className="font-mono text-sm whitespace-pre-line text-gray-500">
+              <p
+                className="max-w-60 truncate font-mono text-sm text-gray-500"
+                title={displayInfo.secondaryText}
+              >
                 {displayInfo.secondaryText}
               </p>
             )}
@@ -91,7 +97,7 @@ export function HistoryEntryCard({
                 onClick={(e) =>
                   onLanguageBadgeClick(e, "source", sourceLangCode)
                 }
-                className={`flex cursor-pointer items-center space-x-1.5 rounded-full border px-2 py-1 transition-all duration-200 ${isSourceLanguageUnknown ? "border-gray-300 bg-gray-100 hover:bg-gray-200 hover:shadow-none" : "border-blue-300 bg-blue-100 hover:bg-blue-200 hover:shadow-sm"}`}
+                className={`flex max-w-28 cursor-pointer items-center space-x-1.5 rounded-full border px-2 py-1 transition-all duration-200 ${isSourceLanguageUnknown ? "border-gray-300 bg-gray-100 hover:bg-gray-200 hover:shadow-none" : "border-blue-300 bg-blue-100 hover:bg-blue-200 hover:shadow-sm"}`}
                 title={t("history:searchBySourceLanguage", {
                   language: sourceLangName,
                 })}
@@ -100,7 +106,7 @@ export function HistoryEntryCard({
                   className={`h-3.5 w-3.5 ${isSourceLanguageUnknown ? "text-gray-500" : "text-blue-600"}`}
                 />
                 <span
-                  className={`font-semibold ${isSourceLanguageUnknown ? "text-gray-500" : "text-blue-700"}`}
+                  className={`truncate font-semibold ${isSourceLanguageUnknown ? "text-gray-500" : "text-blue-700"}`}
                 >
                   {sourceLangName}
                 </span>
@@ -114,13 +120,13 @@ export function HistoryEntryCard({
                 onClick={(e) =>
                   onLanguageBadgeClick(e, "target", translatedLangCode)
                 }
-                className="flex cursor-pointer items-center space-x-1.5 rounded-full border border-emerald-300 bg-emerald-100 px-2 py-1 transition-all duration-200 hover:bg-emerald-200 hover:shadow-sm"
+                className="flex max-w-28 cursor-pointer items-center space-x-1.5 rounded-full border border-emerald-300 bg-emerald-100 px-2 py-1 transition-all duration-200 hover:bg-emerald-200 hover:shadow-sm"
                 title={t("history:searchByTargetLanguage", {
                   language: targetLangName,
                 })}
               >
                 <Globe className="h-3.5 w-3.5 text-emerald-600" />
-                <span className="font-semibold text-emerald-700">
+                <span className="truncate font-semibold text-emerald-700">
                   {targetLangName}
                 </span>
               </div>

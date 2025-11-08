@@ -268,12 +268,20 @@ export function HistoryScreen() {
               </span>
             </div>
             <div className="flex items-center space-x-3 text-xs text-gray-600">
-              <span>
+              <span
+                className="max-w-16 truncate"
+                title={t("history:entriesCount", {
+                  count: storageUsage.historyEntryCount,
+                })}
+              >
                 {t("history:entriesCount", {
                   count: storageUsage.historyEntryCount,
                 })}
               </span>
-              <span className="font-medium">
+              <span
+                className="max-w-16 truncate font-medium"
+                title={`${storageUsage.historySizeKB} KB`}
+              >
                 {storageUsage.historySizeKB} KB
               </span>
             </div>
