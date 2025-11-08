@@ -55,9 +55,9 @@ export function MainScreen({
   // Check if current tab is a privilege page
   useEffect(() => {
     chrome.tabs.query({ active: true, currentWindow: true }, async (tabs) => {
-      const activeTab = tabs[0];
-      if (activeTab?.id) {
-        const isRestricted = await checkPrivilegePage(activeTab.id);
+      const tab = tabs[0];
+      if (tab.id) {
+        const isRestricted = await checkPrivilegePage(tab.id);
         setIsPrivilegePage(isRestricted);
       }
     });

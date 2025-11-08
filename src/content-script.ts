@@ -64,7 +64,7 @@ const popupWidth = 300;
 let dictionaryButton: HTMLElement | null = null;
 let dictionaryPopup: HTMLIFrameElement | null = null;
 let extensionEnabled: boolean = true; // Default to enabled
-let lastSelectedText: string | null = null;
+let lastSelectedText: string | null = null; // use for trick to prevent showing button again after clicking it
 
 // Check if extension is enabled
 async function isExtensionEnabled(): Promise<boolean> {
@@ -99,7 +99,7 @@ async function isExtensionEnabled(): Promise<boolean> {
 })();
 
 // Listen for messages (from App.tsx)
-chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
+chrome.runtime.onMessage.addListener(async (message, _sender, sendResponse) => {
   if (message.type === "EXTENSION_TOGGLE") {
     extensionEnabled = message.enabled;
 
@@ -114,6 +114,23 @@ chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
 
   // Listen for language change messages and forward to dictionary popup
   if (message.type === "LANGUAGE_CHANGED") {
+    // if there's a dictionary button, show a new dictionary button with a new label
+    if (dictionaryButton) {
+      const selection = window.getSelection();
+      const hasSelection =
+        selection?.type === "Range" && selection.toString().trim().length > 0;
+      const selectedText = hasSelection
+        ? selection.toString().replace(/ +/g, " ").trim()
+        : null;
+
+      if (hasSelection && selectedText) {
+        const { xPos, yPos } = getButtonPosition();
+        await showDictionaryButton(selectedText, xPos, yPos);
+      }
+    }
+
+    // if there's a dictionary popup, send the language change message to it
+    // so that it can update its UI language
     if (dictionaryPopup && dictionaryPopup.contentWindow) {
       dictionaryPopup.contentWindow.postMessage(
         {
@@ -249,9 +266,7 @@ document.addEventListener("mouseup", async () => {
   // this case only happens when select no text, or in the middle between
   // selecting 2 different texts
   else if (!selectedText || selectedText.length === 0) {
-    // reset last selected text
     lastSelectedText = null;
-    // Clear the button if no text is selected
     removeDictionaryButton();
   }
 });
@@ -413,9 +428,8 @@ window.addEventListener("message", (event) => {
   }
 });
 
-// Increasing UX, when select a different text, the old button and popup should
-// disappear right away, not waiting for mouseup event for it to be removed by
-// click event
+// Increasing UX, when select a different text, or click outside, the old button
+// and popup should disappear right away, not waiting for the mouseup event
 document.addEventListener("mousedown", (e) => {
   if (dictionaryButton && !dictionaryButton.contains(e.target as Node)) {
     removeDictionaryButton();

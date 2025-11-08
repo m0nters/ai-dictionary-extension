@@ -134,20 +134,21 @@ function App() {
         );
         return;
       }
-      // Send message to content script to update state
-      chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-        const activeTab = tabs[0];
-        if (activeTab?.id && activeTab.url) {
-          chrome.tabs
-            .sendMessage(activeTab.id, {
-              type: "EXTENSION_TOGGLE",
-              enabled: enabled,
-            })
-            .catch(() => {
-              // Silently handle content script not being available
-              // This is normal for pages where content scripts don't run
-            });
-        }
+      // Broadcast to all tabs
+      chrome.tabs.query({}, (tabs) => {
+        tabs.forEach((tab) => {
+          if (tab.id) {
+            chrome.tabs
+              .sendMessage(tab.id, {
+                type: "EXTENSION_TOGGLE",
+                enabled: enabled,
+              })
+              .catch(() => {
+                // Silently handle content script not being available
+                // This is normal for pages where content scripts don't run
+              });
+          }
+        });
       });
     });
   };
