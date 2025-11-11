@@ -5,7 +5,7 @@ const UNINSTALL_SURVEY_URL = "https://forms.gle/EfpEMy8NdidrdVg36";
 chrome.runtime.onInstalled.addListener((details) => {
   console.log("Extension installe/updated:", details);
 
-  if (details.reason === "install") {
+  if (details.reason === chrome.runtime.OnInstalledReason.INSTALL) {
     // Extension was installed for the first time
     console.log("First time installation detected");
 
@@ -17,38 +17,13 @@ chrome.runtime.onInstalled.addListener((details) => {
 
     // Set the uninstall URL for future feedback
     chrome.runtime.setUninstallURL(UNINSTALL_SURVEY_URL);
-  } else if (details.reason === "update") {
+  } else if (details.reason === chrome.runtime.OnInstalledReason.UPDATE) {
     // Extension was updated
     console.log("Extension updated from version:", details.previousVersion);
 
     // Optionally handle updates (e.g., show changelog)
     // You can add update-specific logic here if needed
-
-    // Make sure uninstall URL is still set
-    chrome.runtime.setUninstallURL(UNINSTALL_SURVEY_URL);
   }
-});
-
-// Handle extension startup (when browser starts with extension already installed)
-chrome.runtime.onStartup.addListener(() => {
-  console.log("Extension started");
-
-  // Ensure uninstall URL is set on startup
-  chrome.runtime.setUninstallURL(UNINSTALL_SURVEY_URL);
-});
-
-// Optional: Handle when extension is enabled/disabled
-chrome.management.onEnabled.addListener((info) => {
-  if (info.id === chrome.runtime.id) {
-    console.log("Extension enabled");
-    // Set uninstall URL when extension is re-enabled
-    chrome.runtime.setUninstallURL(UNINSTALL_SURVEY_URL);
-  }
-});
-
-// Optional: Log when extension context is invalidated (for debugging)
-chrome.runtime.onSuspend.addListener(() => {
-  console.log("Extension suspended");
 });
 
 export {};
