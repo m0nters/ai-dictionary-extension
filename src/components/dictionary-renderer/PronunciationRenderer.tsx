@@ -56,7 +56,7 @@ export function PronunciationRenderer({
   }
 
   return (
-    <span className="ml-2 inline-flex items-end gap-1">
+    <span className="inline-flex items-end gap-1">
       <span className="text-base text-gray-600">{pronunciation as string}</span>
       <SpeakerButton word={word} ttsCode={ttsCode} className="translate-y-1" />
     </span>

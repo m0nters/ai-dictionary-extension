@@ -4,6 +4,7 @@ import {
   PronunciationVariants,
   SingleWordTranslation,
 } from "@/types";
+import { jsonrepair } from "jsonrepair";
 import Markdown from "markdown-to-jsx";
 import { createElement } from "react";
 
@@ -72,27 +73,8 @@ export const parseTranslationJSON = (content: string): ParsedTranslation => {
     const jsonMatch = content.match(/```json\s*([\s\S]*?)\s*```/);
     let jsonString = jsonMatch ? jsonMatch[1] : content;
 
-    // Clean up trailing commas that make JSON invalid
-    // Without this parsing code, sometimes AI generates shit like this and make
-    // the whole things fucked!
-    /* 
-        "meanings": [
-        {
-          ...
-          "synonyms": ["individual", "human being", "being", "soul", "man", "woman"],      <-- this comma here is diabolical, normal `JSON.parse()` CAN'T handle it!
-        },
-        {
-          ...
-          "synonyms": ["human", "mankind", "humanity", "homo sapiens"],     <-- similarly
-        },
-        ...
-      ]
-    */
-    jsonString = jsonString
-      .replace(/,(\s*[}\]])/g, "$1") // Remove comma before } or ]
-      .replace(/,(\s*\n\s*[}\]])/g, "$1"); // Handle multi-line cases
-
-    const parsed = JSON.parse(jsonString);
+    const repairedJson = jsonrepair(jsonString); // AI generated JSON format can be malformed, this 3rd party lib repairs it
+    const parsed = JSON.parse(repairedJson);
 
     // Validate the structure
     if (parsed.word) {
