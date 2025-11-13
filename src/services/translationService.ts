@@ -488,11 +488,13 @@ export const translateWithGemini = async (
     },
   );
 
-  if (!response.ok) {
-    throw new Error(`API request failed: ${response.status}`);
-  }
-
   const data = await response.json();
+
+  if (!response.ok) {
+    const errorMessage = `API request failed with status code ${response.status}
+    Reason: ${data?.error?.message || "Undefined"}`;
+    throw new Error(errorMessage);
+  }
   const translation =
     data.candidates?.[0]?.content?.parts?.[0]?.text ||
     "No translation available";

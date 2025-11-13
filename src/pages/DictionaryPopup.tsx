@@ -211,7 +211,9 @@ export function DictionaryPopup() {
               className="flex flex-col items-center justify-center text-center text-sm text-red-500"
               key="error"
             >
-              <p>{getErrorMessage(result.error)}</p>
+              <p className="whitespace-pre-line">
+                {getErrorMessage(result.error)}
+              </p>
               <button
                 onClick={() => {
                   if (result.text) {
