@@ -1,4 +1,4 @@
-# Dictionary Extension
+# Vibelex - A Dictionary Extension
 
 A Chrome extension that provides instant translation using Google's Gemini AI when you select text on any webpage.
 
@@ -95,8 +95,19 @@ Before you can use the extension, you need to provide a Google Gemini API key:
 
 1. **Access history** by clicking the "History" button in the extension popup
 2. **Search your history** using the search bar at the top
-   - Search by original text, translations, or language pairs
-   - Use operators like `lang:en`, `to:vi`, or `from:ja` for advanced filtering
+   - Search by original text, translations, pronunciations, or any content
+   - Use advanced search operators for precise filtering:
+
+   | Operator  | Description               | Example                          |
+   | --------- | ------------------------- | -------------------------------- |
+   | `source:` | Filter by source language | `source:en` or `source:en hello` |
+   | `target:` | Filter by target language | `target:vi` or `target:zh test`  |
+
+   **Tips:**
+   - Combine operators: `source:en target:vi` finds English → Vietnamese translations
+   - Mix with text search: `source:ja computer` finds "computer" in Japanese translations
+   - Fuzzy matching: Works even with typos or partial words
+
 3. **Pin important entries** by clicking the pin icon - pinned items stay at the top
 4. **Select multiple entries**:
    - Hover over any card to see the selection circle
@@ -185,7 +196,7 @@ Update `README.md` at [Supported Languages](#supported-languages) section
 
 - The AI model takes a while to load responses. We could switch to a lighter model to speed things up, but this might lead to less accurate results in some cases.
 - Since the output is AI-generated, each response is unique, so the results aren’t consistent every time.
-- Generating responses uses tokens, which means if the app goes into production, it won’t—and shouldn’t—be free. The reality is, users will often seek out free alternatives, so the business model for this kind of app isn’t guaranteed to succeed.
+- Currently the translation service is at client side, meaning the prompt will be exposed. I've thought about building a backend proxy server to hide the prompt and API key, but currently that would incur additional costs and complexity.
 
 ---
 
