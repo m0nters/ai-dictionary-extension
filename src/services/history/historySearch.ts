@@ -1,7 +1,12 @@
 import type { SearchOperator, SearchOperatorType } from "@/constants";
 import { SEARCH_OPERATOR_REGEX } from "@/constants";
 import { HistoryEntry } from "@/types";
-import { isPhraseTranslation, isSingleWordTranslation } from "@/utils";
+import {
+  hasPronunciationVariants,
+  isPhraseTranslation,
+  isSingleWordTranslation,
+} from "@/utils";
+import Fuse from "fuse.js";
 import { getHistory } from "./historyStorage";
 
 /**
@@ -34,6 +39,94 @@ const parseSearchOperators = (
 };
 
 /**
+ * Extract all searchable text from a history entry
+ */
+const extractSearchableFields = (entry: HistoryEntry): string[] => {
+  const { translation } = entry;
+  const searchableFields: string[] = [];
+
+  if (isSingleWordTranslation(translation)) {
+    // Add the word itself
+    searchableFields.push(translation.word);
+
+    // Add verb forms if available
+    if (translation.verb_forms) {
+      searchableFields.push(...translation.verb_forms);
+    }
+
+    // Extract pronunciations from all meaning entries
+    translation.meanings.forEach((meaning) => {
+      // Add definition
+      searchableFields.push(meaning.definition);
+
+      // Extract pronunciation IPAs
+      if (typeof meaning.pronunciation === "string") {
+        searchableFields.push(meaning.pronunciation);
+      } else if (hasPronunciationVariants(meaning.pronunciation)) {
+        // Push all pronunciation variants dynamically
+        Object.values(meaning.pronunciation).forEach((variant) => {
+          if (variant?.ipa) {
+            searchableFields.push(...variant.ipa);
+          }
+        });
+      }
+
+      // Add examples
+      meaning.examples.forEach((example) => {
+        searchableFields.push(example.text);
+        if (example.pronunciation) {
+          searchableFields.push(example.pronunciation);
+        }
+        if (example.translation) {
+          searchableFields.push(example.translation);
+        }
+      });
+
+      // Add synonyms
+      if (meaning.synonyms) {
+        searchableFields.push(...meaning.synonyms.items);
+      }
+
+      // Add idioms
+      if (meaning.idioms) {
+        meaning.idioms.items.forEach((idiom) => {
+          searchableFields.push(idiom.idiom, idiom.meaning);
+          idiom.examples.forEach((example) => {
+            searchableFields.push(example.text);
+            if (example.pronunciation) {
+              searchableFields.push(example.pronunciation);
+            }
+            if (example.translation) {
+              searchableFields.push(example.translation);
+            }
+          });
+        });
+      }
+
+      // Add phrasal verbs
+      if (meaning.phrasal_verbs) {
+        meaning.phrasal_verbs.items.forEach((pv) => {
+          searchableFields.push(pv.phrasal_verb, pv.meaning);
+          pv.examples.forEach((example) => {
+            searchableFields.push(example.text);
+            if (example.pronunciation) {
+              searchableFields.push(example.pronunciation);
+            }
+            if (example.translation) {
+              searchableFields.push(example.translation);
+            }
+          });
+        });
+      }
+    });
+  } else if (isPhraseTranslation(translation)) {
+    searchableFields.push(translation.text, translation.translation);
+  }
+
+  return searchableFields;
+};
+
+/**
  * Search history entries based on query with support for search operators
  * Supports operators: source:langcode, target:langcode
  * Examples: "source:en hello", "target:vi", "source:en target:zh translation"
@@ -48,7 +141,8 @@ export const searchHistory = async (query: string): Promise<HistoryEntry[]> => {
   const { operators, remainingText } = parseSearchOperators(query);
   const searchTerm = remainingText.toLowerCase();
 
-  return entries.filter((entry) => {
+  // First, filter by operators
+  let filteredEntries = entries.filter((entry) => {
     const { translation } = entry;
 
     // Check search operators
@@ -66,17 +160,25 @@ export const searchHistory = async (query: string): Promise<HistoryEntry[]> => {
       }
     }
 
-    // If there's remaining text, search in content
-    if (searchTerm) {
-      if (isSingleWordTranslation(translation)) {
-        return translation.word.toLowerCase().includes(searchTerm);
-      } else if (isPhraseTranslation(translation)) {
-        return translation.text.toLowerCase().includes(searchTerm);
-      }
-      return false;
-    }
-
-    // If only operators were used (no text search), return true
     return true;
   });
+
+  // If there's remaining text, use fuzzy search
+  if (searchTerm) {
+    const fuse = new Fuse(filteredEntries, {
+      keys: [
+        {
+          name: "searchableText",
+          getFn: (entry) => extractSearchableFields(entry as HistoryEntry),
+        },
+      ],
+      threshold: 0.4, // 0.0 = perfect match, 1.0 = match anything
+    });
+
+    const results = fuse.search(searchTerm);
+    return results.map((result) => result.item);
+  }
+
+  // If only operators were used (no text search), return filtered entries
+  return filteredEntries;
 };
